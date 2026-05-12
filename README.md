@@ -1,1 +1,0 @@
-# sappia-event-manager
