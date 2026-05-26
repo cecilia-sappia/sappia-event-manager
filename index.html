@@ -3,465 +3,1170 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SAPPIA Event Manager — Prototipo</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<title>SAPPIA Event Manager</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --v:#bc88d4;--vl:#f0e3f8;--vd:#7a4d9a;--vt:#4a2d62;
-  --b:#91b5ef;--bl:#e3eefb;--bd:#4a7bca;--bt:#1a3a6a;
-  --m:#afd8d9;--ml:#dff2f2;--md:#5a9fa0;--mt:#1a4a4a;
-  --ink:#120d1a;--ink2:#5a4d6a;--ink3:#9a8daa;
-  --paper:#faf8fc;--paper2:#f2eef8;--paper3:#e8e2f2;
-  --border:#e0d8ec;
-  --r:14px;--r-sm:8px;
-  --shadow:0 2px 12px rgba(60,30,90,.08);
-  --shadow-lg:0 8px 32px rgba(60,30,90,.14);
+  --sp-violet:#bc88d4;--sp-violet-light:#e8d4f2;--sp-violet-dark:#8a5ca0;--sp-violet-text:#5c3d6e;
+  --sp-blue:#91b5ef;--sp-blue-light:#dae8fb;--sp-blue-dark:#5a8bca;--sp-blue-text:#2d5a8a;
+  --sp-mint:#afd8d9;--sp-mint-light:#d8f0f0;--sp-mint-dark:#6ab0b2;--sp-mint-text:#2d7476;
+  --sp-gray:#f4f2f6;--sp-gray2:#e8e4ee;--sp-gray3:#c4bcd0;
+  --sp-text:#1a1020;--sp-text2:#6b5f78;
 }
-html,body{height:100%;font-family:'DM Sans',sans-serif;background:#e8e2f0;color:var(--ink)}
+@media(prefers-color-scheme:dark){:root{
+  --sp-violet-light:#3d2450;--sp-violet-text:#d4a8e8;
+  --sp-blue-light:#1a3050;--sp-blue-text:#aac8f4;
+  --sp-mint-light:#0e3032;--sp-mint-text:#8ed4d6;
+  --sp-gray:#1e1628;--sp-gray2:#2a1f38;--sp-gray3:#4a3d58;
+  --sp-text:#f0ebf8;--sp-text2:#a090b8;
+}}
 
-.proto-shell{min-height:100vh;background:linear-gradient(135deg,#2d1a42 0%,#1a0d2e 50%,#0d1a2e 100%);padding:2rem 1rem;position:relative;overflow:hidden}
-.proto-shell::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 40% at 20% 20%,rgba(188,136,212,.15) 0%,transparent 70%),radial-gradient(ellipse 50% 50% at 80% 70%,rgba(145,181,239,.12) 0%,transparent 70%);pointer-events:none}
+/* ── BASE ── */
+body{font-family:'DM Sans',sans-serif;color:var(--sp-text);background:var(--color-background-primary)}
+.app{padding:1.5rem 0 3rem;display:none}
+.app.visible{display:block}
 
-.proto-header{text-align:center;margin-bottom:3rem;position:relative}
-.proto-logo{display:inline-flex;align-items:center;gap:12px;margin-bottom:1.5rem}
-.proto-logo-mark{width:48px;height:48px;border-radius:50%;background:var(--v);display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 6px rgba(188,136,212,.2)}
-.proto-logo-ring{width:20px;height:20px;border-radius:50%;border:3px solid rgba(255,255,255,.9)}
-.proto-brand-name{font-family:'DM Serif Display',serif;font-size:28px;color:#fff;letter-spacing:.03em}
-.proto-tag{display:inline-block;background:rgba(188,136,212,.2);border:1px solid rgba(188,136,212,.4);color:rgba(188,136,212,1);font-size:11px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;padding:4px 14px;border-radius:20px;margin-bottom:12px}
-.proto-title{font-family:'DM Serif Display',serif;font-size:clamp(32px,5vw,52px);color:#fff;line-height:1.1;margin-bottom:8px}
-.proto-title em{font-style:italic;color:var(--v)}
-.proto-subtitle{font-size:16px;color:rgba(255,255,255,.55);font-weight:300;max-width:480px;margin:0 auto}
+/* ── LOGIN ── */
+.login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:2rem 1rem;background:linear-gradient(135deg,#2d1a42 0%,#1a0d2e 60%,#0d1a2e 100%)}
+.login-card{background:#fff;border-radius:16px;padding:2rem;width:100%;max-width:360px;box-shadow:0 8px 32px rgba(60,30,90,.2)}
+@media(prefers-color-scheme:dark){.login-card{background:#1e1628;border:0.5px solid var(--sp-gray2)}}
+.login-brand{display:flex;align-items:center;gap:10px;justify-content:center;margin-bottom:1.5rem}
+.login-dot{width:40px;height:40px;border-radius:50%;background:var(--sp-violet);display:flex;align-items:center;justify-content:center}
+.login-dot-inner{width:18px;height:18px;border-radius:50%;border:2.5px solid rgba(255,255,255,.9)}
+.login-title{font-size:20px;font-weight:500;color:var(--sp-text);text-align:center;margin-bottom:4px}
+.login-sub{font-size:13px;color:var(--sp-text2);text-align:center;margin-bottom:1.5rem}
+.role-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:1.25rem}
+.role-btn{padding:1rem;border:1px solid var(--sp-gray2);border-radius:12px;background:transparent;cursor:pointer;text-align:center;transition:all .15s;font-family:'DM Sans',sans-serif}
+.role-btn.active{border:2px solid var(--sp-violet);background:var(--sp-violet-light)}
+.role-btn:hover{border-color:var(--sp-violet)}
+.role-icon{font-size:22px;margin-bottom:6px}
+.role-name{font-size:13px;font-weight:500;color:var(--sp-text)}
+.role-desc{font-size:11px;color:var(--sp-text2);margin-top:2px}
+.login-err{font-size:12px;color:#A32D2D;text-align:center;margin-bottom:8px;min-height:16px}
+.pass-wrap{position:relative;margin-bottom:1rem}
+.pass-wrap input{padding-right:40px}
+.pass-eye{position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--sp-text2)}
+.btn-login{width:100%;background:var(--sp-violet);color:#fff;border:none;border-radius:8px;padding:10px;font-size:14px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;margin-bottom:10px}
+.btn-login:hover{background:var(--sp-violet-dark)}
+.btn-login:disabled{opacity:.6;cursor:not-allowed}
 
-.screen-nav{display:flex;gap:8px;justify-content:center;margin-bottom:2.5rem;flex-wrap:wrap}
-.snav-btn{padding:8px 18px;border-radius:30px;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.06);color:rgba(255,255,255,.6);font-size:13px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s}
-.snav-btn:hover,.snav-btn.active{background:var(--v);border-color:var(--v);color:#fff}
+/* ── TOPBAR / NAV ── */
+.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem}
+.brand{display:flex;align-items:center;gap:10px}
+.brand-dot{width:32px;height:32px;border-radius:50%;background:var(--sp-violet);display:flex;align-items:center;justify-content:center}
+.brand-ring{width:14px;height:14px;border-radius:50%;border:2px solid rgba(255,255,255,.9)}
+.brand-name{font-size:18px;font-weight:500;color:var(--sp-text)}
+.brand-sub{font-size:12px;color:var(--sp-text2);margin-top:1px}
+.topbar-right{display:flex;align-items:center;gap:8px}
+.role-pill{display:flex;align-items:center;gap:6px;padding:5px 10px;background:var(--sp-gray);border-radius:20px;font-size:12px;color:var(--sp-text2)}
+.role-pill-dot{width:8px;height:8px;border-radius:50%}
+.dot-admin{background:var(--sp-violet)}.dot-manager{background:var(--sp-blue)}
+.btn-logout{background:none;border:0.5px solid var(--color-border-secondary);border-radius:8px;padding:5px 10px;font-size:12px;color:var(--sp-text2);cursor:pointer;font-family:'DM Sans',sans-serif}
+.btn-logout:hover{background:var(--sp-gray)}
+.nav{display:flex;border:0.5px solid var(--color-border-tertiary);border-radius:12px;overflow:hidden;background:var(--sp-gray);margin-bottom:1.5rem}
+.nb{flex:1;padding:8px 3px;border:none;background:transparent;font-size:11px;color:var(--sp-text2);cursor:pointer;border-right:0.5px solid var(--color-border-tertiary);display:flex;align-items:center;justify-content:center;gap:4px;transition:all .15s;font-family:'DM Sans',sans-serif}
+.nb:last-child{border-right:none}
+.nb.on{background:var(--color-background-primary);color:var(--sp-violet-dark);font-weight:500}
 
-.screen-wrap{display:none;animation:fadeUp .35s ease forwards}
-.screen-wrap.active{display:block}
-@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+/* ── READONLY BAR ── */
+.readonly-bar{background:var(--sp-blue-light);border:0.5px solid var(--sp-blue);border-radius:10px;padding:.6rem 1rem;margin-bottom:1rem;display:flex;align-items:center;gap:8px;font-size:13px;color:var(--sp-blue-text)}
 
-.device{background:var(--paper);border-radius:24px;box-shadow:var(--shadow-lg),0 0 0 1px rgba(255,255,255,.1);overflow:hidden;max-width:900px;margin:0 auto}
-.device-bar{background:#fff;padding:14px 20px;display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--border)}
-.device-dots{display:flex;gap:6px}
-.device-dots span{width:10px;height:10px;border-radius:50%}
-.device-dots span:nth-child(1){background:#ff6b6b}
-.device-dots span:nth-child(2){background:#ffd166}
-.device-dots span:nth-child(3){background:#6bcb77}
-.device-url{flex:1;background:var(--paper2);border-radius:6px;padding:5px 12px;font-size:12px;color:var(--ink3);text-align:center}
-.device-content{padding:24px;overflow-y:auto;max-height:72vh}
+/* ── LOADING ── */
+.loading{text-align:center;padding:3rem;color:var(--sp-text2)}
+.spinner{width:32px;height:32px;border:3px solid var(--sp-gray2);border-top-color:var(--sp-violet);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 12px}
+@keyframes spin{to{transform:rotate(360deg)}}
 
-.screen-label{display:flex;align-items:center;gap:10px;margin-bottom:1rem;padding-bottom:1rem;border-bottom:1px solid var(--border)}
-.screen-label-num{width:28px;height:28px;border-radius:50%;background:var(--v);color:#fff;font-size:12px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.screen-label-name{font-size:15px;font-weight:500;color:var(--ink)}
-.screen-label-role{font-size:12px;color:var(--ink3);margin-left:auto;padding:3px 10px;border-radius:12px}
-.role-admin{background:var(--vl);color:var(--vt)}
-.role-both{background:var(--ml);color:var(--mt)}
+/* ── CARDS / LAYOUT ── */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:1.25rem}
+.card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:12px;padding:1rem 1.1rem;margin-bottom:12px}
+.card-ttl{font-size:11px;font-weight:500;color:var(--sp-text2);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.card-ttl i{color:var(--sp-violet)}
+.met{background:var(--sp-gray);border-radius:10px;padding:.75rem 1rem}
+.met-l{font-size:11px;color:var(--sp-text2);margin-bottom:4px}
+.met-v{font-size:22px;font-weight:500;color:var(--sp-text);display:flex;align-items:center;gap:6px}
+.met-acc{width:3px;height:28px;border-radius:2px;flex-shrink:0}
+.badge{display:inline-flex;align-items:center;gap:3px;padding:2px 9px;border-radius:20px;font-size:11px;font-weight:500}
+.b-violet{background:var(--sp-violet-light);color:var(--sp-violet-text)}
+.b-blue{background:var(--sp-blue-light);color:var(--sp-blue-text)}
+.b-mint{background:var(--sp-mint-light);color:var(--sp-mint-text)}
+.b-black{background:var(--sp-gray2);color:var(--sp-text)}
+.b-red{background:#FCEBEB;color:#A32D2D}.b-amb{background:#FAEEDA;color:#854F0B}
+@media(prefers-color-scheme:dark){.b-red{background:#501313;color:#F7C1C1}.b-amb{background:#412402;color:#FAC775}}
+.dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;margin-top:5px}
+.dv{background:var(--sp-violet)}.db{background:var(--sp-blue)}.dm{background:var(--sp-mint)}.dr{background:#E24B4A}
+.item{display:flex;gap:8px;align-items:flex-start;margin-bottom:7px;font-size:13px;color:var(--sp-text);line-height:1.5}
+.item:last-child{margin-bottom:0}
+.divider{border:none;border-top:0.5px solid var(--color-border-tertiary);margin:1rem 0}
+.empty{text-align:center;padding:2rem;color:var(--sp-text2);font-size:14px}
+.bar-wrap{display:flex;align-items:center;gap:8px;margin-bottom:7px}
+.bar-lbl{font-size:11px;color:var(--sp-text2);min-width:130px;text-align:right}
+.bar-out{flex:1;background:var(--sp-gray2);border-radius:4px;height:12px;overflow:hidden}
+.bar-in{height:100%;border-radius:4px;transition:width .5s}
+.bar-val{font-size:11px;color:var(--sp-text2);min-width:28px}
+.destaque-card{background:var(--sp-violet-light);border-left:3px solid var(--sp-violet);border-radius:0 8px 8px 0;padding:.7rem 1rem;margin-bottom:7px}
+.destaque-txt{font-size:13px;color:var(--sp-violet-text);line-height:1.5}
+.erow{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:10px;padding:.75rem 1rem;margin-bottom:8px;display:flex;align-items:center;gap:10px;cursor:pointer;transition:border-color .15s}
+.erow:hover{border-color:var(--sp-violet)}
+.er-l{flex:1;min-width:0}
+.er-name{font-size:14px;font-weight:500;color:var(--sp-text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.er-sub{font-size:12px;color:var(--sp-text2);margin-top:2px}
+.er-r{display:flex;align-items:center;gap:6px;flex-shrink:0;flex-wrap:wrap;justify-content:flex-end}
+.score-pill{display:inline-flex;align-items:center;gap:3px;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500}
+.sp-pre{background:var(--sp-blue-light);color:var(--sp-blue-text)}
+.sp-live{background:var(--sp-violet-light);color:var(--sp-violet-text)}
+.sp-post{background:var(--sp-mint-light);color:var(--sp-mint-text)}
+.sp-prod{background:var(--sp-mint-light);color:var(--sp-mint-text)}
+.sp-cuen{background:var(--sp-violet-light);color:var(--sp-violet-text)}
+.chip-grp{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1rem}
+.chip{padding:4px 12px;border-radius:20px;font-size:12px;border:0.5px solid var(--color-border-secondary);background:transparent;color:var(--sp-text2);cursor:pointer;transition:all .15s;font-family:'DM Sans',sans-serif}
+.chip.on{background:var(--sp-violet);color:#fff;border-color:var(--sp-violet)}
 
-.annotation{background:rgba(255,220,80,.1);border-left:3px solid #f0c040;border-radius:0 8px 8px 0;padding:8px 12px;margin-bottom:14px;font-size:12px;color:rgba(0,0,0,.6)}
-.annotation strong{color:#8a6a00}
+/* ── FORM ── */
+label{font-size:13px;color:var(--sp-text2);display:block;margin-bottom:4px;margin-top:12px}
+label:first-child{margin-top:0}
+input,select,textarea{width:100%;font-family:'DM Sans',sans-serif;font-size:14px;border:0.5px solid var(--color-border-secondary);border-radius:8px;padding:8px 12px;background:var(--color-background-primary);color:var(--sp-text)}
+textarea{resize:vertical;min-height:60px}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--sp-violet)}
+.btn-p{background:var(--sp-violet);color:#fff;border:none;border-radius:8px;padding:9px 20px;font-size:14px;font-weight:500;cursor:pointer;width:100%;margin-top:16px;font-family:'DM Sans',sans-serif}
+.btn-p:hover{background:var(--sp-violet-dark)}
+.btn-p:disabled{opacity:.6;cursor:not-allowed}
+.btn-s{padding:5px 12px;font-size:12px;background:transparent;color:var(--sp-text2);border:0.5px solid var(--color-border-secondary);border-radius:8px;cursor:pointer;font-family:'DM Sans',sans-serif}
+.btn-s:hover{background:var(--sp-gray)}
+.btn-d{background:#FCEBEB;color:#A32D2D;border:none;border-radius:8px;padding:5px 12px;font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif}
+@media(prefers-color-scheme:dark){.btn-d{background:#501313;color:#F7C1C1}}
+.stars{display:flex;gap:3px}
+.star{font-size:20px;cursor:pointer;color:var(--sp-gray2);transition:color .1s;user-select:none}
+.star.on{color:var(--sp-violet)}
+.rstar{font-size:18px;cursor:pointer;color:var(--sp-gray2);transition:color .1s;user-select:none;line-height:1}
+.rstar.on{color:var(--sp-violet)}
+.rating-row{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:0.5px solid var(--color-border-tertiary)}
+.rating-row:last-child{border-bottom:none}
+.rating-label{flex:1;font-size:13px;color:var(--sp-text)}
+.rating-stars{display:flex;gap:2px;flex-shrink:0}
+.na-note{font-size:11px;color:var(--sp-text2);font-style:italic;margin-top:2px}
+.etapa-block{border:0.5px solid var(--color-border-tertiary);border-radius:12px;padding:1rem 1.1rem;margin-bottom:1rem}
+.etapa-header{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.etapa-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.etapa-icon-pre{background:var(--sp-blue-light)}
+.etapa-icon-live{background:var(--sp-violet-light)}
+.etapa-icon-post{background:var(--sp-mint-light)}
+.etapa-title{font-size:14px;font-weight:500;color:var(--sp-text)}
+.etapa-subtitle{font-size:12px;color:var(--sp-text2);margin-top:1px}
+.area-block{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:1rem}
+.area-card{border:0.5px solid var(--color-border-tertiary);border-radius:12px;padding:1rem}
+.area-header{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+.area-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center}
+.area-icon-prod{background:var(--sp-mint-light)}.area-icon-cuen{background:var(--sp-violet-light)}
+.area-title{font-size:13px;font-weight:500;color:var(--sp-text)}
+.form-section-label{font-size:11px;font-weight:500;color:var(--sp-text2);text-transform:uppercase;letter-spacing:.06em;margin:16px 0 10px;display:flex;align-items:center;gap:6px}
+.form-section-label i{color:var(--sp-violet)}
+.partic-chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.pc{display:flex;align-items:center;gap:5px;padding:4px 10px;border-radius:20px;font-size:12px;border:0.5px solid var(--color-border-secondary);color:var(--sp-text2);cursor:pointer;background:transparent;transition:all .15s;font-family:'DM Sans',sans-serif}
+.pc.sel{background:var(--sp-violet);color:#fff;border-color:var(--sp-violet)}
 
-.ui-topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
-.ui-brand{display:flex;align-items:center;gap:8px}
-.ui-brand-dot{width:28px;height:28px;border-radius:50%;background:var(--v);display:flex;align-items:center;justify-content:center}
-.ui-brand-ring{width:12px;height:12px;border-radius:50%;border:2px solid rgba(255,255,255,.9)}
-.ui-brand-name{font-family:'DM Serif Display',serif;font-size:17px;color:var(--ink)}
-.ui-brand-sub{font-size:11px;color:var(--ink3);margin-top:1px}
-.ui-btn{background:var(--v);color:#fff;border:none;border-radius:8px;padding:7px 14px;font-size:12px;font-weight:500;font-family:'DM Sans',sans-serif;cursor:default;display:inline-flex;align-items:center;gap:5px}
-.ui-btn-ghost{background:transparent;color:var(--ink3);border:1px solid var(--border);border-radius:8px;padding:5px 12px;font-size:12px;font-family:'DM Sans',sans-serif;cursor:default}
-.ui-nav{display:flex;background:var(--paper2);border-radius:10px;overflow:hidden;margin-bottom:18px;border:1px solid var(--border)}
-.ui-nav-btn{flex:1;padding:8px 4px;font-size:11px;color:var(--ink3);text-align:center;border-right:1px solid var(--border)}
-.ui-nav-btn:last-child{border-right:none}
-.ui-nav-btn.active{background:#fff;color:var(--vd);font-weight:500}
+/* ── MODAL ── */
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:100;align-items:flex-start;justify-content:center;padding-top:28px}
+.modal-bg.open{display:flex}
+.modal{background:var(--color-background-primary);border-radius:16px;border:0.5px solid var(--color-border-tertiary);padding:1.5rem;width:94%;max-width:640px;max-height:90vh;overflow-y:auto}
+.modal-title{font-size:16px;font-weight:500;color:var(--sp-text);margin-bottom:1rem;display:flex;justify-content:space-between;align-items:center}
+.modal-close{background:none;border:none;font-size:20px;cursor:pointer;color:var(--sp-text2);line-height:1}
+.stabs{display:flex;border:0.5px solid var(--color-border-tertiary);border-radius:8px;overflow:hidden;background:var(--sp-gray);margin-bottom:1.25rem}
+.stab{flex:1;padding:7px 4px;border:none;background:transparent;font-size:12px;color:var(--sp-text2);cursor:pointer;border-right:0.5px solid var(--color-border-tertiary);font-family:'DM Sans',sans-serif}
+.stab:last-child{border-right:none}
+.stab.on{background:var(--color-background-primary);color:var(--sp-violet-dark);font-weight:500}
+.sv{display:none}.sv.on{display:block}
 
-.ui-metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}
-.ui-met{background:var(--paper2);border-radius:10px;padding:12px}
-.ui-met-l{font-size:10px;color:var(--ink3);margin-bottom:4px}
-.ui-met-v{font-size:20px;font-weight:500;color:var(--ink);display:flex;align-items:center;gap:6px}
-.ui-met-acc{width:3px;height:24px;border-radius:2px}
-
-.ui-card{background:#fff;border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:12px;box-shadow:var(--shadow)}
-.ui-card-ttl{font-size:10px;font-weight:500;color:var(--ink3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px}
-.ui-grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
-
-.ui-bar-wrap{display:flex;align-items:center;gap:8px;margin-bottom:7px}
-.ui-bar-lbl{font-size:11px;color:var(--ink3);min-width:90px;text-align:right}
-.ui-bar-out{flex:1;background:var(--paper3);border-radius:4px;height:12px;overflow:hidden}
-.ui-bar-in{height:100%;border-radius:4px}
-.ui-bar-val{font-size:11px;color:var(--ink3);min-width:24px}
-
-.badge{display:inline-flex;align-items:center;gap:3px;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:500}
-.b-v{background:var(--vl);color:var(--vt)}.b-b{background:var(--bl);color:var(--bt)}
-.b-m{background:var(--ml);color:var(--mt)}.b-gray{background:var(--paper3);color:var(--ink3)}
-.b-red{background:#fde8e8;color:#a33}.b-amb{background:#fef3de;color:#853}
-
-.stars{display:inline-flex;gap:2px;font-size:13px}
-.star{color:#e0d8ec}.star.on{color:var(--v)}
-
-.ui-erow{background:#fff;border:1px solid var(--border);border-radius:10px;padding:10px 14px;margin-bottom:8px;display:flex;align-items:center;gap:10px;box-shadow:var(--shadow)}
-.ui-erow-r{display:flex;align-items:center;gap:6px;margin-left:auto;flex-shrink:0;flex-wrap:wrap;justify-content:flex-end}
-.score-pill{display:inline-flex;align-items:center;gap:3px;padding:2px 8px;border-radius:12px;font-size:10px;font-weight:500}
-.sp-pre{background:var(--bl);color:var(--bt)}.sp-live{background:var(--vl);color:var(--vt)}
-.sp-prod{background:var(--ml);color:var(--mt)}.sp-cuen{background:var(--vl);color:var(--vt)}
-
-.av{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;flex-shrink:0}
-.av-v{background:var(--vl);color:var(--vt)}.av-b{background:var(--bl);color:var(--bt)}.av-m{background:var(--ml);color:var(--mt)}
-
-.ui-rating-row{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--border)}
-.ui-rating-row:last-child{border-bottom:none}
-.ui-rating-lbl{flex:1;font-size:12px;color:var(--ink)}
-.ui-rating-stars{display:flex;gap:2px;font-size:16px}
-
-.ui-perf-bar{display:flex;align-items:center;gap:8px;margin-bottom:6px}
-.ui-perf-lbl{font-size:11px;color:var(--ink3);min-width:110px}
-.ui-perf-out{flex:1;background:var(--paper3);border-radius:4px;height:8px;overflow:hidden}
-.ui-perf-in{height:100%;border-radius:4px}
-.ui-perf-val{font-size:11px;color:var(--ink3);min-width:24px;text-align:right}
-
-.forte-item{display:flex;gap:8px;align-items:flex-start;padding:7px 0;border-bottom:1px solid var(--border)}
+/* ── EQUIPO ── */
+.contrib-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+.contrib-card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:12px;padding:1rem;cursor:pointer;transition:border-color .15s}
+.contrib-card:hover{border-color:var(--sp-violet)}
+.contrib-av{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:500;flex-shrink:0}
+.cstats{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;margin-bottom:8px}
+.cstat{background:var(--sp-gray);border-radius:8px;padding:5px 4px;text-align:center}
+.cstat-v{font-size:12px;font-weight:500;color:var(--sp-text)}
+.cstat-l{font-size:9px;color:var(--sp-text2);margin-top:1px}
+.pill-f{background:var(--sp-violet-light);color:var(--sp-violet-text);font-size:11px;padding:2px 8px;border-radius:12px}
+.pill-o{background:var(--sp-blue-light);color:var(--sp-blue-text);font-size:11px;padding:2px 8px;border-radius:12px}
+.perf-bar{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.perf-lbl{font-size:12px;color:var(--sp-text2);min-width:120px}
+.perf-out{flex:1;background:var(--sp-gray2);border-radius:4px;height:10px;overflow:hidden}
+.perf-in{height:100%;border-radius:4px}
+.perf-val{font-size:12px;color:var(--sp-text2);min-width:24px;text-align:right}
+.forte-item{display:flex;gap:8px;align-items:flex-start;padding:7px 0;border-bottom:0.5px solid var(--color-border-tertiary)}
 .forte-item:last-child{border-bottom:none}
-.forte-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-top:4px}
-.forte-txt{font-size:12px;color:var(--ink);flex:1;line-height:1.5}
-.destaque{background:var(--vl);border-left:3px solid var(--v);border-radius:0 8px 8px 0;padding:8px 12px;margin-bottom:8px;font-size:12px;color:var(--vt)}
+.forte-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:4px}
+.forte-txt{font-size:13px;color:var(--sp-text);flex:1;line-height:1.5}
+.forte-source{font-size:11px;color:var(--sp-text2);margin-top:2px}
 
-.ui-login-card{background:#fff;border-radius:16px;padding:24px;max-width:320px;margin:0 auto;box-shadow:var(--shadow-lg);border:1px solid var(--border)}
-.ui-role-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0}
-.ui-role-btn{padding:14px 10px;border:1px solid var(--border);border-radius:10px;text-align:center;cursor:default}
-.ui-role-btn.active{border:2px solid var(--v);background:var(--vl)}
-.ui-input{width:100%;background:var(--paper2);border:1px solid var(--border);border-radius:8px;padding:10px 12px;font-size:13px;color:var(--ink);font-family:'DM Sans',sans-serif;margin-bottom:10px}
-.ui-hint{background:var(--paper2);border-radius:8px;padding:8px 12px;font-size:11px;color:var(--ink3);text-align:center;line-height:1.6}
+/* ── AI ── */
+.ai-wrap{display:flex;flex-direction:column;height:65vh;min-height:400px}
+.ai-header{display:flex;align-items:center;gap:10px;margin-bottom:1rem;padding-bottom:1rem;border-bottom:0.5px solid var(--color-border-tertiary)}
+.ai-avatar{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--sp-violet),var(--sp-blue));display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:18px;color:#fff}
+.ai-messages{flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:10px;margin-bottom:12px;padding-right:4px}
+.ai-msg{display:flex;gap:8px;align-items:flex-start}
+.ai-msg.user{flex-direction:row-reverse}
+.ai-msg-av{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;color:#fff}
+.ai-msg-av.bot{background:linear-gradient(135deg,var(--sp-violet),var(--sp-blue))}
+.ai-msg-av.user{background:var(--sp-gray2);color:var(--sp-text2);font-size:11px;font-weight:600}
+.ai-bubble{max-width:82%;padding:10px 14px;border-radius:12px;font-size:13px;line-height:1.6;color:var(--sp-text)}
+.ai-bubble.bot{background:var(--sp-gray);border-bottom-left-radius:4px}
+.ai-bubble.user{background:var(--sp-violet);color:#fff;border-bottom-right-radius:4px}
+.ai-bubble ul{margin:6px 0 0 16px}
+.ai-bubble li{margin-bottom:3px}
+.ai-bubble strong{font-weight:600}
+.ai-sugs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+.ai-sug{padding:5px 12px;border-radius:20px;border:0.5px solid var(--sp-violet);background:var(--sp-violet-light);color:var(--sp-violet-text);font-size:12px;cursor:pointer;transition:all .15s;font-family:'DM Sans',sans-serif}
+.ai-sug:hover{background:var(--sp-violet);color:#fff}
+.ai-input-row{display:flex;gap:8px;align-items:flex-end}
+.ai-input{flex:1;background:var(--sp-gray);border:0.5px solid var(--color-border-tertiary);border-radius:12px;padding:10px 14px;font-size:13px;color:var(--sp-text);font-family:'DM Sans',sans-serif;resize:none;min-height:44px;max-height:120px;line-height:1.5}
+.ai-input:focus{outline:none;border-color:var(--sp-violet)}
+.ai-send{width:40px;height:40px;border-radius:10px;background:var(--sp-violet);border:none;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.ai-send:hover{background:var(--sp-violet-dark)}
+.ai-send:disabled{opacity:.4;cursor:not-allowed}
+.ai-thinking span{width:6px;height:6px;border-radius:50%;background:var(--sp-violet-dark);animation:blink 1.2s infinite;display:inline-block;margin:0 2px}
+.ai-thinking span:nth-child(2){animation-delay:.2s}
+.ai-thinking span:nth-child(3){animation-delay:.4s}
+@keyframes blink{0%,80%,100%{opacity:.25}40%{opacity:1}}
 
-.section-div{display:flex;align-items:center;gap:10px;margin:14px 0 10px}
-.section-div-line{flex:1;height:1px;background:var(--border)}
-.section-div-label{font-size:10px;font-weight:500;color:var(--ink3);text-transform:uppercase;letter-spacing:.08em}
-
-.ui-stabs{display:flex;background:var(--paper2);border-radius:8px;overflow:hidden;margin-bottom:14px;border:1px solid var(--border)}
-.ui-stab{flex:1;padding:6px 4px;font-size:11px;color:var(--ink3);text-align:center;border-right:1px solid var(--border)}
-.ui-stab:last-child{border-right:none}
-.ui-stab.active{background:#fff;color:var(--vd);font-weight:500}
-
-.flow{display:flex;align-items:center;gap:0;flex-wrap:wrap;justify-content:center;margin:1.5rem 0}
-.flow-step{text-align:center}
-.flow-box{background:#fff;border:1.5px solid var(--border);border-radius:12px;padding:14px 18px;min-width:120px;box-shadow:var(--shadow)}
-.flow-box.active{border-color:var(--v);background:var(--vl)}
-.flow-icon{font-size:22px;margin-bottom:6px}
-.flow-name{font-size:12px;font-weight:500;color:var(--ink)}
-.flow-desc{font-size:10px;color:var(--ink3);margin-top:3px}
-.flow-arrow{font-size:20px;color:var(--ink3);padding:0 8px;margin-top:-8px}
-
-.matrix{width:100%;border-collapse:collapse;font-size:12px}
-.matrix th{padding:8px 12px;background:var(--paper2);color:var(--ink3);font-weight:500;text-align:left;border-bottom:1px solid var(--border)}
-.matrix td{padding:8px 12px;border-bottom:1px solid var(--border);color:var(--ink)}
-.matrix tr:last-child td{border-bottom:none}
-.check{color:var(--md);font-size:14px;font-weight:600}
-.cross{color:#c33;font-size:14px;font-weight:600}
-
-.proto-footer{text-align:center;margin-top:2.5rem;padding-top:2rem;border-top:1px solid rgba(255,255,255,.1)}
-.proto-footer p{font-size:13px;color:rgba(255,255,255,.4);margin-bottom:1rem}
-.proto-pills{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
-.proto-pill{display:flex;align-items:center;gap:6px;padding:6px 14px;border-radius:20px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);font-size:12px;color:rgba(255,255,255,.5)}
-.proto-pill span{color:var(--v);font-size:14px}
+/* ── CIERRE ── */
+.cierre-banner{background:var(--sp-violet-light);border:0.5px solid var(--sp-violet);border-radius:10px;padding:.75rem 1rem;margin-bottom:1rem;display:flex;align-items:center;gap:8px}
+.cierre-banner i{color:var(--sp-violet);font-size:16px;flex-shrink:0}
+.cierre-banner-txt{font-size:13px;color:var(--sp-violet-text);font-weight:500}
+.voice-row{display:flex;gap:10px;margin-bottom:10px;align-items:flex-start}
+.av{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;flex-shrink:0}
+.av-a{background:var(--sp-violet-light);color:var(--sp-violet-text)}
+.av-b{background:var(--sp-blue-light);color:var(--sp-blue-text)}
+.av-c{background:var(--sp-mint-light);color:var(--sp-mint-text)}
+.av-d{background:var(--sp-gray2);color:var(--sp-text2)}
+.quote-text{font-size:13px;color:var(--sp-text2);border-left:2px solid var(--sp-violet);padding-left:8px;margin:4px 0 8px;line-height:1.6}
+.action-r{display:flex;gap:10px;align-items:flex-start;padding:9px 0;border-bottom:0.5px solid var(--color-border-tertiary)}
+.action-r:last-child{border-bottom:none}
+.a-num{font-size:11px;font-weight:500;color:var(--sp-text2);min-width:20px;margin-top:1px}
+.a-body{flex:1}
+.a-title{font-size:13px;color:var(--sp-text);line-height:1.5}
+.pmi{width:6px;height:6px;border-radius:50%;background:var(--sp-violet);margin-top:5px;flex-shrink:0}
+.comp-table{width:100%;border-collapse:collapse;font-size:13px}
+.comp-table td{padding:7px 8px;border-bottom:0.5px solid var(--color-border-tertiary);color:var(--sp-text)}
+.comp-table tr:last-child td{border-bottom:none}
+.comp-table td:first-child{color:var(--sp-text2);font-size:12px}
+.sm{font-size:13px;color:var(--sp-gray3)}.sm.on{color:var(--sp-violet)}
+.mejora-timeline{position:relative;padding-left:20px}
+.mejora-timeline::before{content:'';position:absolute;left:6px;top:8px;bottom:8px;width:1px;background:var(--sp-gray3)}
+.mejora-item{position:relative;margin-bottom:14px}
+.mejora-dot{position:absolute;left:-17px;top:4px;width:10px;height:10px;border-radius:50%;border:2px solid var(--color-background-primary)}
+.md-v{background:var(--sp-violet)}.md-b{background:var(--sp-blue)}
+.pstat{background:var(--sp-gray);border-radius:10px;padding:.7rem .9rem;text-align:center}
+.pstat-v{font-size:18px;font-weight:500;color:var(--sp-text)}
+.pstat-l{font-size:11px;color:var(--sp-text2);margin-top:2px}
+.te{display:flex;gap:10px;padding:8px 0;border-bottom:0.5px solid var(--color-border-tertiary)}
+.te:last-child{border-bottom:none}
+.te-date{font-size:11px;color:var(--sp-text2);min-width:80px;flex-shrink:0;padding-top:2px}
+.trend-up{color:var(--sp-mint-dark);font-size:13px}
+.trend-dn{color:#E24B4A;font-size:13px}
 </style>
 </head>
 <body>
-<div class="proto-shell">
-  <div class="proto-header">
-    <div class="proto-logo">
-      <div class="proto-logo-mark"><div class="proto-logo-ring"></div></div>
-      <div class="proto-brand-name">SAPPIA</div>
-    </div>
-    <div><div class="proto-tag">Prototipo · Para revisión del equipo</div></div>
-    <h1 class="proto-title">Event Manager<br><em>Sistema de evaluación</em></h1>
-    <p class="proto-subtitle">Pantallas clave para validar flujo, estructura y contenido antes de desarrollar</p>
-  </div>
 
-  <div class="screen-nav">
-    <button class="snav-btn active" onclick="showScreen('dashboard',this)">① Dashboard</button>
-    <button class="snav-btn" onclick="showScreen('nuevo',this)">② Nuevo evento</button>
-    <button class="snav-btn" onclick="showScreen('historial',this)">③ Historial</button>
-    <button class="snav-btn" onclick="showScreen('cierre',this)">④ Cierre</button>
-    <button class="snav-btn" onclick="showScreen('equipo',this)">⑤ Equipo</button>
-    <button class="snav-btn" onclick="showScreen('perfil',this)">⑥ Perfil</button>
-    <button class="snav-btn" onclick="showScreen('flujo',this)">⑦ Flujo</button>
-  </div>
-
-  <!-- ① DASHBOARD -->
-  <div class="screen-wrap active" id="s-dashboard">
-    <div class="device">
-      <div class="device-bar"><div class="device-dots"><span></span><span></span><span></span></div><div class="device-url">sappia-events.app / dashboard</div></div>
-      <div class="device-content">
-        <div class="screen-label"><div class="screen-label-num">1</div><div class="screen-label-name">Dashboard — Vista consolidada</div><span class="screen-label-role role-both">Admin + Manager</span></div>
-        <div class="annotation"><strong>Vista central:</strong> Métricas globales, calidad por área (Producción + Cuentas) y por etapa (Pre + Vivo), destacados recientes y aprendizajes recurrentes.</div>
-        <div class="ui-topbar">
-          <div class="ui-brand"><div class="ui-brand-dot"><div class="ui-brand-ring"></div></div><div><div class="ui-brand-name">SAPPIA</div><div class="ui-brand-sub">Event Manager</div></div></div>
-          <div style="display:flex;align-items:center;gap:8px"><div style="display:flex;align-items:center;gap:6px;padding:4px 10px;background:var(--vl);border-radius:20px;font-size:11px;color:var(--vt)"><div style="width:7px;height:7px;border-radius:50%;background:var(--v)"></div>Admin</div><button class="ui-btn-ghost">Salir</button></div>
-        </div>
-        <div class="ui-nav"><div class="ui-nav-btn active">Dashboard</div><div class="ui-nav-btn">Historial</div><div class="ui-nav-btn">Cierres</div><div class="ui-nav-btn">Mejoras</div><div class="ui-nav-btn">Equipo</div><div class="ui-nav-btn">Proveedores</div></div>
-        <div class="ui-metrics">
-          <div class="ui-met"><div class="ui-met-l">Total eventos</div><div class="ui-met-v"><div class="ui-met-acc" style="background:var(--v)"></div>3</div></div>
-          <div class="ui-met"><div class="ui-met-l">Calidad promedio</div><div class="ui-met-v"><div class="ui-met-acc" style="background:var(--b)"></div>3.8<span style="font-size:11px;color:var(--ink3)">/5</span></div></div>
-          <div class="ui-met"><div class="ui-met-l">Tiempos cumplidos</div><div class="ui-met-v"><div class="ui-met-acc" style="background:var(--m)"></div>33<span style="font-size:11px;color:var(--ink3)">%</span></div></div>
-          <div class="ui-met"><div class="ui-met-l">Destacados</div><div class="ui-met-v"><div class="ui-met-acc" style="background:var(--paper3)"></div>8</div></div>
-        </div>
-        <div class="ui-grid2">
-          <div class="ui-card">
-            <div class="ui-card-ttl">Calidad por área y etapa</div>
-            <div class="ui-bar-wrap"><div class="ui-bar-lbl">🔧 Producción</div><div class="ui-bar-out"><div class="ui-bar-in" style="width:76%;background:var(--m)"></div></div><div class="ui-bar-val">3.8</div></div>
-            <div class="ui-bar-wrap"><div class="ui-bar-lbl">💰 Cuentas</div><div class="ui-bar-out"><div class="ui-bar-in" style="width:80%;background:var(--v)"></div></div><div class="ui-bar-val">4.0</div></div>
-            <div style="font-size:10px;color:var(--bd);font-weight:500;text-transform:uppercase;letter-spacing:.05em;margin:10px 0 6px">⚙️ Pre-producción</div>
-            <div class="ui-bar-wrap"><div class="ui-bar-lbl">Planificación</div><div class="ui-bar-out"><div class="ui-bar-in" style="width:72%;background:var(--b)"></div></div><div class="ui-bar-val">3.6</div></div>
-            <div class="ui-bar-wrap"><div class="ui-bar-lbl">Roles</div><div class="ui-bar-out"><div class="ui-bar-in" style="width:64%;background:var(--b)"></div></div><div class="ui-bar-val">3.2</div></div>
-            <div style="font-size:10px;color:var(--vt);font-weight:500;text-transform:uppercase;letter-spacing:.05em;margin:10px 0 6px">▶️ Ejecución en vivo</div>
-            <div class="ui-bar-wrap"><div class="ui-bar-lbl">Coordinación</div><div class="ui-bar-out"><div class="ui-bar-in" style="width:80%;background:var(--v)"></div></div><div class="ui-bar-val">4.0</div></div>
-            <div class="ui-bar-wrap"><div class="ui-bar-lbl">Exp. cliente</div><div class="ui-bar-out"><div class="ui-bar-in" style="width:88%;background:var(--v)"></div></div><div class="ui-bar-val">4.4</div></div>
-          </div>
-          <div>
-            <div class="ui-card" style="margin-bottom:10px">
-              <div class="ui-card-ttl">⭐ Destacados recientes</div>
-              <div class="destaque">Diseño de SAPPIA — el cliente valoró la propuesta</div>
-              <div class="destaque">Ejecución impecable — caso de éxito</div>
-            </div>
-            <div class="ui-card">
-              <div class="ui-card-ttl">📌 Aprendizajes recurrentes</div>
-              <div style="display:flex;gap:7px;align-items:flex-start;margin-bottom:7px"><div style="width:6px;height:6px;border-radius:50%;background:var(--v);flex-shrink:0;margin-top:4px"></div><div style="font-size:12px;color:var(--ink)">No cerrar diseño sin alineamiento del cliente<div style="font-size:10px;color:var(--ink3)">En: Automechanika</div></div></div>
-              <div style="display:flex;gap:7px;align-items:flex-start"><div style="width:6px;height:6px;border-radius:50%;background:var(--v);flex-shrink:0;margin-top:4px"></div><div style="font-size:12px;color:var(--ink)">Pedir soporte antes de llegar al límite<div style="font-size:10px;color:var(--ink3)">En: Automechanika</div></div></div>
-            </div>
-          </div>
-        </div>
+<!-- LOGIN -->
+<div id="login-screen">
+  <div class="login-wrap">
+    <div class="login-card">
+      <div class="login-brand">
+        <div class="login-dot"><div class="login-dot-inner"></div></div>
+        <div style="font-family:'DM Serif Display',serif;font-size:20px;color:var(--sp-text)">SAPPIA</div>
       </div>
-    </div>
-  </div>
-
-  <!-- ③ NUEVO EVENTO -->
-  <div class="screen-wrap" id="s-nuevo">
-    <div class="device">
-      <div class="device-bar"><div class="device-dots"><span></span><span></span><span></span></div><div class="device-url">sappia-events.app / nuevo-evento</div></div>
-      <div class="device-content">
-        <div class="screen-label"><div class="screen-label-num">2</div><div class="screen-label-name">Registro de evento — Formulario completo</div><span class="screen-label-role role-admin">Solo Admin</span></div>
-        <div class="annotation"><strong>Flujo de carga:</strong> Datos base → Calidad por área (Prod + Cuentas) → Pre-producción con participantes → Ejecución en vivo con participantes → Destacados / mejoras → Cierre opcional</div>
-        <div style="font-size:11px;font-weight:500;color:var(--ink3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">Datos del evento</div>
-        <div class="ui-grid2" style="margin-bottom:10px">
-          <div><div style="font-size:11px;color:var(--ink3);margin-bottom:4px">Nombre *</div><div style="background:var(--paper2);border:1px solid var(--border);border-radius:8px;padding:8px 12px;font-size:13px;color:var(--ink)">Congreso Anual Tech</div></div>
-          <div><div style="font-size:11px;color:var(--ink3);margin-bottom:4px">Fecha *</div><div style="background:var(--paper2);border:1px solid var(--border);border-radius:8px;padding:8px 12px;font-size:13px;color:var(--ink)">10 / 03 / 2025</div></div>
-        </div>
-        <div class="section-div"><div class="section-div-line"></div><div class="section-div-label">Calidad por área</div><div class="section-div-line"></div></div>
-        <div class="ui-grid2" style="margin-bottom:12px">
-          <div style="background:var(--ml);border-radius:10px;padding:12px"><div style="font-size:11px;color:var(--mt);font-weight:500;margin-bottom:8px">🔧 Producción</div><div class="stars"><span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star">★</span></div></div>
-          <div style="background:var(--vl);border-radius:10px;padding:12px"><div style="font-size:11px;color:var(--vt);font-weight:500;margin-bottom:8px">💰 Cuentas</div><div class="stars"><span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star on">★</span></div></div>
-        </div>
-        <div class="section-div"><div class="section-div-line"></div><div class="section-div-label">⚙️ Pre-producción</div><div class="section-div-line"></div></div>
-        <div style="font-size:11px;font-weight:500;color:var(--ink3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px">Participantes de esta etapa</div>
-        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px">
-          <div style="display:flex;align-items:center;gap:5px;padding:4px 10px;border-radius:20px;background:var(--v);color:#fff;font-size:11px"><div class="av" style="width:18px;height:18px;font-size:8px;background:rgba(255,255,255,.25);color:#fff">ML</div>Mili</div>
-          <div style="display:flex;align-items:center;gap:5px;padding:4px 10px;border-radius:20px;background:var(--v);color:#fff;font-size:11px"><div class="av" style="width:18px;height:18px;font-size:8px;background:rgba(255,255,255,.25);color:#fff">JN</div>Juan</div>
-          <div style="display:flex;align-items:center;gap:5px;padding:4px 10px;border-radius:20px;border:1px solid var(--border);font-size:11px;color:var(--ink3)"><div class="av av-m" style="width:18px;height:18px;font-size:8px">JV</div>Javi</div>
-        </div>
-        <div class="ui-rating-row"><div class="ui-rating-lbl">Planificación y organización</div><div class="ui-rating-stars"><span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star">★</span><span class="star">★</span></div></div>
-        <div class="ui-rating-row"><div class="ui-rating-lbl">Claridad de roles y tareas</div><div class="ui-rating-stars"><span class="star on">★</span><span class="star on">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span></div></div>
-        <div class="ui-rating-row"><div class="ui-rating-lbl">Gestión del presupuesto</div><div class="ui-rating-stars"><span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star">★</span></div></div>
-        <div class="section-div" style="margin-top:12px"><div class="section-div-line"></div><div class="section-div-label">▶️ Ejecución en vivo</div><div class="section-div-line"></div></div>
-        <div style="font-size:10px;color:var(--ink3);margin-bottom:6px">Participantes: <strong>Juan, Javi</strong></div>
-        <div class="ui-rating-row"><div class="ui-rating-lbl">Montaje y puesta en escena</div><div class="ui-rating-stars"><span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star on">★</span></div></div>
-        <div class="ui-rating-row"><div class="ui-rating-lbl">Resolución de imprevistos</div><div class="ui-rating-stars"><span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star">★</span></div></div>
-        <div style="margin-top:14px"><button class="ui-btn" style="width:100%;justify-content:center">Guardar evento</button></div>
+      <div class="login-title">Event Manager</div>
+      <div class="login-sub">Seleccioná tu rol para continuar</div>
+      <div class="role-grid">
+        <button class="role-btn active" id="role-admin-btn" onclick="selectRole('admin')">
+          <div class="role-icon">🛡️</div>
+          <div class="role-name">Admin</div>
+          <div class="role-desc">Carga y edita</div>
+        </button>
+        <button class="role-btn" id="role-manager-btn" onclick="selectRole('manager')">
+          <div class="role-icon">👁️</div>
+          <div class="role-name">Manager</div>
+          <div class="role-desc">Solo lectura</div>
+        </button>
       </div>
-    </div>
-  </div>
-
-  <!-- ④ HISTORIAL -->
-  <div class="screen-wrap" id="s-historial">
-    <div class="device">
-      <div class="device-bar"><div class="device-dots"><span></span><span></span><span></span></div><div class="device-url">sappia-events.app / historial</div></div>
-      <div class="device-content">
-        <div class="screen-label"><div class="screen-label-num">3</div><div class="screen-label-name">Historial — Lista de eventos</div><span class="screen-label-role role-both">Admin + Manager</span></div>
-        <div class="annotation"><strong>Vista de listado:</strong> Cada evento muestra sus 4 scores (🔧💰⚙️▶️). Filtros rápidos por calificación. Click en cualquier fila abre el detalle completo.</div>
-        <div style="display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap">
-          <div style="padding:4px 12px;border-radius:20px;background:var(--v);color:#fff;font-size:11px">Todos</div>
-          <div style="padding:4px 12px;border-radius:20px;border:1px solid var(--border);font-size:11px;color:var(--ink3)">Excelente</div>
-          <div style="padding:4px 12px;border-radius:20px;border:1px solid var(--border);font-size:11px;color:var(--ink3)">Bueno</div>
-          <div style="padding:4px 12px;border-radius:20px;border:1px solid var(--border);font-size:11px;color:var(--ink3)">A mejorar</div>
-          <div style="padding:4px 12px;border-radius:20px;border:1px solid var(--border);font-size:11px;color:var(--ink3)">Con cierre</div>
-        </div>
-        <div class="ui-erow">
-          <div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:500;color:var(--ink)">Lanzamiento Alpha</div><div style="font-size:11px;color:var(--ink3);margin-top:2px">08/02/2025 · Lanzamiento · Alpha Industries</div></div>
-          <div class="ui-erow-r"><span class="score-pill sp-prod">🔧 5</span><span class="score-pill sp-cuen">💰 5</span><span class="score-pill sp-pre">⚙️ 4.8</span><span class="score-pill sp-live">▶️ 4.7</span><span class="badge b-m">Excelente</span><span class="badge b-v">⭐ 2</span></div>
-        </div>
-        <div class="ui-erow">
-          <div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:500;color:var(--ink)">Gala Fin de Año Grupo Norte</div><div style="font-size:11px;color:var(--ink3);margin-top:2px">20/12/2024 · Gala · Grupo Norte</div></div>
-          <div class="ui-erow-r"><span class="score-pill sp-prod">🔧 4</span><span class="score-pill sp-cuen">💰 4</span><span class="score-pill sp-pre">⚙️ 3.7</span><span class="score-pill sp-live">▶️ 3.8</span><span class="badge b-b">Bueno</span></div>
-        </div>
-        <div class="ui-erow">
-          <div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:500;color:var(--ink)">Automechanika</div><div style="font-size:11px;color:var(--ink3);margin-top:2px">10/03/2025 · Congreso · Bosch</div></div>
-          <div class="ui-erow-r"><span class="score-pill sp-prod">🔧 3</span><span class="score-pill sp-cuen">💰 3</span><span class="score-pill sp-pre">⚙️ 2.5</span><span class="score-pill sp-live">▶️ 3.2</span><span class="badge b-amb">Regular</span><span class="badge b-v">⭐ 2</span><span class="badge b-gray">📋</span></div>
-        </div>
+      <div id="login-err" class="login-err"></div>
+      <div class="pass-wrap">
+        <input type="password" id="login-pass" placeholder="Contraseña" onkeydown="if(event.key==='Enter')doLogin()">
+        <button class="pass-eye" onclick="togglePwd()"><i class="ti ti-eye" id="eye-icon"></i></button>
       </div>
-    </div>
-  </div>
-
-  <!-- ⑤ CIERRE -->
-  <div class="screen-wrap" id="s-cierre">
-    <div class="device">
-      <div class="device-bar"><div class="device-dots"><span></span><span></span><span></span></div><div class="device-url">sappia-events.app / cierres</div></div>
-      <div class="device-content">
-        <div class="screen-label"><div class="screen-label-num">4</div><div class="screen-label-name">Cierre del evento — Aprendizajes colectivos</div><span class="screen-label-role role-admin">Admin carga · Manager ve</span></div>
-        <div class="annotation"><strong>Reemplaza el post-mortem:</strong> Aprendizajes del equipo, voces individuales y acciones para el próximo evento. Sin estado — el evento ya está cerrado.</div>
-        <div class="ui-card">
-          <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px">
-            <div><div style="font-size:15px;font-weight:500;color:var(--ink)">Automechanika</div><div style="font-size:11px;color:var(--ink3);margin-top:2px">10/03/2025 · Participantes: Mili, Juan, Javi</div></div>
-            <span class="badge b-v">📋 Cerrado</span>
-          </div>
-          <div class="ui-stabs"><div class="ui-stab active">Aprendizajes</div><div class="ui-stab">Voces del equipo</div><div class="ui-stab">Acciones</div></div>
-          <div style="display:flex;gap:7px;align-items:flex-start;margin-bottom:8px"><div style="width:6px;height:6px;border-radius:50%;background:var(--v);flex-shrink:0;margin-top:4px"></div><div style="font-size:12px;color:var(--ink)">No cerrar diseño sin alineamiento total del cliente</div></div>
-          <div style="display:flex;gap:7px;align-items:flex-start;margin-bottom:8px"><div style="width:6px;height:6px;border-radius:50%;background:var(--v);flex-shrink:0;margin-top:4px"></div><div style="font-size:12px;color:var(--ink)">Pedir soporte antes de llegar al límite</div></div>
-          <div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border)">
-            <div style="font-size:10px;font-weight:500;color:var(--ink3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">Proveedores a revisar</div>
-            <div style="display:flex;gap:7px;align-items:flex-start;margin-bottom:6px"><div style="width:6px;height:6px;border-radius:50%;background:#c33;flex-shrink:0;margin-top:4px"></div><div><div style="font-size:12px;font-weight:500;color:var(--ink)">Operador Lach</div><div style="font-size:11px;color:var(--ink3)">Mal performance — no reutilizar</div></div></div>
-            <div style="display:flex;gap:7px;align-items:flex-start"><div style="width:6px;height:6px;border-radius:50%;background:#c33;flex-shrink:0;margin-top:4px"></div><div><div style="font-size:12px;font-weight:500;color:var(--ink)">Desiderios</div><div style="font-size:11px;color:var(--ink3)">No estuvo a la altura del contrato</div></div></div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ⑥ EQUIPO -->
-  <div class="screen-wrap" id="s-equipo">
-    <div class="device">
-      <div class="device-bar"><div class="device-dots"><span></span><span></span><span></span></div><div class="device-url">sappia-events.app / equipo</div></div>
-      <div class="device-content">
-        <div class="screen-label"><div class="screen-label-num">5</div><div class="screen-label-name">Equipo — Grid de contributors</div><span class="screen-label-role role-both">Admin + Manager</span></div>
-        <div class="annotation"><strong>Vista del equipo:</strong> 4 indicadores por persona (Prod · Cuen · Pre · Vivo), fortalezas y oportunidades. Admin puede agregar y editar perfiles.</div>
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px"><div style="font-size:12px;color:var(--ink3)">3 personas en el equipo</div><button class="ui-btn" style="font-size:11px;padding:5px 12px">+ Agregar persona</button></div>
-        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px">
-          <div class="ui-card" style="margin:0">
-            <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px"><div class="av av-v" style="width:36px;height:36px;font-size:12px">ML</div><div><div style="font-size:13px;font-weight:500;color:var(--ink)">Mili F.</div><div style="font-size:10px;color:var(--ink3)">Cuentas</div></div></div>
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-bottom:8px">
-              <div style="background:var(--paper2);border-radius:6px;padding:5px;text-align:center"><div style="font-size:13px;font-weight:500;color:var(--ink)">3.7</div><div style="font-size:9px;color:var(--ink3)">🔧 Prod.</div></div>
-              <div style="background:var(--paper2);border-radius:6px;padding:5px;text-align:center"><div style="font-size:13px;font-weight:500;color:var(--ink)">4.3</div><div style="font-size:9px;color:var(--ink3)">💰 Cuen.</div></div>
-              <div style="background:var(--paper2);border-radius:6px;padding:5px;text-align:center"><div style="font-size:13px;font-weight:500;color:var(--ink)">4.0</div><div style="font-size:9px;color:var(--ink3)">⚙️ Pre</div></div>
-              <div style="background:var(--paper2);border-radius:6px;padding:5px;text-align:center"><div style="font-size:13px;font-weight:500;color:var(--ink)">—</div><div style="font-size:9px;color:var(--ink3)">▶️ Vivo</div></div>
-            </div>
-            <div style="font-size:9px;font-weight:500;color:var(--ink3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px">Fortalezas</div>
-            <div style="display:flex;gap:4px;flex-wrap:wrap"><span class="badge b-v" style="font-size:10px">Vínculo cliente</span><span class="badge b-v" style="font-size:10px">Expectativas</span></div>
-          </div>
-          <div class="ui-card" style="margin:0">
-            <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px"><div class="av av-b" style="width:36px;height:36px;font-size:12px">JN</div><div><div style="font-size:13px;font-weight:500;color:var(--ink)">Juan P.</div><div style="font-size:10px;color:var(--ink3)">Coordinación</div></div></div>
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-bottom:8px">
-              <div style="background:var(--paper2);border-radius:6px;padding:5px;text-align:center"><div style="font-size:13px;font-weight:500;color:var(--ink)">4.0</div><div style="font-size:9px;color:var(--ink3)">🔧 Prod.</div></div>
-              <div style="background:var(--paper2);border-radius:6px;padding:5px;text-align:center"><div style="font-size:13px;font-weight:500;color:var(--ink)">4.0</div><div style="font-size:9px;color:var(--ink3)">💰 Cuen.</div></div>
-              <div style="background:var(--paper2);border-radius:6px;padding:5px;text-align:center"><div style="font-size:13px;font-weight:500;color:var(--ink)">3.5</div><div style="font-size:9px;color:var(--ink3)">⚙️ Pre</div></div>
-              <div style="background:var(--paper2);border-radius:6px;padding:5px;text-align:center"><div style="font-size:13px;font-weight:500;color:var(--ink)">4.2</div><div style="font-size:9px;color:var(--ink3)">▶️ Vivo</div></div>
-            </div>
-            <div style="font-size:9px;font-weight:500;color:var(--ink3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px">Fortalezas</div>
-            <div style="display:flex;gap:4px;flex-wrap:wrap"><span class="badge b-v" style="font-size:10px">Liderazgo</span><span class="badge b-v" style="font-size:10px">Conflictos</span></div>
-          </div>
-          <div class="ui-card" style="margin:0">
-            <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px"><div class="av av-m" style="width:36px;height:36px;font-size:12px">JV</div><div><div style="font-size:13px;font-weight:500;color:var(--ink)">Javi L.</div><div style="font-size:10px;color:var(--ink3)">Dir. de Arte</div></div></div>
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-bottom:8px">
-              <div style="background:var(--paper2);border-radius:6px;padding:5px;text-align:center"><div style="font-size:13px;font-weight:500;color:var(--ink)">4.5</div><div style="font-size:9px;color:var(--ink3)">🔧 Prod.</div></div>
-              <div style="background:var(--paper2);border-radius:6px;padding:5px;text-align:center"><div style="font-size:13px;font-weight:500;color:var(--ink)">3.5</div><div style="font-size:9px;color:var(--ink3)">💰 Cuen.</div></div>
-              <div style="background:var(--paper2);border-radius:6px;padding:5px;text-align:center"><div style="font-size:13px;font-weight:500;color:var(--ink)">—</div><div style="font-size:9px;color:var(--ink3)">⚙️ Pre</div></div>
-              <div style="background:var(--paper2);border-radius:6px;padding:5px;text-align:center"><div style="font-size:13px;font-weight:500;color:var(--ink)">4.6</div><div style="font-size:9px;color:var(--ink3)">▶️ Vivo</div></div>
-            </div>
-            <div style="font-size:9px;font-weight:500;color:var(--ink3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px">Fortalezas</div>
-            <div style="display:flex;gap:4px;flex-wrap:wrap"><span class="badge b-v" style="font-size:10px">Creatividad</span><span class="badge b-v" style="font-size:10px">Criterio est.</span></div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ⑦ PERFIL -->
-  <div class="screen-wrap" id="s-perfil">
-    <div class="device">
-      <div class="device-bar"><div class="device-dots"><span></span><span></span><span></span></div><div class="device-url">sappia-events.app / equipo / mili</div></div>
-      <div class="device-content">
-        <div class="screen-label"><div class="screen-label-num">6</div><div class="screen-label-name">Perfil individual — Tracking de performance</div><span class="screen-label-role role-both">Admin + Manager</span></div>
-        <div class="annotation"><strong>Perfil completo:</strong> Barras de rendimiento por área y etapa, fortalezas, oportunidades de mejora, timeline de eventos y notas privadas del manager (solo admin puede agregar).</div>
-        <div style="display:flex;align-items:center;gap:14px;margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid var(--border)">
-          <div class="av av-v" style="width:50px;height:50px;font-size:16px">ML</div>
-          <div><div style="font-size:17px;font-weight:500;color:var(--ink)">Mili Fernández</div><div style="font-size:12px;color:var(--ink3)">Cuentas</div></div>
-          <button class="ui-btn" style="margin-left:auto;font-size:11px;padding:5px 12px">✏️ Editar</button>
-        </div>
-        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px">
-          <div style="background:var(--paper2);border-radius:10px;padding:10px;text-align:center"><div style="font-size:18px;font-weight:500;color:var(--ink)">3</div><div style="font-size:11px;color:var(--ink3)">Eventos</div></div>
-          <div style="background:var(--paper2);border-radius:10px;padding:10px;text-align:center"><div style="font-size:18px;font-weight:500;color:var(--ink)">1</div><div style="font-size:11px;color:var(--ink3)">Menciones</div></div>
-          <div style="background:var(--paper2);border-radius:10px;padding:10px;text-align:center"><div style="font-size:18px;font-weight:500;color:var(--ink)">4</div><div style="font-size:11px;color:var(--ink3)">Evaluaciones</div></div>
-        </div>
-        <div class="ui-card-ttl">Rendimiento histórico</div>
-        <div class="ui-perf-bar"><div class="ui-perf-lbl">🔧 Producción</div><div class="ui-perf-out"><div class="ui-perf-in" style="width:74%;background:var(--m)"></div></div><div class="ui-perf-val">3.7</div></div>
-        <div class="ui-perf-bar"><div class="ui-perf-lbl">💰 Cuentas</div><div class="ui-perf-out"><div class="ui-perf-in" style="width:86%;background:var(--v)"></div></div><div class="ui-perf-val">4.3</div></div>
-        <div class="ui-perf-bar"><div class="ui-perf-lbl">⚙️ Pre-producción</div><div class="ui-perf-out"><div class="ui-perf-in" style="width:80%;background:var(--b)"></div></div><div class="ui-perf-val">4.0</div></div>
-        <div class="ui-perf-bar" style="margin-bottom:14px"><div class="ui-perf-lbl">▶️ Ejecución vivo</div><div class="ui-perf-out"><div class="ui-perf-in" style="width:0%"></div></div><div class="ui-perf-val">—</div></div>
-        <div class="ui-stabs"><div class="ui-stab active">Fortalezas</div><div class="ui-stab">Oportunidades</div><div class="ui-stab">Eventos</div><div class="ui-stab">Notas manager</div></div>
-        <div class="forte-item"><div class="forte-dot" style="background:var(--v)"></div><div class="forte-txt">Vínculo cercano con el cliente</div></div>
-        <div class="forte-item"><div class="forte-dot" style="background:var(--v)"></div><div class="forte-txt">Gestión de expectativas</div></div>
-        <div class="forte-item"><div class="forte-dot" style="background:var(--v)"></div><div class="forte-txt">Seguimiento puntual de tareas</div></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ⑧ FLUJO -->
-  <div class="screen-wrap" id="s-flujo">
-    <div class="device">
-      <div class="device-bar"><div class="device-dots"><span></span><span></span><span></span></div><div class="device-url">sappia-events.app — Mapa del sistema</div></div>
-      <div class="device-content">
-        <div class="screen-label"><div class="screen-label-num">7</div><div class="screen-label-name">Flujo del sistema — Estructura y roles</div><span class="screen-label-role role-both">Para el equipo</span></div>
-        <div class="annotation"><strong>Para validar en equipo:</strong> Cómo se relacionan las pantallas, qué puede hacer cada rol y qué datos genera el sistema por evento y por persona.</div>
-        <div class="ui-card-ttl" style="margin-bottom:10px">Flujo de uso</div>
-        <div class="flow">
-          <div class="flow-step"><div class="flow-box active"><div class="flow-icon">🔐</div><div class="flow-name">Login</div><div class="flow-desc">Rol + contraseña</div></div></div>
-          <div class="flow-arrow">→</div>
-          <div class="flow-step"><div class="flow-box active"><div class="flow-icon">📊</div><div class="flow-name">Dashboard</div><div class="flow-desc">Vista global</div></div></div>
-          <div class="flow-arrow">→</div>
-          <div class="flow-step"><div class="flow-box active"><div class="flow-icon">➕</div><div class="flow-name">Nuevo evento</div><div class="flow-desc">Solo Admin</div></div></div>
-          <div class="flow-arrow">→</div>
-          <div class="flow-step"><div class="flow-box"><div class="flow-icon">📋</div><div class="flow-name">Historial</div><div class="flow-desc">Todos los eventos</div></div></div>
-        </div>
-        <div style="font-size:10px;font-weight:500;color:var(--ink3);text-transform:uppercase;letter-spacing:.08em;text-align:center;margin:14px 0 8px">Dentro de cada evento</div>
-        <div class="flow">
-          <div class="flow-step"><div class="flow-box"><div class="flow-icon">🔧💰</div><div class="flow-name">Áreas</div><div class="flow-desc">Prod. y Cuentas</div></div></div>
-          <div class="flow-arrow">+</div>
-          <div class="flow-step"><div class="flow-box"><div class="flow-icon">⚙️</div><div class="flow-name">Pre-prod.</div><div class="flow-desc">6 criterios</div></div></div>
-          <div class="flow-arrow">+</div>
-          <div class="flow-step"><div class="flow-box"><div class="flow-icon">▶️</div><div class="flow-name">Vivo</div><div class="flow-desc">6 criterios</div></div></div>
-          <div class="flow-arrow">+</div>
-          <div class="flow-step"><div class="flow-box active"><div class="flow-icon">📋</div><div class="flow-name">Cierre</div><div class="flow-desc">Aprendizajes</div></div></div>
-        </div>
-        <div style="font-size:10px;font-weight:500;color:var(--ink3);text-transform:uppercase;letter-spacing:.08em;margin:14px 0 8px">Matriz de permisos</div>
-        <table class="matrix">
-          <tr><th>Acción</th><th>Admin</th><th>Manager</th></tr>
-          <tr><td>Ver dashboards y reportes</td><td class="check">✓</td><td class="check">✓</td></tr>
-          <tr><td>Ver historial de eventos</td><td class="check">✓</td><td class="check">✓</td></tr>
-          <tr><td>Ver perfiles del equipo</td><td class="check">✓</td><td class="check">✓</td></tr>
-          <tr><td>Registrar y editar eventos</td><td class="check">✓</td><td class="cross">✗</td></tr>
-          <tr><td>Cargar evaluaciones y cierres</td><td class="check">✓</td><td class="cross">✗</td></tr>
-          <tr><td>Gestionar perfiles del equipo</td><td class="check">✓</td><td class="cross">✗</td></tr>
-          <tr><td>Notas privadas de manager</td><td class="check">✓</td><td class="cross">✗</td></tr>
-          <tr><td>Cambiar contraseñas / exportar datos</td><td class="check">✓</td><td class="cross">✗</td></tr>
-        </table>
-      </div>
-    </div>
-  </div>
-
-  <div class="proto-footer">
-    <p>SAPPIA Event Manager · Prototipo v1.0 · Para revisión del equipo antes del desarrollo</p>
-    <div class="proto-pills">
-      <div class="proto-pill"><span>⑦</span> Pantallas</div>
-      <div class="proto-pill"><span>2</span> Roles de acceso</div>
-      <div class="proto-pill"><span>4</span> Dimensiones de evaluación</div>
-      <div class="proto-pill"><span>🏗️</span> Listo para desarrollar</div>
+      <button class="btn-login" id="login-btn" onclick="doLogin()">Ingresar</button>
     </div>
   </div>
 </div>
 
+<!-- APP -->
+<div class="app" id="app-screen">
+  <div class="topbar">
+    <div class="brand">
+      <div class="brand-dot"><div class="brand-ring"></div></div>
+      <div><div class="brand-name">SAPPIA</div><div class="brand-sub">Event Manager</div></div>
+    </div>
+    <div class="topbar-right">
+      <div class="role-pill"><div class="role-pill-dot" id="role-dot"></div><span id="role-label-top"></span></div>
+      <button class="btn-logout" onclick="doLogout()"><i class="ti ti-logout"></i> Salir</button>
+    </div>
+  </div>
+
+  <nav class="nav" id="main-nav">
+    <button class="nb on" onclick="goSec('dashboard',this)"><i class="ti ti-chart-bar" style="font-size:13px"></i> Dashboard</button>
+    <button class="nb" onclick="goSec('historial',this)"><i class="ti ti-calendar" style="font-size:13px"></i> Historial</button>
+    <button class="nb" onclick="goSec('cierres',this)"><i class="ti ti-clipboard-check" style="font-size:13px"></i> Cierres</button>
+    <button class="nb" onclick="goSec('mejoras',this)"><i class="ti ti-trending-up" style="font-size:13px"></i> Mejoras</button>
+    <button class="nb" onclick="goSec('contributors',this)"><i class="ti ti-user-star" style="font-size:13px"></i> Equipo</button>
+    <button class="nb" onclick="goSec('ai',this)"><i class="ti ti-sparkles" style="font-size:13px"></i> IA</button>
+  </nav>
+
+  <div id="admin-actions" style="display:none;margin-bottom:1rem;text-align:right">
+    <button class="btn-s" onclick="openNew()" style="background:var(--sp-violet);color:#fff;border-color:var(--sp-violet)"><i class="ti ti-plus"></i> Nuevo evento</button>
+  </div>
+
+  <!-- SECCIONES -->
+  <div id="s-dashboard" class="sec on"><div id="dash-content"><div class="loading"><div class="spinner"></div>Cargando datos...</div></div></div>
+  <div id="s-historial" class="sec">
+    <div class="chip-grp">
+      <button class="chip on" onclick="filterH('todos',this)">Todos</button>
+      <button class="chip" onclick="filterH('excelente',this)">Excelente</button>
+      <button class="chip" onclick="filterH('bueno',this)">Bueno</button>
+      <button class="chip" onclick="filterH('mejorar',this)">A mejorar</button>
+      <button class="chip" onclick="filterH('con-cierre',this)">Con cierre</button>
+    </div>
+    <div id="hist-list"></div>
+  </div>
+  <div id="s-cierres" class="sec"><div id="cierre-list"></div></div>
+  <div id="s-mejoras" class="sec">
+    <div class="chip-grp">
+      <button class="chip on" onclick="filterMej('todas',this)">Todo</button>
+      <button class="chip" onclick="filterMej('destacados',this)">Destacados</button>
+      <button class="chip" onclick="filterMej('mejoras',this)">Mejoras</button>
+    </div>
+    <div id="mej-content"></div>
+  </div>
+  <div id="s-contributors" class="sec">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem">
+      <div style="font-size:13px;color:var(--sp-text2)" id="contrib-count"></div>
+      <button class="btn-s" id="add-person-btn" onclick="openContribForm()" style="display:none"><i class="ti ti-user-plus"></i> Agregar persona</button>
+    </div>
+    <div class="contrib-grid" id="contrib-grid"></div>
+  </div>
+  <div id="s-ai" class="sec">
+    <div class="ai-wrap">
+      <div class="ai-header">
+        <div class="ai-avatar">✦</div>
+        <div><div style="font-size:15px;font-weight:500;color:var(--sp-text)">Asistente SAPPIA</div><div style="font-size:12px;color:var(--sp-text2);margin-top:1px">Analizá eventos, pedí insights y generá reportes</div></div>
+        <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--sp-mint-dark);margin-left:auto"><div style="width:7px;height:7px;border-radius:50%;background:var(--sp-mint)"></div>Activo</div>
+      </div>
+      <div class="ai-messages" id="ai-messages"></div>
+      <div class="ai-sugs" id="ai-suggestions"></div>
+      <div class="ai-input-row">
+        <textarea class="ai-input" id="ai-input" placeholder="Preguntá sobre tus eventos..." rows="1" onkeydown="handleAIKey(event)" oninput="autoResize(this)"></textarea>
+        <button class="ai-send" id="ai-send-btn" onclick="sendAI()"><i class="ti ti-send" style="font-size:16px"></i></button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL NUEVO EVENTO -->
+<div class="modal-bg" id="modal-new">
+<div class="modal">
+  <div class="modal-title">Registrar evento <button class="modal-close" onclick="closeM('modal-new')">×</button></div>
+  <div class="g2"><div><label>Nombre *</label><input type="text" id="en-nombre" placeholder="Ej: Gala Fin de Año"></div><div><label>Fecha *</label><input type="date" id="en-fecha"></div></div>
+  <div class="g3"><div><label>Tipo</label><select id="en-tipo"><option>Corporativo</option><option>Lanzamiento</option><option>Congreso</option><option>Gala</option><option>Capacitación</option><option>Social</option><option>Otro</option></select></div><div><label>Cliente</label><input type="text" id="en-cliente"></div><div><label>Asistentes</label><input type="number" id="en-asist" min="0"></div></div>
+  <hr class="divider">
+  <div class="form-section-label"><i class="ti ti-users"></i> Calidad por área</div>
+  <div class="area-block">
+    <div class="area-card"><div class="area-header"><div class="area-icon area-icon-prod"><i class="ti ti-tool" style="font-size:16px;color:var(--sp-mint-dark)"></i></div><div class="area-title">Producción</div></div><div class="stars" id="r-prod" data-v="0"><span class="star" onclick="setR('r-prod',1)">★</span><span class="star" onclick="setR('r-prod',2)">★</span><span class="star" onclick="setR('r-prod',3)">★</span><span class="star" onclick="setR('r-prod',4)">★</span><span class="star" onclick="setR('r-prod',5)">★</span></div></div>
+    <div class="area-card"><div class="area-header"><div class="area-icon area-icon-cuen"><i class="ti ti-currency-dollar" style="font-size:16px;color:var(--sp-violet-dark)"></i></div><div class="area-title">Cuentas</div></div><div class="stars" id="r-cuen" data-v="0"><span class="star" onclick="setR('r-cuen',1)">★</span><span class="star" onclick="setR('r-cuen',2)">★</span><span class="star" onclick="setR('r-cuen',3)">★</span><span class="star" onclick="setR('r-cuen',4)">★</span><span class="star" onclick="setR('r-cuen',5)">★</span></div></div>
+  </div>
+  <!-- PREVIA -->
+  <div class="etapa-block">
+    <div class="etapa-header"><div class="etapa-icon etapa-icon-pre"><i class="ti ti-settings" style="font-size:18px;color:var(--sp-blue-dark)"></i></div><div><div class="etapa-title">Previa: Planificación</div><div class="etapa-subtitle">Evaluación de la etapa de preparación</div></div></div>
+    <div style="font-size:11px;font-weight:500;color:var(--sp-text2);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px">Participantes</div>
+    <div id="pre-partic-chips" class="partic-chips"></div>
+    <div style="margin-top:12px">
+      <div class="rating-row"><div class="rating-label">Armado de CC y entrega en tiempo y forma</div><div class="rating-stars" id="pre-cc" data-v="0"><span class="rstar" onclick="setRS('pre-cc',1)">★</span><span class="rstar" onclick="setRS('pre-cc',2)">★</span><span class="rstar" onclick="setRS('pre-cc',3)">★</span><span class="rstar" onclick="setRS('pre-cc',4)">★</span><span class="rstar" onclick="setRS('pre-cc',5)">★</span></div></div>
+      <div class="rating-row"><div class="rating-label">Administración carpeta producción</div><div class="rating-stars" id="pre-carpeta" data-v="0"><span class="rstar" onclick="setRS('pre-carpeta',1)">★</span><span class="rstar" onclick="setRS('pre-carpeta',2)">★</span><span class="rstar" onclick="setRS('pre-carpeta',3)">★</span><span class="rstar" onclick="setRS('pre-carpeta',4)">★</span><span class="rstar" onclick="setRS('pre-carpeta',5)">★</span></div></div>
+      <div class="rating-row"><div class="rating-label">Armado de cashflow y validación</div><div class="rating-stars" id="pre-cashflow" data-v="0"><span class="rstar" onclick="setRS('pre-cashflow',1)">★</span><span class="rstar" onclick="setRS('pre-cashflow',2)">★</span><span class="rstar" onclick="setRS('pre-cashflow',3)">★</span><span class="rstar" onclick="setRS('pre-cashflow',4)">★</span><span class="rstar" onclick="setRS('pre-cashflow',5)">★</span></div></div>
+      <div class="rating-row"><div class="rating-label">Selección de proveedores y negociación</div><div class="rating-stars" id="pre-provee" data-v="0"><span class="rstar" onclick="setRS('pre-provee',1)">★</span><span class="rstar" onclick="setRS('pre-provee',2)">★</span><span class="rstar" onclick="setRS('pre-provee',3)">★</span><span class="rstar" onclick="setRS('pre-provee',4)">★</span><span class="rstar" onclick="setRS('pre-provee',5)">★</span></div></div>
+      <div class="rating-row"><div class="rating-label">Comunicación con el equipo de cuentas</div><div class="rating-stars" id="pre-comun" data-v="0"><span class="rstar" onclick="setRS('pre-comun',1)">★</span><span class="rstar" onclick="setRS('pre-comun',2)">★</span><span class="rstar" onclick="setRS('pre-comun',3)">★</span><span class="rstar" onclick="setRS('pre-comun',4)">★</span><span class="rstar" onclick="setRS('pre-comun',5)">★</span></div></div>
+      <div class="rating-row"><div class="rating-label">Seguimiento con Sr. Producer Manager</div><div class="rating-stars" id="pre-producer" data-v="0"><span class="rstar" onclick="setRS('pre-producer',1)">★</span><span class="rstar" onclick="setRS('pre-producer',2)">★</span><span class="rstar" onclick="setRS('pre-producer',3)">★</span><span class="rstar" onclick="setRS('pre-producer',4)">★</span><span class="rstar" onclick="setRS('pre-producer',5)">★</span></div></div>
+    </div>
+    <label style="margin-top:12px">Observaciones</label>
+    <textarea id="pre-obs" placeholder="¿Qué funcionó bien? ¿Qué mejorar?"></textarea>
+  </div>
+  <!-- EJECUCIÓN -->
+  <div class="etapa-block">
+    <div class="etapa-header"><div class="etapa-icon etapa-icon-live"><i class="ti ti-player-play" style="font-size:18px;color:var(--sp-violet-dark)"></i></div><div><div class="etapa-title">Evento: Ejecución</div><div class="etapa-subtitle">Operación el día del evento</div></div></div>
+    <div style="font-size:11px;font-weight:500;color:var(--sp-text2);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px">Participantes</div>
+    <div id="live-partic-chips" class="partic-chips"></div>
+    <div style="margin-top:12px">
+      <div class="rating-row"><div class="rating-label">Cronograma de armado y desarme</div><div class="rating-stars" id="live-crono" data-v="0"><span class="rstar" onclick="setRS('live-crono',1)">★</span><span class="rstar" onclick="setRS('live-crono',2)">★</span><span class="rstar" onclick="setRS('live-crono',3)">★</span><span class="rstar" onclick="setRS('live-crono',4)">★</span><span class="rstar" onclick="setRS('live-crono',5)">★</span></div></div>
+      <div class="rating-row"><div class="rating-label"><div>Armado de planos</div><div class="na-note">En caso de ser necesario</div></div><div class="rating-stars" id="live-planos" data-v="0"><span class="rstar" onclick="setRS('live-planos',1)">★</span><span class="rstar" onclick="setRS('live-planos',2)">★</span><span class="rstar" onclick="setRS('live-planos',3)">★</span><span class="rstar" onclick="setRS('live-planos',4)">★</span><span class="rstar" onclick="setRS('live-planos',5)">★</span></div></div>
+      <div class="rating-row"><div class="rating-label"><div>Armado de planilla de diseño</div><div class="na-note">En caso de ser necesario</div></div><div class="rating-stars" id="live-diseno" data-v="0"><span class="rstar" onclick="setRS('live-diseno',1)">★</span><span class="rstar" onclick="setRS('live-diseno',2)">★</span><span class="rstar" onclick="setRS('live-diseno',3)">★</span><span class="rstar" onclick="setRS('live-diseno',4)">★</span><span class="rstar" onclick="setRS('live-diseno',5)">★</span></div></div>
+      <div class="rating-row"><div class="rating-label">Armado de pañol</div><div class="rating-stars" id="live-panol" data-v="0"><span class="rstar" onclick="setRS('live-panol',1)">★</span><span class="rstar" onclick="setRS('live-panol',2)">★</span><span class="rstar" onclick="setRS('live-panol',3)">★</span><span class="rstar" onclick="setRS('live-panol',4)">★</span><span class="rstar" onclick="setRS('live-panol',5)">★</span></div></div>
+      <div class="rating-row"><div class="rating-label">Cumplimiento de roles y desempeño</div><div class="rating-stars" id="live-roles" data-v="0"><span class="rstar" onclick="setRS('live-roles',1)">★</span><span class="rstar" onclick="setRS('live-roles',2)">★</span><span class="rstar" onclick="setRS('live-roles',3)">★</span><span class="rstar" onclick="setRS('live-roles',4)">★</span><span class="rstar" onclick="setRS('live-roles',5)">★</span></div></div>
+      <div class="rating-row"><div class="rating-label">Gestión de proveedores en armado y evento</div><div class="rating-stars" id="live-provee" data-v="0"><span class="rstar" onclick="setRS('live-provee',1)">★</span><span class="rstar" onclick="setRS('live-provee',2)">★</span><span class="rstar" onclick="setRS('live-provee',3)">★</span><span class="rstar" onclick="setRS('live-provee',4)">★</span><span class="rstar" onclick="setRS('live-provee',5)">★</span></div></div>
+      <div class="rating-row"><div class="rating-label">Comunicación con el equipo de cuentas</div><div class="rating-stars" id="live-comun" data-v="0"><span class="rstar" onclick="setRS('live-comun',1)">★</span><span class="rstar" onclick="setRS('live-comun',2)">★</span><span class="rstar" onclick="setRS('live-comun',3)">★</span><span class="rstar" onclick="setRS('live-comun',4)">★</span><span class="rstar" onclick="setRS('live-comun',5)">★</span></div></div>
+    </div>
+    <label style="margin-top:12px">Observaciones</label>
+    <textarea id="live-obs" placeholder="¿Qué funcionó bien? ¿Qué mejorar?"></textarea>
+  </div>
+  <!-- POST -->
+  <div class="etapa-block">
+    <div class="etapa-header"><div class="etapa-icon etapa-icon-post"><i class="ti ti-file-invoice" style="font-size:18px;color:var(--sp-mint-dark)"></i></div><div><div class="etapa-title">Post: Cierre de evento</div><div class="etapa-subtitle">Cierre administrativo y operativo</div></div></div>
+    <div style="margin-top:4px">
+      <div class="rating-row"><div class="rating-label">Cierre de la CC — actualización de valores</div><div class="rating-stars" id="post-cc" data-v="0"><span class="rstar" onclick="setRS('post-cc',1)">★</span><span class="rstar" onclick="setRS('post-cc',2)">★</span><span class="rstar" onclick="setRS('post-cc',3)">★</span><span class="rstar" onclick="setRS('post-cc',4)">★</span><span class="rstar" onclick="setRS('post-cc',5)">★</span></div></div>
+      <div class="rating-row"><div class="rating-label">Seguimiento de facturas pendientes</div><div class="rating-stars" id="post-facturas" data-v="0"><span class="rstar" onclick="setRS('post-facturas',1)">★</span><span class="rstar" onclick="setRS('post-facturas',2)">★</span><span class="rstar" onclick="setRS('post-facturas',3)">★</span><span class="rstar" onclick="setRS('post-facturas',4)">★</span><span class="rstar" onclick="setRS('post-facturas',5)">★</span></div></div>
+      <div class="rating-row"><div class="rating-label">Envío de cierre a administración</div><div class="rating-stars" id="post-envio" data-v="0"><span class="rstar" onclick="setRS('post-envio',1)">★</span><span class="rstar" onclick="setRS('post-envio',2)">★</span><span class="rstar" onclick="setRS('post-envio',3)">★</span><span class="rstar" onclick="setRS('post-envio',4)">★</span><span class="rstar" onclick="setRS('post-envio',5)">★</span></div></div>
+      <div class="rating-row"><div class="rating-label">Cargado de facturas en planilla y carpeta</div><div class="rating-stars" id="post-cargado" data-v="0"><span class="rstar" onclick="setRS('post-cargado',1)">★</span><span class="rstar" onclick="setRS('post-cargado',2)">★</span><span class="rstar" onclick="setRS('post-cargado',3)">★</span><span class="rstar" onclick="setRS('post-cargado',4)">★</span><span class="rstar" onclick="setRS('post-cargado',5)">★</span></div></div>
+      <div class="rating-row"><div class="rating-label">Comunicación con cuentas por extras</div><div class="rating-stars" id="post-extras" data-v="0"><span class="rstar" onclick="setRS('post-extras',1)">★</span><span class="rstar" onclick="setRS('post-extras',2)">★</span><span class="rstar" onclick="setRS('post-extras',3)">★</span><span class="rstar" onclick="setRS('post-extras',4)">★</span><span class="rstar" onclick="setRS('post-extras',5)">★</span></div></div>
+    </div>
+    <label style="margin-top:12px">Observaciones</label>
+    <textarea id="post-obs" placeholder="¿Qué quedó pendiente? ¿Qué mejorar?"></textarea>
+  </div>
+  <hr class="divider">
+  <label>Destacados <span style="font-size:11px;color:var(--sp-text2)">(uno por línea)</span></label>
+  <textarea id="en-destacados" placeholder="Ej:&#10;El diseño fue muy valorado por el cliente"></textarea>
+  <label>¿Qué se mejoró respecto al evento anterior? <span style="font-size:11px;color:var(--sp-text2)">(uno por línea)</span></label>
+  <textarea id="en-mejoras"></textarea>
+  <label>Observaciones para producción</label><textarea id="en-oprod"></textarea>
+  <label>Observaciones para cuentas</label><textarea id="en-ocuen"></textarea>
+  <hr class="divider">
+  <div class="form-section-label"><i class="ti ti-users"></i> Equipo del evento</div>
+  <div id="ev-team-sel" style="margin-bottom:12px"></div>
+  <hr class="divider">
+  <div style="display:flex;gap:8px;align-items:center;margin-bottom:8px"><input type="checkbox" id="en-tiempos" style="width:auto"><label for="en-tiempos" style="margin:0;font-size:14px;color:var(--sp-text)">Tiempos generales cumplidos</label></div>
+  <hr class="divider">
+  <div style="display:flex;gap:8px;align-items:center;margin-bottom:10px"><input type="checkbox" id="en-addcierre" style="width:auto"><label for="en-addcierre" style="margin:0;font-size:14px;color:var(--sp-text)">Agregar reunión de cierre del evento</label></div>
+  <div id="cierre-inline" style="display:none">
+    <div class="cierre-banner"><i class="ti ti-clipboard-check"></i><div class="cierre-banner-txt">Reunión de cierre — aprendizajes colectivos</div></div>
+    <label>Participantes</label><input type="text" id="en-cpartic" placeholder="Ej: Sofi, Maca, Diego">
+    <label>Aprendizajes <span style="font-size:11px;color:var(--sp-text2)">(uno por línea)</span></label>
+    <textarea id="en-caprendizajes"></textarea>
+    <label>Voces del equipo <span style="font-size:11px;color:var(--sp-text2)">(nombre: observación)</span></label>
+    <textarea id="en-cvoces" placeholder="Ej:&#10;Sofi: La comunicación con el cliente mejoró&#10;Diego: Faltó tiempo para armar el pañol"></textarea>
+    <label>Acciones para el próximo evento <span style="font-size:11px;color:var(--sp-text2)">(una por línea)</span></label>
+    <textarea id="en-cacciones"></textarea>
+  </div>
+  <button class="btn-p" id="btn-save-event" onclick="saveEvent()">Guardar evento</button>
+</div>
+</div>
+
+<!-- MODAL PERFIL -->
+<div class="modal-bg" id="modal-profile">
+<div class="modal">
+  <div class="modal-title">Perfil <button class="modal-close" onclick="closeM('modal-profile')">×</button></div>
+  <div id="profile-content"></div>
+</div>
+</div>
+
+<!-- MODAL CONTRIB FORM -->
+<div class="modal-bg" id="modal-contrib">
+<div class="modal">
+  <div class="modal-title"><span id="contrib-modal-title">Agregar persona</span><button class="modal-close" onclick="closeM('modal-contrib')">×</button></div>
+  <div class="g2"><div><label>Nombre *</label><input type="text" id="cf-nombre"></div><div><label>Apellido</label><input type="text" id="cf-apellido"></div></div>
+  <div class="g3"><div><label>Rol</label><select id="cf-rol"><option>Producción</option><option>Cuentas</option><option>Dirección de Arte</option><option>Coordinación</option><option>Logística</option><option>Sr. Producer Manager</option><option>Otro</option></select></div><div><label>Color</label><select id="cf-color"><option value="a">Violeta</option><option value="b">Celeste</option><option value="c">Menta</option><option value="d">Gris</option></select></div><div><label>Ingreso a SAPPIA</label><input type="month" id="cf-ingreso"></div></div>
+  <hr class="divider">
+  <div style="font-size:11px;font-weight:500;color:var(--sp-text2);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">Fortalezas <span style="font-weight:400">(una por línea)</span></div>
+  <textarea id="cf-fortalezas"></textarea>
+  <div style="font-size:11px;font-weight:500;color:var(--sp-text2);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;margin-top:12px">Oportunidades de mejora <span style="font-weight:400">(una por línea)</span></div>
+  <textarea id="cf-oportunidades"></textarea>
+  <button class="btn-p" onclick="saveContrib()">Guardar</button>
+</div>
+</div>
+
+<!-- MODAL DETALLE EVENTO -->
+<div class="modal-bg" id="modal-det">
+<div class="modal">
+  <div class="modal-title"><span id="det-title">Detalle</span><button class="modal-close" onclick="closeM('modal-det')">×</button></div>
+  <div id="det-content"></div>
+</div>
+</div>
+
 <script>
-function showScreen(id, btn) {
-  document.querySelectorAll('.screen-wrap').forEach(s => s.classList.remove('active'));
-  document.querySelectorAll('.snav-btn').forEach(b => b.classList.remove('active'));
-  document.getElementById('s-' + id).classList.add('active');
-  btn.classList.add('active');
+// ── CONFIG ──
+const API = 'https://script.google.com/a/macros/sappia.la/s/AKfycbzr6BuKUgmsZBPeUMQSAd4P-b4Mp0Z1yXsS89MnItpwXFzt6YdfSUzXjUX5yxAEV3Qi/exec';
+
+// ── STATE ──
+let currentRole = null, token = null;
+let db = { events: [], contributors: [], cierres: [], evaluaciones: [] };
+let hFilt = 'todos', mejFilt = 'todas', editingContribId = null;
+let aiHistory = [];
+
+const AV_COLORS = {
+  a:{bg:'var(--sp-violet-light)',fg:'var(--sp-violet-text)'},
+  b:{bg:'var(--sp-blue-light)',fg:'var(--sp-blue-text)'},
+  c:{bg:'var(--sp-mint-light)',fg:'var(--sp-mint-text)'},
+  d:{bg:'var(--sp-gray2)',fg:'var(--sp-text2)'}
+};
+
+const PRE_FIELDS=[['cc','Armado CC'],['carpeta','Carpeta producción'],['cashflow','Cashflow'],['provee','Proveedores'],['comun','Comunicación cuentas'],['producer','Producer Manager']];
+const LIVE_FIELDS=[['crono','Cronograma'],['planos','Planos'],['diseno','Planilla diseño'],['panol','Pañol'],['roles','Roles y desempeño'],['provee','Proveedores vivo'],['comun','Comunicación cuentas']];
+const POST_FIELDS=[['cc','Cierre CC'],['facturas','Facturas'],['envio','Envío admin'],['cargado','Carga facturas'],['extras','Extras cuentas']];
+
+function avgF(obj,fields){if(!obj)return 0;const vals=fields.map(([k])=>parseFloat(obj[k])||0).filter(v=>v>0);return vals.length?vals.reduce((a,b)=>a+b,0)/vals.length:0}
+function parseJ(v){try{return typeof v==='string'?JSON.parse(v):v}catch(e){return v||[]}}
+
+// ── API CALLS ──
+async function apiGet(action){
+  const r=await fetch(`${API}?action=${action}&token=${token}`);
+  return r.json();
 }
+async function apiPost(body){
+  const r=await fetch(API,{method:'POST',body:JSON.stringify({...body,token})});
+  return r.json();
+}
+
+// ── AUTH ──
+let selectedRole='admin';
+function selectRole(r){
+  selectedRole=r;
+  document.getElementById('role-admin-btn').classList.toggle('active',r==='admin');
+  document.getElementById('role-manager-btn').classList.toggle('active',r==='manager');
+}
+function togglePwd(){
+  const inp=document.getElementById('login-pass');
+  const ico=document.getElementById('eye-icon');
+  inp.type=inp.type==='password'?'text':'password';
+  ico.className=inp.type==='password'?'ti ti-eye':'ti ti-eye-off';
+}
+async function doLogin(){
+  const pass=document.getElementById('login-pass').value;
+  const err=document.getElementById('login-err');
+  const btn=document.getElementById('login-btn');
+  if(!pass){err.textContent='Ingresá la contraseña';return}
+  btn.disabled=true;btn.textContent='Verificando...';
+  try{
+    const res=await fetch(API,{method:'POST',body:JSON.stringify({action:'login',rol:selectedRole,password:pass})});
+    const data=await res.json();
+    if(data.ok){
+      currentRole=data.rol;token=data.token;
+      enterApp();
+    }else{
+      err.textContent='Contraseña incorrecta. Intentá de nuevo.';
+      setTimeout(()=>{err.textContent=''},3000);
+    }
+  }catch(e){
+    err.textContent='Error de conexión. Verificá internet.';
+  }
+  btn.disabled=false;btn.textContent='Ingresar';
+}
+
+function enterApp(){
+  document.getElementById('login-screen').style.display='none';
+  document.getElementById('app-screen').classList.add('visible');
+  const dot=document.getElementById('role-dot');
+  const lbl=document.getElementById('role-label-top');
+  if(currentRole==='admin'){
+    dot.className='role-pill-dot dot-admin';
+    lbl.innerHTML='Admin <span style="background:var(--sp-violet-light);color:var(--sp-violet-text);padding:2px 8px;border-radius:10px;font-size:10px;font-weight:500">Admin</span>';
+    document.getElementById('admin-actions').style.display='block';
+    document.getElementById('add-person-btn').style.display='inline-flex';
+  }else{
+    dot.className='role-pill-dot dot-manager';
+    lbl.innerHTML='Manager <span style="background:var(--sp-blue-light);color:var(--sp-blue-text);padding:2px 8px;border-radius:10px;font-size:10px;font-weight:500">Solo lectura</span>';
+  }
+  loadData();
+}
+
+function doLogout(){
+  currentRole=null;token=null;db={events:[],contributors:[],cierres:[],evaluaciones:[]};
+  document.getElementById('login-screen').style.display='block';
+  document.getElementById('app-screen').classList.remove('visible');
+  document.getElementById('login-pass').value='';
+  document.getElementById('login-err').textContent='';
+  selectedRole='admin';
+  document.getElementById('role-admin-btn').classList.add('active');
+  document.getElementById('role-manager-btn').classList.remove('active');
+}
+
+function isAdmin(){return currentRole==='admin'}
+
+// ── LOAD DATA ──
+async function loadData(){
+  document.getElementById('dash-content').innerHTML='<div class="loading"><div class="spinner"></div>Cargando datos desde Google Sheets...</div>';
+  try{
+    const data=await apiGet('getAll');
+    db.events=Array.isArray(data.eventos)?data.eventos:[];
+    db.contributors=Array.isArray(data.equipo)?data.equipo:[];
+    db.cierres=Array.isArray(data.cierres)?data.cierres:[];
+    db.evaluaciones=Array.isArray(data.evaluaciones)?data.evaluaciones:[];
+    renderAll();
+  }catch(e){
+    document.getElementById('dash-content').innerHTML='<div class="empty">Error al cargar datos. Verificá la conexión.</div>';
+  }
+}
+
+// ── HELPERS ──
+function initials(c){return((c.nombre||'').slice(0,1)+(c.apellido||'').slice(0,1)).toUpperCase()||(c.nombre||'').slice(0,2).toUpperCase()}
+function avStyle(color){const col=AV_COLORS[color]||AV_COLORS.a;return`background:${col.bg};color:${col.fg}`}
+function smini(v){let s='';for(let i=1;i<=5;i++)s+=`<span class="sm${i<=Math.round(v)?' on':''}">★</span>`;return`<div style="display:flex;gap:2px">${s}</div>`}
+function setR(id,v){const el=document.getElementById(id);if(!el)return;el.dataset.v=v;el.querySelectorAll('.star').forEach((s,i)=>s.classList.toggle('on',i<v))}
+function getR(id){const el=document.getElementById(id);return el?parseInt(el.dataset.v)||0:0}
+function setRS(id,v){const el=document.getElementById(id);if(!el)return;el.dataset.v=v;el.querySelectorAll('.rstar').forEach((s,i)=>s.classList.toggle('on',i<v))}
+function getRS(id){const el=document.getElementById(id);return el?parseInt(el.dataset.v)||0:0}
+function parseLines(v){return(v||'').trim().split('\n').map(l=>l.trim()).filter(Boolean)}
+function parseKV(v){return(v||'').trim().split('\n').map(l=>{const i=l.indexOf(':');if(i<0)return null;return{k:l.slice(0,i).trim(),v:l.slice(i+1).trim()}}).filter(Boolean)}
+
+function getEvOverall(e){
+  const parts=[];
+  if(parseFloat(e.prod_rating)>0)parts.push(parseFloat(e.prod_rating));
+  if(parseFloat(e.cuen_rating)>0)parts.push(parseFloat(e.cuen_rating));
+  // get evals for this event
+  const evEvals=db.evaluaciones.filter(ev=>ev.evento_id==e.id);
+  const preE=evEvals.filter(ev=>ev.etapa==='pre');
+  const liveE=evEvals.filter(ev=>ev.etapa==='live');
+  const postE=evEvals.filter(ev=>ev.etapa==='post');
+  [preE,liveE,postE].forEach(arr=>{if(arr.length){const avg=arr.reduce((a,b)=>a+parseFloat(b.valor||0),0)/arr.length;if(avg>0)parts.push(avg);}});
+  return parts.length?parts.reduce((a,b)=>a+b,0)/parts.length:0;
+}
+function getEtapaAvg(eventoId,etapa){
+  const evals=db.evaluaciones.filter(e=>e.evento_id==eventoId&&e.etapa===etapa);
+  if(!evals.length)return 0;
+  const vals=evals.map(e=>parseFloat(e.valor)||0).filter(v=>v>0);
+  return vals.length?vals.reduce((a,b)=>a+b,0)/vals.length:0;
+}
+function scoreLabel(a){if(a>=4.5)return['Excelente','b-mint'];if(a>=3.5)return['Bueno','b-blue'];if(a>=2.5)return['Regular','b-amb'];return['A mejorar','b-red']}
+
+// ── NAV ──
+function goSec(id,btn){
+  document.querySelectorAll('.sec').forEach(s=>s.classList.remove('on'));
+  document.getElementById('s-'+id).classList.add('on');
+  document.querySelectorAll('.nb').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  if(id==='ai')initAI();
+}
+function closeM(id){document.getElementById(id).classList.remove('open')}
+function filterH(f,btn){hFilt=f;document.querySelectorAll('.chip').forEach(b=>b.classList.remove('on'));btn.classList.add('on');renderHistorial()}
+function filterMej(f,btn){mejFilt=f;document.querySelectorAll('.chip').forEach(b=>b.classList.remove('on'));btn.classList.add('on');renderMejoras()}
+
+// ── RENDER DASHBOARD ──
+function renderDashboard(){
+  const evs=db.events,n=evs.length;
+  const allAvg=n?(evs.reduce((a,e)=>a+getEvOverall(e),0)/n).toFixed(1):'—';
+  const tiempos=evs.filter(e=>e.tiempos==='TRUE'||e.tiempos===true||e.tiempos==='true').length;
+  const totalDest=evs.reduce((a,e)=>a+(parseJ(e.destacados)||[]).length,0);
+  const accents=['var(--sp-violet)','var(--sp-blue)','var(--sp-mint)','var(--sp-gray3)'];
+  let h=`<div class="g4">${[['Total eventos',n],['Calidad promedio',`${allAvg}<span style="font-size:13px;color:var(--sp-text2)">/5</span>`],['Tiempos cumplidos',`${n?Math.round(tiempos/n*100):0}<span style="font-size:13px;color:var(--sp-text2)">%</span>`],['Destacados',totalDest]].map(([l,v],i)=>`<div class="met"><div class="met-l">${l}</div><div class="met-v"><div class="met-acc" style="background:${accents[i]}"></div>${v}</div></div>`).join('')}</div>`;
+  // Áreas
+  let aH='';
+  const pEvs=evs.filter(e=>parseFloat(e.prod_rating)>0);const cEvs=evs.filter(e=>parseFloat(e.cuen_rating)>0);
+  const aP=pEvs.length?(pEvs.reduce((a,e)=>a+parseFloat(e.prod_rating),0)/pEvs.length).toFixed(1):null;
+  const aC=cEvs.length?(cEvs.reduce((a,e)=>a+parseFloat(e.cuen_rating),0)/cEvs.length).toFixed(1):null;
+  if(aP)aH+=`<div class="bar-wrap"><div class="bar-lbl">🔧 Producción</div><div class="bar-out"><div class="bar-in" style="width:${Math.round(aP/5*100)}%;background:var(--sp-mint)"></div></div><div class="bar-val">${aP}</div></div>`;
+  if(aC)aH+=`<div class="bar-wrap"><div class="bar-lbl">💰 Cuentas</div><div class="bar-out"><div class="bar-in" style="width:${Math.round(aC/5*100)}%;background:var(--sp-violet)"></div></div><div class="bar-val">${aC}</div></div>`;
+  // Etapas
+  let eH='';
+  ['pre','live','post'].forEach((etapa,ei)=>{
+    const labels=[['⚙️ Previa','var(--sp-blue)'],['▶️ Ejecución','var(--sp-violet)'],['📋 Post cierre','var(--sp-mint)']];
+    const etaEvals=db.evaluaciones.filter(e=>e.etapa===etapa);
+    if(!etaEvals.length)return;
+    const camposMap={};etaEvals.forEach(e=>{if(!camposMap[e.campo])camposMap[e.campo]=[];camposMap[e.campo].push(parseFloat(e.valor)||0);});
+    eH+=`<div style="font-size:10px;font-weight:500;color:var(--sp-text2);text-transform:uppercase;letter-spacing:.05em;margin:${ei>0?'10px':0} 0 6px">${labels[ei][0]}</div>`;
+    Object.entries(camposMap).slice(0,4).forEach(([campo,vals])=>{
+      const avg=vals.filter(v=>v>0).reduce((a,b)=>a+b,0)/(vals.filter(v=>v>0).length||1);
+      if(!avg)return;
+      eH+=`<div class="bar-wrap"><div class="bar-lbl">${campo.length>18?campo.slice(0,17)+'…':campo}</div><div class="bar-out"><div class="bar-in" style="width:${Math.round(avg/5*100)}%;background:${labels[ei][1]}"></div></div><div class="bar-val">${avg.toFixed(1)}</div></div>`;
+    });
+  });
+  // Destacados
+  const destEvs=[...evs].sort((a,b)=>b.fecha?.localeCompare(a.fecha||'')).filter(e=>parseJ(e.destacados)?.length);
+  let dH='';if(destEvs.length){destEvs.slice(0,2).forEach(e=>{(parseJ(e.destacados)||[]).slice(0,1).forEach(d=>{dH+=`<div class="destaque-card"><div class="destaque-txt">${d}</div><div style="font-size:11px;color:var(--sp-text2);margin-top:3px">${e.nombre} · ${e.fecha}</div></div>`;});});}else dH='<div class="empty">Sin destacados aún</div>';
+  // Aprendizajes recurrentes
+  const allApr={};db.cierres.forEach(ci=>{(parseJ(ci.aprendizajes)||[]).forEach(a=>{const k=a.toLowerCase().slice(0,40);if(!allApr[k])allApr[k]={txt:a,evs:[]};const ev=evs.find(e=>e.id==ci.evento_id);if(ev)allApr[k].evs.push(ev.nombre);});});
+  const recur=Object.values(allApr).filter(x=>x.evs.length>0).slice(0,4);
+  let iH='';if(recur.length)recur.forEach(p=>{iH+=`<div class="item"><span class="dot dv"></span><div><div style="font-size:13px;color:var(--sp-text)">${p.txt}</div><div style="font-size:11px;color:var(--sp-text2);margin-top:1px">En: ${p.evs.join(', ')}</div></div></div>`});else iH='<div class="empty">Sin cierres registrados aún</div>';
+
+  document.getElementById('dash-content').innerHTML=h+`
+    <div class="g2">
+      <div class="card"><div class="card-ttl"><i class="ti ti-chart-bar"></i> Calidad por área</div>${aH||'<div class="empty">Sin datos</div>'}</div>
+      <div class="card"><div class="card-ttl"><i class="ti ti-layers"></i> Calidad por etapa</div>${eH||'<div class="empty">Sin datos</div>'}</div>
+    </div>
+    <div class="g2">
+      <div class="card"><div class="card-ttl"><i class="ti ti-star"></i> Destacados recientes</div>${dH}</div>
+      <div class="card"><div class="card-ttl"><i class="ti ti-alert-triangle"></i> Aprendizajes recurrentes</div>${iH}</div>
+    </div>`;
+}
+
+// ── RENDER HISTORIAL ──
+function renderHistorial(){
+  let evs=[...db.events].sort((a,b)=>(b.fecha||'').localeCompare(a.fecha||''));
+  evs=evs.filter(e=>{
+    if(hFilt==='todos')return true;
+    const a=getEvOverall(e);
+    if(hFilt==='excelente')return a>=4.5;
+    if(hFilt==='bueno')return a>=3.5&&a<4.5;
+    if(hFilt==='mejorar')return a<3.5&&a>0;
+    if(hFilt==='con-cierre')return db.cierres.some(c=>c.evento_id==e.id);
+    return true;
+  });
+  if(!evs.length){document.getElementById('hist-list').innerHTML='<div class="empty">Sin eventos registrados</div>';return}
+  let h='';
+  evs.forEach(e=>{
+    const ov=getEvOverall(e);const[l,c]=scoreLabel(ov);
+    const preA=getEtapaAvg(e.id,'pre');const liveA=getEtapaAvg(e.id,'live');const postA=getEtapaAvg(e.id,'post');
+    const hasCierre=db.cierres.some(ci=>ci.evento_id==e.id);
+    const teamIds=(parseJ(e.team)||[]);
+    const teamAv=teamIds.map(id=>{const ct=db.contributors.find(x=>x.id==id);if(!ct)return'';return`<div style="width:20px;height:20px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:8px;font-weight:500;${avStyle(ct.color)}">${initials(ct)}</div>`;}).join('');
+    h+=`<div class="erow" onclick="openDet('${e.id}')">
+      <div class="er-l"><div class="er-name">${e.nombre}</div>
+      <div class="er-sub" style="display:flex;align-items:center;gap:5px;flex-wrap:wrap">${e.fecha||'—'} · ${e.tipo||'—'} · ${e.cliente||'—'}${teamAv?`<div style="display:flex;gap:2px">${teamAv}</div>`:''}</div></div>
+      <div class="er-r">
+        ${parseFloat(e.prod_rating)>0?`<span class="score-pill sp-prod">🔧${e.prod_rating}</span>`:''}
+        ${parseFloat(e.cuen_rating)>0?`<span class="score-pill sp-cuen">💰${e.cuen_rating}</span>`:''}
+        ${preA>0?`<span class="score-pill sp-pre">⚙️${preA.toFixed(1)}</span>`:''}
+        ${liveA>0?`<span class="score-pill sp-live">▶️${liveA.toFixed(1)}</span>`:''}
+        ${postA>0?`<span class="score-pill sp-post">📋${postA.toFixed(1)}</span>`:''}
+        <span class="badge ${c}">${l}</span>
+        ${(parseJ(e.destacados)||[]).length?`<span class="badge b-violet"><i class="ti ti-star" style="font-size:11px"></i>${(parseJ(e.destacados)||[]).length}</span>`:''}
+        ${hasCierre?`<span class="badge b-black"><i class="ti ti-clipboard-check" style="font-size:11px"></i></span>`:''}
+      </div>
+    </div>`;
+  });
+  document.getElementById('hist-list').innerHTML=h;
+}
+
+// ── RENDER CIERRES ──
+function renderCierres(){
+  const cierres=[...db.cierres].sort((a,b)=>(b.created_at||'').localeCompare(a.created_at||''));
+  if(!cierres.length){document.getElementById('cierre-list').innerHTML='<div class="empty">Sin cierres registrados</div>';return}
+  let h='';
+  cierres.forEach(ci=>{
+    const ev=db.events.find(e=>e.id==ci.evento_id)||{nombre:'Evento',fecha:'—'};
+    const aprs=parseJ(ci.aprendizajes)||[];
+    h+=`<div class="card" style="cursor:pointer" onclick="openDet('${ev.id}')">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px">
+        <div><div style="font-size:15px;font-weight:500;color:var(--sp-text)">${ev.nombre}</div><div style="font-size:12px;color:var(--sp-text2);margin-top:2px">${ev.fecha} · ${ci.participantes||'—'}</div></div>
+        <span class="badge b-violet"><i class="ti ti-clipboard-check"></i> Cerrado</span>
+      </div>
+      ${aprs.length?aprs.slice(0,2).map(a=>`<div class="item"><span class="dot dv"></span>${a}</div>`).join('')+''.concat(aprs.length>2?`<div style="font-size:12px;color:var(--sp-text2)">+${aprs.length-2} más</div>`:''):''}
+    </div>`;
+  });
+  document.getElementById('cierre-list').innerHTML=h;
+}
+
+// ── RENDER MEJORAS ──
+function renderMejoras(){
+  const evsSorted=[...db.events].sort((a,b)=>(a.fecha||'').localeCompare(b.fecha||''));
+  let h='';
+  if(mejFilt==='todas'||mejFilt==='destacados'){
+    const de=evsSorted.filter(e=>(parseJ(e.destacados)||[]).length).reverse();
+    if(de.length){h+=`<div style="font-size:14px;font-weight:500;color:var(--sp-text);margin-bottom:12px;display:flex;align-items:center;gap:6px"><i class="ti ti-star" style="color:var(--sp-violet)"></i> Destacados del equipo</div>`;de.forEach(e=>{h+=`<div class="card"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><div style="font-size:14px;font-weight:500;color:var(--sp-text)">${e.nombre}</div><div style="font-size:12px;color:var(--sp-text2)">${e.fecha}</div></div>`;(parseJ(e.destacados)||[]).forEach(d=>{h+=`<div class="destaque-card"><div class="destaque-txt">${d}</div></div>`;});h+=`</div>`;});}
+    else if(mejFilt==='destacados')h='<div class="empty">Sin destacados</div>';
+  }
+  if(mejFilt==='todas'||mejFilt==='mejoras'){
+    const me=evsSorted.filter(e=>(parseJ(e.mejoras)||[]).length);
+    if(me.length){if(mejFilt==='todas')h+=`<div style="height:16px"></div>`;h+=`<div style="font-size:14px;font-weight:500;color:var(--sp-text);margin-bottom:16px;display:flex;align-items:center;gap:6px"><i class="ti ti-trending-up" style="color:var(--sp-mint-dark)"></i> Mejoras progresivas</div><div class="mejora-timeline">`;me.forEach((e,idx)=>{const isLast=idx===me.length-1;(parseJ(e.mejoras)||[]).forEach(m=>{h+=`<div class="mejora-item"><div class="mejora-dot ${isLast?'md-v':'md-b'}"></div><div style="font-size:11px;color:var(--sp-text2);margin-bottom:2px">${e.fecha} · ${e.nombre}</div><div style="font-size:13px;color:var(--sp-text);line-height:1.5">${m}</div></div>`;});});h+=`</div>`;}
+    else if(mejFilt==='mejoras')h='<div class="empty">Sin mejoras registradas</div>';
+  }
+  if(!h)h='<div class="empty">Sin datos</div>';
+  document.getElementById('mej-content').innerHTML=h;
+}
+
+// ── RENDER EQUIPO ──
+function renderContributors(){
+  const contribs=db.contributors;
+  document.getElementById('contrib-count').textContent=`${contribs.length} persona${contribs.length!==1?'s':''} en el equipo`;
+  let h='';
+  contribs.forEach(c=>{
+    const col=AV_COLORS[c.color]||AV_COLORS.a;
+    const evs=db.events.filter(e=>(parseJ(e.team)||[]).includes(c.id?.toString())||( parseJ(e.team)||[]).includes(c.id));
+    // ingreso
+    let antiguedad='';
+    if(c.ingreso){const d=new Date(c.ingreso+'-01');const now=new Date();const m=Math.floor((now-d)/1000/60/60/24/30);antiguedad=m>=12?`${Math.floor(m/12)}a`:`${m}m`;}
+    h+=`<div class="contrib-card" onclick="openProfile('${c.id}')">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">
+        <div class="contrib-av" style="background:${col.bg};color:${col.fg}">${initials(c)}</div>
+        <div style="flex:1"><div style="font-size:14px;font-weight:500;color:var(--sp-text)">${c.nombre} ${c.apellido||''}</div><div style="font-size:12px;color:var(--sp-text2);margin-top:1px">${c.rol||'—'}${antiguedad?` · 📅 ${antiguedad} en SAPPIA`:''}</div></div>
+      </div>
+      <div class="cstats">
+        <div class="cstat"><div class="cstat-v">${evs.length}</div><div class="cstat-l">Eventos</div></div>
+        <div class="cstat"><div class="cstat-v">—</div><div class="cstat-l">🔧</div></div>
+        <div class="cstat"><div class="cstat-v">—</div><div class="cstat-l">💰</div></div>
+        <div class="cstat"><div class="cstat-v">—</div><div class="cstat-l">⚙️</div></div>
+        <div class="cstat"><div class="cstat-v">—</div><div class="cstat-l">▶️</div></div>
+      </div>
+      ${(parseJ(c.fortalezas)||[]).slice(0,2).length?`<div style="font-size:10px;font-weight:500;color:var(--sp-text2);text-transform:uppercase;letter-spacing:.05em;margin-bottom:5px">Fortalezas</div><div style="display:flex;gap:5px;flex-wrap:wrap">${(parseJ(c.fortalezas)||[]).slice(0,2).map(f=>`<span class="pill-f">${f.length>28?f.slice(0,26)+'…':f}</span>`).join('')}</div>`:''}
+    </div>`;
+  });
+  document.getElementById('contrib-grid').innerHTML=h||'<div class="empty">Sin personas en el equipo</div>';
+}
+
+// ── OPEN PROFILE ──
+function openProfile(id){
+  const c=db.contributors.find(x=>x.id==id);if(!c)return;
+  const col=AV_COLORS[c.color]||AV_COLORS.a;
+  const evs=db.events.filter(e=>(parseJ(e.team)||[]).map(String).includes(String(id)));
+  let antiguedad='';
+  if(c.ingreso){const d=new Date(c.ingreso+'-01');const now=new Date();const m=Math.floor((now-d)/1000/60/60/24/30);const a=Math.floor(m/12);const rm=m%12;antiguedad=a>0?`${a} año${a>1?'s':''}${rm>0?` y ${rm} mes${rm>1?'es':''}`:''}`:` ${m} mes${m>1?'es':''}`;}
+  let h=`<div style="display:flex;align-items:center;gap:16px;margin-bottom:1.25rem;padding-bottom:1rem;border-bottom:0.5px solid var(--color-border-tertiary)">
+    <div style="width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:500;background:${col.bg};color:${col.fg}">${initials(c)}</div>
+    <div><div style="font-size:17px;font-weight:500;color:var(--sp-text)">${c.nombre} ${c.apellido||''}</div><div style="font-size:13px;color:var(--sp-text2);margin-top:2px">${c.rol||'—'}</div></div>
+    ${isAdmin()?`<button class="btn-s" style="margin-left:auto" onclick="closeM('modal-profile');openContribForm('${c.id}')"><i class="ti ti-edit"></i> Editar</button>`:''}
+  </div>
+  ${antiguedad?`<div style="display:inline-flex;align-items:center;gap:6px;padding:4px 12px;background:var(--sp-violet-light);border-radius:20px;font-size:11px;color:var(--sp-violet-text);margin-bottom:14px">📅 En SAPPIA desde <strong>${c.ingreso}</strong> · ${antiguedad}</div>`:''}
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:1rem">
+    <div class="pstat"><div class="pstat-v">${evs.length}</div><div class="pstat-l">Eventos</div></div>
+    <div class="pstat"><div class="pstat-v">${(parseJ(c.fortalezas)||[]).length}</div><div class="pstat-l">Fortalezas</div></div>
+    <div class="pstat"><div class="pstat-v">${(parseJ(c.notas||'[]')||[]).length}</div><div class="pstat-l">Notas</div></div>
+  </div>
+  <div class="stabs"><button class="stab on" onclick="switchPT('pt-f',this)">Fortalezas</button><button class="stab" onclick="switchPT('pt-o',this)">Oportunidades</button><button class="stab" onclick="switchPT('pt-e',this)">Eventos</button><button class="stab" onclick="switchPT('pt-n',this)">Notas manager</button></div>
+  <div id="pt-f" class="sv on">`;
+  const fortalezas=parseJ(c.fortalezas)||[];
+  if(fortalezas.length)fortalezas.forEach(f=>{h+=`<div class="forte-item"><div class="forte-dot" style="background:var(--sp-violet)"></div><div class="forte-txt">${f}</div></div>`;});
+  else h+='<div class="empty">Sin fortalezas</div>';
+  h+=`</div><div id="pt-o" class="sv">`;
+  const opors=parseJ(c.oportunidades)||[];
+  if(opors.length)opors.forEach(o=>{h+=`<div class="forte-item"><div class="forte-dot" style="background:var(--sp-blue)"></div><div class="forte-txt">${o}</div></div>`;});
+  else h+='<div class="empty">Sin oportunidades</div>';
+  h+=`</div><div id="pt-e" class="sv">`;
+  if(evs.length)evs.forEach(e=>{const ov=getEvOverall(e);const[l,cl]=scoreLabel(ov);h+=`<div class="te"><div class="te-date">${e.fecha}</div><div style="flex:1"><div style="font-size:13px;font-weight:500;color:var(--sp-text)">${e.nombre} <span class="badge ${cl}" style="font-size:10px">${l}</span></div></div></div>`;});
+  else h+='<div class="empty">Sin eventos registrados</div>';
+  h+=`</div><div id="pt-n" class="sv">`;
+  if(isAdmin())h+=`<div style="margin-bottom:10px"><textarea id="nota-nueva" placeholder="Agregar nota..." style="margin-bottom:8px"></textarea><button class="btn-s" onclick="addNota('${c.id}')"><i class="ti ti-plus"></i> Agregar</button></div>`;
+  const notas=parseJ(c.notas||'[]')||[];
+  if(notas.length)notas.slice().reverse().forEach((nt,i)=>{h+=`<div class="forte-item"><div class="forte-dot" style="background:var(--sp-mint)"></div><div class="forte-txt">${nt.texto||nt}<div class="forte-source">${nt.fecha||''}</div></div></div>`;});
+  else h+='<div class="empty">Sin notas</div>';
+  h+=`</div>`;
+  if(isAdmin())h+=`<hr class="divider"><button class="btn-d" onclick="delContrib('${c.id}')"><i class="ti ti-trash"></i> Eliminar perfil</button>`;
+  document.getElementById('profile-content').innerHTML=h;
+  document.getElementById('modal-profile').classList.add('open');
+}
+
+async function addNota(cid){
+  const txt=document.getElementById('nota-nueva').value.trim();if(!txt)return;
+  const c=db.contributors.find(x=>x.id==cid);if(!c)return;
+  const notas=parseJ(c.notas||'[]')||[];
+  notas.push({texto:txt,fecha:new Date().toLocaleDateString('es-AR',{day:'2-digit',month:'2-digit',year:'numeric'})});
+  await apiPost({action:'updateRow',sheet:'equipo',id:cid,data:{notas:JSON.stringify(notas)}});
+  c.notas=JSON.stringify(notas);
+  openProfile(cid);
+}
+
+async function delContrib(id){
+  if(!confirm('¿Eliminar?'))return;
+  await apiPost({action:'deleteRow',sheet:'equipo',id});
+  db.contributors=db.contributors.filter(c=>c.id!=id);
+  closeM('modal-profile');renderContributors();
+}
+
+function switchPT(id,btn){document.querySelectorAll('.sv').forEach(v=>v.classList.remove('on'));document.getElementById(id).classList.add('on');document.querySelectorAll('.stab').forEach(b=>b.classList.remove('on'));btn.classList.add('on');}
+
+// ── OPEN DET EVENTO ──
+function openDet(id){
+  const e=db.events.find(x=>x.id==id);if(!e)return;
+  const ov=getEvOverall(e);const[l,c]=scoreLabel(ov);
+  const preA=getEtapaAvg(id,'pre');const liveA=getEtapaAvg(id,'live');const postA=getEtapaAvg(id,'post');
+  const cierre=db.cierres.find(ci=>ci.evento_id==id);
+  const teamCards=(parseJ(e.team)||[]).map(tid=>{const ct=db.contributors.find(x=>x.id==tid||x.id==String(tid));if(!ct)return'';return`<div style="display:inline-flex;align-items:center;gap:5px;padding:3px 8px;background:${AV_COLORS[ct.color]?.bg||'var(--sp-gray2)'};border-radius:12px;margin-right:5px;margin-bottom:4px"><span style="font-size:12px;color:${AV_COLORS[ct.color]?.fg||'var(--sp-text2)'};font-weight:500">${ct.nombre}</span></div>`;}).join('');
+  let h=`<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:.75rem">
+    <span class="badge ${c}">${l}</span><span class="badge b-black">${e.tipo||'—'}</span>
+    ${parseFloat(e.prod_rating)>0?`<span class="score-pill sp-prod">🔧 ${e.prod_rating}</span>`:''}
+    ${parseFloat(e.cuen_rating)>0?`<span class="score-pill sp-cuen">💰 ${e.cuen_rating}</span>`:''}
+    ${preA>0?`<span class="score-pill sp-pre">⚙️ ${preA.toFixed(1)}</span>`:''}
+    ${liveA>0?`<span class="score-pill sp-live">▶️ ${liveA.toFixed(1)}</span>`:''}
+    ${postA>0?`<span class="score-pill sp-post">📋 ${postA.toFixed(1)}</span>`:''}
+    ${cierre?`<span class="badge b-violet"><i class="ti ti-clipboard-check"></i> Cierre</span>`:''}
+  </div>
+  <div style="font-size:13px;color:var(--sp-text2);margin-bottom:8px">Cliente: ${e.cliente||'—'} · ${e.fecha||'—'} · ${e.asistentes||'—'} asistentes</div>
+  ${teamCards?`<div style="margin-bottom:12px">${teamCards}</div>`:''}
+  <div class="stabs">
+    <button class="stab on" onclick="switchDT('dt-areas',this)">🔧💰 Áreas</button>
+    <button class="stab" onclick="switchDT('dt-pre',this)">⚙️ Previa</button>
+    <button class="stab" onclick="switchDT('dt-live',this)">▶️ Ejecución</button>
+    <button class="stab" onclick="switchDT('dt-post',this)">📋 Post</button>
+    <button class="stab" onclick="switchDT('dt-general',this)">General</button>
+    ${cierre?`<button class="stab" onclick="switchDT('dt-cierre',this)">Cierre</button>`:''}
+  </div>`;
+
+  h+=`<div id="dt-areas" class="sv on">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
+      <div style="background:var(--sp-mint-light);border-radius:12px;padding:1rem;text-align:center"><div style="font-size:11px;color:var(--sp-mint-text);font-weight:500;margin-bottom:8px;text-transform:uppercase">🔧 Producción</div>${parseFloat(e.prod_rating)>0?`<div style="font-size:28px;font-weight:500;color:var(--sp-mint-dark)">${e.prod_rating}<span style="font-size:14px">/5</span></div><div style="margin-top:6px">${smini(parseFloat(e.prod_rating))}</div>`:'<div style="font-size:13px;color:var(--sp-mint-text)">Sin evaluar</div>'}</div>
+      <div style="background:var(--sp-violet-light);border-radius:12px;padding:1rem;text-align:center"><div style="font-size:11px;color:var(--sp-violet-text);font-weight:500;margin-bottom:8px;text-transform:uppercase">💰 Cuentas</div>${parseFloat(e.cuen_rating)>0?`<div style="font-size:28px;font-weight:500;color:var(--sp-violet-dark)">${e.cuen_rating}<span style="font-size:14px">/5</span></div><div style="margin-top:6px">${smini(parseFloat(e.cuen_rating))}</div>`:'<div style="font-size:13px;color:var(--sp-violet-text)">Sin evaluar</div>'}</div>
+    </div>
+    ${e.oprod?`<div style="margin-bottom:10px"><div style="font-size:11px;font-weight:500;color:var(--sp-text2);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px">Para producción</div><div style="font-size:13px;color:var(--sp-text);line-height:1.6">${e.oprod}</div></div>`:''}
+    ${e.ocuen?`<div><div style="font-size:11px;font-weight:500;color:var(--sp-text2);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px">Para cuentas</div><div style="font-size:13px;color:var(--sp-text);line-height:1.6">${e.ocuen}</div></div>`:''}
+    ${isAdmin()?`<hr class="divider"><button class="btn-d" onclick="delEvent('${e.id}')"><i class="ti ti-trash"></i> Eliminar evento</button>`:''}
+  </div>`;
+
+  // Etapas
+  ['pre','live','post'].forEach(etapa=>{
+    const labels={pre:'dt-pre',live:'dt-live',post:'dt-post'};
+    const evals=db.evaluaciones.filter(ev=>ev.evento_id==id&&ev.etapa===etapa);
+    const avg=evals.length?evals.reduce((a,b)=>a+parseFloat(b.valor||0),0)/evals.length:0;
+    const obs=etapa==='pre'?e.pre_obs:etapa==='live'?e.live_obs:e.post_obs;
+    const colors={pre:'var(--sp-blue-light)',live:'var(--sp-violet-light)',post:'var(--sp-mint-light)'};
+    h+=`<div id="${labels[etapa]}" class="sv">`;
+    if(evals.length){
+      h+=`<table class="comp-table">`;
+      evals.forEach(ev=>{h+=`<tr><td>${ev.campo}</td><td>${smini(parseFloat(ev.valor||0))}</td><td style="color:var(--sp-text2)">${ev.valor}/5</td></tr>`;});
+      h+=`</table>`;
+      if(avg>0){const sp={pre:'sp-pre',live:'sp-live',post:'sp-post'};h+=`<div style="margin-top:10px;display:flex;align-items:center;gap:8px"><span style="font-size:12px;color:var(--sp-text2)">Promedio etapa</span><span class="score-pill ${sp[etapa]}">${avg.toFixed(1)} / 5</span></div>`;}
+      if(obs)h+=`<div style="margin-top:12px;font-size:13px;color:var(--sp-text);line-height:1.6;padding:10px;background:${colors[etapa]};border-radius:8px">${obs}</div>`;
+    }else h+='<div class="empty">Sin evaluación registrada</div>';
+    h+=`</div>`;
+  });
+
+  // General
+  const dests=parseJ(e.destacados)||[];const mejoras=parseJ(e.mejoras)||[];
+  h+=`<div id="dt-general" class="sv">
+    ${dests.length?`<div style="margin-bottom:12px"><div style="font-size:11px;font-weight:500;color:var(--sp-text2);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px">⭐ Destacados</div>${dests.map(d=>`<div class="destaque-card"><div class="destaque-txt">${d}</div></div>`).join('')}</div>`:''}
+    ${mejoras.length?`<div><div style="font-size:11px;font-weight:500;color:var(--sp-text2);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px">📈 Mejoras vs anterior</div>${mejoras.map(m=>`<div class="item"><span class="dot dm"></span>${m}</div>`).join('')}</div>`:''}
+    ${!dests.length&&!mejoras.length?'<div class="empty">Sin datos generales</div>':''}
+  </div>`;
+
+  // Cierre
+  if(cierre){
+    const aprs=parseJ(cierre.aprendizajes)||[];
+    const acciones=parseJ(cierre.acciones)||[];
+    const voces=parseJ(cierre.voces)||[];
+    h+=`<div id="dt-cierre" class="sv">
+      <div class="cierre-banner"><i class="ti ti-clipboard-check"></i><div class="cierre-banner-txt">Participantes: ${cierre.participantes||'—'}</div></div>
+      <div class="stabs" style="margin-bottom:1rem"><button class="stab on" onclick="switchCT('ci-apr',this)">Aprendizajes</button><button class="stab" onclick="switchCT('ci-voces',this)">Voces</button><button class="stab" onclick="switchCT('ci-acc',this)">Acciones</button></div>
+      <div id="ci-apr" class="sv on">${aprs.length?aprs.map(a=>`<div class="item"><span class="dot dv"></span>${a}</div>`).join(''):'<div class="empty">Sin aprendizajes</div>'}</div>
+      <div id="ci-voces" class="sv">${voces.length?voces.map(v=>`<div class="voice-row"><div class="av av-a">${(v.nombre||'?').slice(0,2).toUpperCase()}</div><div style="flex:1"><div style="font-size:12px;font-weight:500;color:var(--sp-text)">${v.nombre||''}</div>${v.quote?`<div class="quote-text">"${v.quote}"</div>`:''}<div style="font-size:13px;color:var(--sp-text);margin-top:4px">${v.obs||''}</div></div></div>`).join(''):'<div class="empty">Sin voces</div>'}</div>
+      <div id="ci-acc" class="sv">${acciones.length?acciones.map((ac,i)=>`<div class="action-r"><div class="pmi"></div><div class="a-num">0${i+1}</div><div class="a-body"><div class="a-title">${typeof ac==='string'?ac:ac.titulo||ac}</div></div></div>`).join(''):'<div class="empty">Sin acciones</div>'}</div>
+    </div>`;
+  }
+
+  document.getElementById('det-title').textContent=e.nombre;
+  document.getElementById('det-content').innerHTML=h;
+  document.getElementById('modal-det').classList.add('open');
+}
+
+function switchDT(id,btn){const mc=document.getElementById('det-content');mc.querySelectorAll(':scope > .sv').forEach(v=>v.classList.remove('on'));document.getElementById(id).classList.add('on');mc.querySelectorAll(':scope > .stabs > .stab').forEach(b=>b.classList.remove('on'));btn.classList.add('on');}
+function switchCT(id,btn){['ci-apr','ci-voces','ci-acc'].forEach(k=>{const el=document.getElementById(k);if(el)el.classList.remove('on')});document.getElementById(id).classList.add('on');btn.parentElement.querySelectorAll('.stab').forEach(b=>b.classList.remove('on'));btn.classList.add('on');}
+
+async function delEvent(id){
+  if(!confirm('¿Eliminar este evento?'))return;
+  await apiPost({action:'deleteRow',sheet:'eventos',id});
+  db.events=db.events.filter(e=>e.id!=id);
+  closeM('modal-det');renderAll();
+}
+
+// ── NUEVO EVENTO ──
+function renderParticChips(cid,sel){
+  const el=document.getElementById(cid);if(!el)return;
+  if(!db.contributors.length){el.innerHTML='<div style="font-size:12px;color:var(--sp-text2)">Agregá personas desde Equipo primero.</div>';return;}
+  el.innerHTML=db.contributors.map(c=>{const s=(sel||[]).map(String).includes(String(c.id));return`<button class="pc${s?' sel':''}" onclick="togglePartic(this)" data-id="${c.id}">${initials(c)} ${c.nombre}</button>`;}).join('');
+}
+function togglePartic(btn){btn.classList.toggle('sel')}
+function getSelectedPartic(cid){const el=document.getElementById(cid);if(!el)return[];return[...el.querySelectorAll('.pc.sel')].map(b=>b.dataset.id)}
+function renderTeamSelector(){
+  const el=document.getElementById('ev-team-sel');if(!el)return;
+  el.innerHTML=db.contributors.map(c=>`<label style="display:inline-flex;align-items:center;gap:6px;margin-right:10px;margin-bottom:6px;cursor:pointer;font-size:13px;color:var(--sp-text)"><input type="checkbox" class="ev-team-cb" value="${c.id}" style="width:auto"><div style="width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:500;${avStyle(c.color)}">${initials(c)}</div>${c.nombre}</label>`).join('')||'Sin personas en el equipo.';
+}
+function getSelectedTeam(){return[...document.querySelectorAll('.ev-team-cb:checked')].map(cb=>cb.value)}
+
+function openNew(){
+  if(!isAdmin()){alert('Solo los admins pueden registrar eventos.');return}
+  ['en-nombre','en-cliente','en-destacados','en-mejoras','en-oprod','en-ocuen','pre-obs','live-obs','post-obs','en-cpartic','en-caprendizajes','en-cvoces','en-cacciones'].forEach(id=>{const el=document.getElementById(id);if(el)el.value=''});
+  ['r-prod','r-cuen'].forEach(id=>{const el=document.getElementById(id);if(el){el.dataset.v=0;el.querySelectorAll('.star').forEach(s=>s.classList.remove('on'))}});
+  ['pre-cc','pre-carpeta','pre-cashflow','pre-provee','pre-comun','pre-producer','live-crono','live-planos','live-diseno','live-panol','live-roles','live-provee','live-comun','post-cc','post-facturas','post-envio','post-cargado','post-extras'].forEach(id=>{const el=document.getElementById(id);if(el){el.dataset.v=0;el.querySelectorAll('.rstar').forEach(s=>s.classList.remove('on'))}});
+  ['en-tiempos','en-addcierre'].forEach(id=>{const el=document.getElementById(id);if(el)el.checked=false});
+  document.getElementById('cierre-inline').style.display='none';
+  document.getElementById('en-fecha').value=new Date().toISOString().split('T')[0];
+  renderTeamSelector();renderParticChips('pre-partic-chips',[]);renderParticChips('live-partic-chips',[]);
+  document.getElementById('modal-new').classList.add('open');
+}
+document.getElementById('en-addcierre').addEventListener('change',function(){document.getElementById('cierre-inline').style.display=this.checked?'block':'none'});
+
+async function saveEvent(){
+  if(!isAdmin())return;
+  const nombre=document.getElementById('en-nombre').value.trim();
+  const fecha=document.getElementById('en-fecha').value;
+  if(!nombre||!fecha){alert('Nombre y fecha son obligatorios');return}
+  const btn=document.getElementById('btn-save-event');
+  btn.disabled=true;btn.textContent='Guardando...';
+
+  const eventoId=Date.now().toString();
+  const evento={
+    id:eventoId,nombre,fecha,
+    tipo:document.getElementById('en-tipo').value,
+    cliente:document.getElementById('en-cliente').value,
+    asistentes:document.getElementById('en-asist').value||'0',
+    prod_rating:getR('r-prod')||'',
+    cuen_rating:getR('r-cuen')||'',
+    tiempos:document.getElementById('en-tiempos').checked?'TRUE':'FALSE',
+    oprod:document.getElementById('en-oprod').value,
+    ocuen:document.getElementById('en-ocuen').value,
+    destacados:JSON.stringify(parseLines(document.getElementById('en-destacados').value)),
+    mejoras:JSON.stringify(parseLines(document.getElementById('en-mejoras').value)),
+    mal:'',
+    team:JSON.stringify(getSelectedTeam()),
+  };
+
+  // Guardar evaluaciones
+  const prePartic=getSelectedPartic('pre-partic-chips');
+  const livePartic=getSelectedPartic('live-partic-chips');
+  const preObs=document.getElementById('pre-obs').value;
+  const liveObs=document.getElementById('live-obs').value;
+  const postObs=document.getElementById('post-obs').value;
+
+  const evalData=[
+    {id:'pre-cc',campo:'Armado CC',etapa:'pre'},
+    {id:'pre-carpeta',campo:'Carpeta producción',etapa:'pre'},
+    {id:'pre-cashflow',campo:'Cashflow',etapa:'pre'},
+    {id:'pre-provee',campo:'Selección proveedores',etapa:'pre'},
+    {id:'pre-comun',campo:'Comunicación cuentas',etapa:'pre'},
+    {id:'pre-producer',campo:'Producer Manager',etapa:'pre'},
+    {id:'live-crono',campo:'Cronograma armado',etapa:'live'},
+    {id:'live-planos',campo:'Armado planos',etapa:'live'},
+    {id:'live-diseno',campo:'Planilla diseño',etapa:'live'},
+    {id:'live-panol',campo:'Armado pañol',etapa:'live'},
+    {id:'live-roles',campo:'Cumplimiento roles',etapa:'live'},
+    {id:'live-provee',campo:'Gestión proveedores',etapa:'live'},
+    {id:'live-comun',campo:'Comunicación cuentas',etapa:'live'},
+    {id:'post-cc',campo:'Cierre CC',etapa:'post'},
+    {id:'post-facturas',campo:'Facturas pendientes',etapa:'post'},
+    {id:'post-envio',campo:'Envío administración',etapa:'post'},
+    {id:'post-cargado',campo:'Carga facturas',etapa:'post'},
+    {id:'post-extras',campo:'Extras cuentas',etapa:'post'},
+  ];
+
+  try{
+    await apiPost({action:'saveEvento',data:evento});
+
+    for(const e of evalData){
+      const val=getRS(e.id);if(!val)continue;
+      const ptcs=e.etapa==='pre'?prePartic:e.etapa==='live'?livePartic:[];
+      const obs=e.etapa==='pre'?preObs:e.etapa==='live'?liveObs:postObs;
+      await apiPost({action:'saveEvaluacion',data:{evento_id:eventoId,etapa:e.etapa,campo:e.campo,valor:val,obs,participantes:JSON.stringify(ptcs)}});
+    }
+
+    if(document.getElementById('en-addcierre').checked){
+      const vr=parseKV(document.getElementById('en-cvoces').value);
+      await apiPost({action:'saveCierre',data:{
+        evento_id:eventoId,
+        participantes:document.getElementById('en-cpartic').value,
+        aprendizajes:JSON.stringify(parseLines(document.getElementById('en-caprendizajes').value)),
+        voces:JSON.stringify(vr.map(v=>({nombre:v.k,obs:v.v}))),
+        acciones:JSON.stringify(parseLines(document.getElementById('en-cacciones').value)),
+      }});
+    }
+
+    closeM('modal-new');
+    await loadData();
+  }catch(err){
+    alert('Error al guardar. Verificá la conexión.');
+  }
+  btn.disabled=false;btn.textContent='Guardar evento';
+}
+
+// ── CONTRIB FORM ──
+function openContribForm(id){
+  if(!isAdmin()){alert('Solo los admins pueden editar perfiles.');return}
+  editingContribId=id||null;
+  const c=id?db.contributors.find(x=>x.id==id):null;
+  document.getElementById('contrib-modal-title').textContent=c?'Editar perfil':'Agregar persona';
+  document.getElementById('cf-nombre').value=c?c.nombre:'';
+  document.getElementById('cf-apellido').value=c?c.apellido||'':'';
+  document.getElementById('cf-rol').value=c?c.rol||'Producción':'Producción';
+  document.getElementById('cf-color').value=c?c.color||'a':'a';
+  document.getElementById('cf-ingreso').value=c?c.ingreso||'':'';
+  document.getElementById('cf-fortalezas').value=c?(parseJ(c.fortalezas)||[]).join('\n'):'';
+  document.getElementById('cf-oportunidades').value=c?(parseJ(c.oportunidades)||[]).join('\n'):'';
+  document.getElementById('modal-contrib').classList.add('open');
+}
+
+async function saveContrib(){
+  if(!isAdmin())return;
+  const nombre=document.getElementById('cf-nombre').value.trim();
+  if(!nombre){alert('Nombre requerido');return}
+  const data={
+    nombre,apellido:document.getElementById('cf-apellido').value.trim(),
+    rol:document.getElementById('cf-rol').value,color:document.getElementById('cf-color').value,
+    ingreso:document.getElementById('cf-ingreso').value,
+    fortalezas:JSON.stringify(parseLines(document.getElementById('cf-fortalezas').value)),
+    oportunidades:JSON.stringify(parseLines(document.getElementById('cf-oportunidades').value)),
+    notas:'[]'
+  };
+  try{
+    if(editingContribId){
+      await apiPost({action:'updateRow',sheet:'equipo',id:editingContribId,data});
+      const idx=db.contributors.findIndex(c=>c.id==editingContribId);
+      if(idx>=0)db.contributors[idx]={...db.contributors[idx],...data};
+    }else{
+      data.id=Date.now().toString();
+      await apiPost({action:'saveEquipo',data});
+      db.contributors.push(data);
+    }
+    closeM('modal-contrib');renderContributors();
+  }catch(err){alert('Error al guardar.');}
+}
+
+// ── AI ──
+function buildContext(){
+  const n=db.events.length;
+  if(!n)return'No hay eventos registrados aún.';
+  const summary=db.events.map(e=>{
+    const preA=getEtapaAvg(e.id,'pre');const liveA=getEtapaAvg(e.id,'live');const postA=getEtapaAvg(e.id,'post');
+    const cierre=db.cierres.find(c=>c.evento_id==e.id);
+    return`- ${e.nombre} (${e.fecha}, ${e.tipo||'—'}, cliente: ${e.cliente||'—'}): Producción ${e.prod_rating||0}/5, Cuentas ${e.cuen_rating||0}/5, Previa ${preA.toFixed(1)}/5, Ejecución ${liveA.toFixed(1)}/5, Post ${postA.toFixed(1)}/5. Tiempos: ${e.tiempos==='TRUE'?'cumplidos':'con desvíos'}. Destacados: ${(parseJ(e.destacados)||[]).join('; ')||'ninguno'}. Observaciones producción: ${e.oprod||'ninguna'}. Observaciones cuentas: ${e.ocuen||'ninguna'}.${cierre?` Cierre registrado con participantes: ${cierre.participantes||'—'}, ${(parseJ(cierre.aprendizajes)||[]).length} aprendizajes.`:''}`
+  }).join('\n');
+  const team=db.contributors.map(c=>`- ${c.nombre} ${c.apellido||''} (${c.rol||'—'}): Fortalezas: ${(parseJ(c.fortalezas)||[]).join(', ')||'no registradas'}. Oportunidades: ${(parseJ(c.oportunidades)||[]).join(', ')||'no registradas'}.`).join('\n');
+  return`Sos el asistente de análisis de SAPPIA Event Manager, una productora de eventos argentina.\n\nEVENTOS (${n}):\n${summary}\n\nEQUIPO:\n${team}\n\nRespondé en español, de forma concisa y práctica. Usá los nombres reales. Analizá patrones, dá recomendaciones concretas.`;
+}
+
+async function sendAI(){
+  const input=document.getElementById('ai-input');
+  const msg=input.value.trim();if(!msg)return;
+  input.value='';autoResize(input);
+  addMsg('user',msg);
+  document.getElementById('ai-suggestions').innerHTML='';
+  document.getElementById('ai-send-btn').disabled=true;
+  showThinking();
+  try{
+    const ctx=buildContext();
+    const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,system:ctx,messages:[{role:'user',content:msg},...aiHistory.slice(-6)]})});
+    removeThinking();
+    if(!res.ok)throw new Error('API error');
+    const data=await res.json();
+    const reply=data.content?.[0]?.text||'No pude generar una respuesta.';
+    aiHistory.push({role:'user',content:msg},{role:'assistant',content:reply});
+    addMsg('bot',reply);
+    showSuggestions();
+  }catch(e){
+    removeThinking();
+    addMsg('bot','Hubo un error al conectar con la IA. Verificá tu conexión e intentá de nuevo.');
+  }
+  document.getElementById('ai-send-btn').disabled=false;
+}
+
+function addMsg(role,text){
+  const container=document.getElementById('ai-messages');
+  const div=document.createElement('div');div.className=`ai-msg ${role}`;
+  const formatted=text.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/^- (.+)$/gm,'<li>$1</li>').replace(/(<li>.*?<\/li>(\n|$))+/gs,s=>`<ul>${s}</ul>`).replace(/\n/g,'<br>');
+  div.innerHTML=`<div class="ai-msg-av ${role}">${role==='bot'?'✦':'Yo'}</div><div class="ai-bubble ${role}">${formatted}</div>`;
+  container.appendChild(div);container.scrollTop=container.scrollHeight;
+}
+function showThinking(){const c=document.getElementById('ai-messages');const d=document.createElement('div');d.className='ai-msg';d.id='ai-thinking-msg';d.innerHTML=`<div class="ai-msg-av bot">✦</div><div class="ai-bubble bot"><span class="ai-thinking"><span></span><span></span><span></span></span></div>`;c.appendChild(d);c.scrollTop=c.scrollHeight;}
+function removeThinking(){const el=document.getElementById('ai-thinking-msg');if(el)el.remove();}
+const SUGGESTIONS=['¿Cuál fue el evento con mejor performance?','Resumí los aprendizajes de todos los cierres','¿Dónde está fallando más el equipo?','¿Cómo mejoró el equipo entre eventos?','Generá recomendaciones para el próximo evento','Comparar Previa vs Ejecución'];
+function showSuggestions(){const c=document.getElementById('ai-suggestions');c.innerHTML=SUGGESTIONS.sort(()=>Math.random()-.5).slice(0,3).map(s=>`<button class="ai-sug" onclick="useSuggestion('${s}')">${s}</button>`).join('');}
+function useSuggestion(txt){document.getElementById('ai-input').value=txt;sendAI();}
+function handleAIKey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendAI();}}
+function autoResize(el){el.style.height='auto';el.style.height=Math.min(el.scrollHeight,120)+'px';}
+function initAI(){
+  if(document.getElementById('ai-messages').children.length>0)return;
+  addMsg('bot',`Hola 👋 Soy el asistente de SAPPIA.\n\nTengo acceso en tiempo real a todos los eventos registrados en el sistema. Puedo analizar performance por etapa, identificar patrones entre eventos, resumir aprendizajes de cierres o generar recomendaciones concretas.\n\n¿Qué querés analizar?`);
+  showSuggestions();
+}
+
+// ── RENDER ALL ──
+function renderAll(){renderDashboard();renderHistorial();renderCierres();renderMejoras();renderContributors();}
+
+// ── SECTION HANDLING ──
+document.querySelectorAll('.sec').forEach(s=>s.classList.remove('on'));
+document.getElementById('s-dashboard').classList.add('on');
 </script>
 </body>
 </html>
