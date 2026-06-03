@@ -169,11 +169,27 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--sp-viole
 .pc.sel{background:var(--sp-violet);color:#fff;border-color:var(--sp-violet)}
 
 /* ── MODAL ── */
-.modal-bg{display:none;position:fixed;inset:0;background:var(--color-background-primary);z-index:100;align-items:flex-start;justify-content:center;padding-top:0;overflow-y:auto}
+.modal-bg{display:none}
+.modal-bg.open{display:block}
+.modal{background:var(--color-background-primary);padding:1.5rem;width:100%;max-width:680px;margin:0 auto}
+.page-view{display:none}
+.page-view.open{display:block;position:fixed;top:0;left:0;right:0;bottom:0;width:100vw;height:100vh;background:var(--color-background-primary);z-index:99999;overflow-y:auto;overflow-x:hidden}
+.page-header{display:flex;align-items:center;gap:12px;padding:1rem 1.5rem;border-bottom:0.5px solid var(--color-border-tertiary);position:sticky;top:0;background:var(--color-background-primary);z-index:10}
+.page-header-brand{display:flex;align-items:center;gap:8px}
+.page-header-dot{width:24px;height:24px;border-radius:50%;background:var(--sp-violet);display:flex;align-items:center;justify-content:center}
+.page-header-ring{width:10px;height:10px;border-radius:50%;border:2px solid rgba(255,255,255,.9)}
+.page-back{background:var(--sp-gray);border:none;border-radius:8px;padding:6px 14px;font-size:12px;color:var(--sp-text2);cursor:pointer;font-family:"DM Sans",sans-serif;display:flex;align-items:center;gap:5px;margin-left:auto}
+.page-back:hover{background:var(--sp-gray2)}
+.page-body{padding:1.5rem;max-width:680px;margin:0 auto}
 .modal-bg.open{display:flex}
-.modal{background:var(--color-background-primary);border-radius:0;border:none;border-bottom:0.5px solid var(--color-border-tertiary);padding:1.5rem;width:100%;max-width:720px;min-height:100vh;margin:0 auto}
-.modal-title{font-size:16px;font-weight:500;color:var(--sp-text);margin-bottom:1.5rem;display:flex;justify-content:space-between;align-items:center;padding-bottom:1rem;border-bottom:0.5px solid var(--color-border-tertiary);position:sticky;top:0;background:var(--color-background-primary);z-index:10;padding-top:.5rem}
-.modal-close{background:none;border:none;font-size:20px;cursor:pointer;color:var(--sp-text2);line-height:1}
+.modal-topbar{display:flex;align-items:center;justify-content:space-between;padding:12px 1.5rem;border-bottom:0.5px solid var(--color-border-tertiary);background:var(--color-background-primary);position:sticky;top:0;z-index:20;width:100%}
+.modal-topbar-brand{display:flex;align-items:center;gap:8px}
+.modal-topbar-dot{width:24px;height:24px;border-radius:50%;background:var(--sp-violet);display:flex;align-items:center;justify-content:center}
+.modal-topbar-ring{width:10px;height:10px;border-radius:50%;border:2px solid rgba(255,255,255,.9)}
+.modal-topbar-name{font-size:15px;font-weight:500;color:var(--sp-text)}
+.modal{background:var(--color-background-primary);border-radius:0;border:none;padding:1.5rem;width:100%;max-width:680px;min-height:100vh;margin:0 auto}
+.modal-title{font-size:16px;font-weight:500;color:var(--sp-text);margin-bottom:1.5rem;display:flex;justify-content:space-between;align-items:center;padding:1rem 0;border-bottom:0.5px solid var(--color-border-tertiary);position:sticky;top:0;background:var(--color-background-primary);z-index:10}
+.modal-close{background:var(--sp-gray);border:none;font-size:13px;cursor:pointer;color:var(--sp-text2);line-height:1;padding:6px 14px;border-radius:8px;font-family:"DM Sans",sans-serif;display:flex;align-items:center;gap:5px}
 .stabs{display:flex;border:0.5px solid var(--color-border-tertiary);border-radius:8px;overflow:hidden;background:var(--sp-gray);margin-bottom:1.25rem}
 .stab{flex:1;padding:7px 4px;border:none;background:transparent;font-size:12px;color:var(--sp-text2);cursor:pointer;border-right:0.5px solid var(--color-border-tertiary);font-family:'DM Sans',sans-serif}
 .stab:last-child{border-right:none}
@@ -375,9 +391,13 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--sp-viole
 </div>
 
 <!-- MODAL NUEVO EVENTO -->
-<div class="modal-bg" id="modal-new">
+<div class="page-view" id="modal-new"><div class="page-header"><div class="page-header-brand"><div class="page-header-dot"><div class="page-header-ring"></div></div><span style="font-size:15px;font-weight:500;color:var(--sp-text)">SAPPIA</span></div><button class="page-back" onclick="closeM('modal-new')"><i class="ti ti-arrow-left"></i> Volver</button></div><div class="page-body">
+<div class="modal-topbar">
+  <div class="modal-topbar-brand"><div class="modal-topbar-dot"><div class="modal-topbar-ring"></div></div><div class="modal-topbar-name">SAPPIA</div></div>
+  
+</div>
 <div class="modal">
-  <div class="modal-title">Registrar evento <button class="modal-close" onclick="closeM('modal-new')">×</button></div>
+  <div class="modal-title">Registrar evento </div>
   <div class="g2"><div><label>Nombre *</label><input type="text" id="en-nombre" placeholder="Ej: Gala Fin de Año"></div><div><label>Fecha *</label><input type="date" id="en-fecha"></div></div>
   <div class="g3"><div><label>Tipo</label><select id="en-tipo"><option>Corporativo</option><option>Lanzamiento</option><option>Congreso</option><option>Gala</option><option>Capacitación</option><option>Social</option><option>Otro</option></select></div><div><label>Cliente</label><input type="text" id="en-cliente"></div><div><label>Asistentes</label><input type="number" id="en-asist" min="0"></div></div>
   <hr class="divider">
@@ -457,21 +477,28 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--sp-viole
     <textarea id="en-cacciones"></textarea>
   </div>
   <button class="btn-p" id="btn-save-event" onclick="saveEvent()">Guardar evento</button>
-</div>
-</div>
+</div></div>
 
 <!-- MODAL PERFIL -->
-<div class="modal-bg" id="modal-profile">
+<div class="page-view" id="modal-profile"><div class="page-header"><div class="page-header-brand"><div class="page-header-dot"><div class="page-header-ring"></div></div><span style="font-size:15px;font-weight:500;color:var(--sp-text)">SAPPIA</span></div><button class="page-back" onclick="closeM('modal-profile')"><i class="ti ti-arrow-left"></i> Volver</button></div><div class="page-body">
+<div class="modal-topbar">
+  <div class="modal-topbar-brand"><div class="modal-topbar-dot"><div class="modal-topbar-ring"></div></div><div class="modal-topbar-name">SAPPIA</div></div>
+  
+</div>
 <div class="modal">
-  <div class="modal-title">Perfil <button class="modal-close" onclick="closeM('modal-profile')">×</button></div>
+  <div class="modal-title">Perfil </div>
   <div id="profile-content"></div>
 </div>
 </div>
 
 <!-- MODAL CONTRIB FORM -->
-<div class="modal-bg" id="modal-contrib">
+<div class="page-view" id="modal-contrib"><div class="page-header"><div class="page-header-brand"><div class="page-header-dot"><div class="page-header-ring"></div></div><span style="font-size:15px;font-weight:500;color:var(--sp-text)">SAPPIA</span></div><button class="page-back" onclick="closeM('modal-contrib')"><i class="ti ti-arrow-left"></i> Volver</button></div><div class="page-body">
+<div class="modal-topbar">
+  <div class="modal-topbar-brand"><div class="modal-topbar-dot"><div class="modal-topbar-ring"></div></div><div class="modal-topbar-name">SAPPIA</div></div>
+  
+</div>
 <div class="modal">
-  <div class="modal-title"><span id="contrib-modal-title">Agregar persona</span><button class="modal-close" onclick="closeM('modal-contrib')">×</button></div>
+  <div class="modal-title"><span id="contrib-modal-title">Agregar persona</span></div>
   <div class="g2"><div><label>Nombre *</label><input type="text" id="cf-nombre"></div><div><label>Apellido</label><input type="text" id="cf-apellido"></div></div>
   <div class="g3"><div><label>Rol</label><select id="cf-rol"><option>Producción</option><option>Cuentas</option><option>Dirección de Arte</option><option>Coordinación</option><option>Logística</option><option>Sr. Producer Manager</option><option>Otro</option></select></div><div><label>Color</label><select id="cf-color"><option value="a">Violeta</option><option value="b">Celeste</option><option value="c">Menta</option><option value="d">Gris</option></select></div><div><label>Ingreso a SAPPIA</label><input type="month" id="cf-ingreso"></div></div>
   <hr class="divider">
@@ -484,9 +511,13 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--sp-viole
 </div>
 
 <!-- MODAL DETALLE EVENTO -->
-<div class="modal-bg" id="modal-det">
+<div class="page-view" id="modal-det"><div class="page-header"><div class="page-header-brand"><div class="page-header-dot"><div class="page-header-ring"></div></div><span style="font-size:15px;font-weight:500;color:var(--sp-text)">SAPPIA</span></div><button class="page-back" onclick="closeM('modal-det')"><i class="ti ti-arrow-left"></i> Volver</button></div><div class="page-body">
+<div class="modal-topbar">
+  <div class="modal-topbar-brand"><div class="modal-topbar-dot"><div class="modal-topbar-ring"></div></div><div class="modal-topbar-name">SAPPIA</div></div>
+  
+</div>
 <div class="modal">
-  <div class="modal-title"><span id="det-title">Detalle</span><button class="modal-close" onclick="closeM('modal-det')">×</button></div>
+  <div class="modal-title"><span id="det-title">Detalle</span></div>
   <div id="det-content"></div>
 </div>
 </div>
@@ -644,7 +675,10 @@ function goSec(id,btn){
   btn.classList.add('on');
   if(id==='ai')initAI();
 }
-function closeM(id){document.getElementById(id).classList.remove('open')}
+function closeM(id){
+  document.getElementById(id).classList.remove('open');
+  document.getElementById('app-screen').style.display='block';
+}
 function filterH(f,btn){hFilt=f;document.querySelectorAll('.chip').forEach(b=>b.classList.remove('on'));btn.classList.add('on');renderHistorial()}
 function filterMej(f,btn){mejFilt=f;document.querySelectorAll('.chip').forEach(b=>b.classList.remove('on'));btn.classList.add('on');renderMejoras()}
 
@@ -839,6 +873,8 @@ function openProfile(id){
   if(isAdmin())h+=`<hr class="divider"><button class="btn-d" onclick="delContrib('${c.id}')"><i class="ti ti-trash"></i> Eliminar perfil</button>`;
   document.getElementById('profile-content').innerHTML=h;
   document.getElementById('modal-profile').classList.add('open');
+  document.getElementById('app-screen').style.display='none';
+  
 }
 
 async function addNota(cid){
@@ -940,6 +976,8 @@ function openDet(id){
   document.getElementById('det-title').textContent=e.nombre;
   document.getElementById('det-content').innerHTML=h;
   document.getElementById('modal-det').classList.add('open');
+  document.getElementById('app-screen').style.display='none';
+  
 }
 
 function switchDT(id,btn){const mc=document.getElementById('det-content');mc.querySelectorAll(':scope > .sv').forEach(v=>v.classList.remove('on'));document.getElementById(id).classList.add('on');mc.querySelectorAll(':scope > .stabs > .stab').forEach(b=>b.classList.remove('on'));btn.classList.add('on');}
@@ -976,6 +1014,8 @@ function openNew(){
   document.getElementById('en-fecha').value=new Date().toISOString().split('T')[0];
   renderTeamSelector();renderParticChips('pre-partic-chips',[]);renderParticChips('live-partic-chips',[]);
   document.getElementById('modal-new').classList.add('open');
+  document.getElementById('app-screen').style.display='none';
+  
 }
 document.getElementById('en-addcierre').addEventListener('change',function(){document.getElementById('cierre-inline').style.display=this.checked?'block':'none'});
 
@@ -1075,6 +1115,8 @@ function openContribForm(id){
   document.getElementById('cf-fortalezas').value=c?(parseJ(c.fortalezas)||[]).join('\n'):'';
   document.getElementById('cf-oportunidades').value=c?(parseJ(c.oportunidades)||[]).join('\n'):'';
   document.getElementById('modal-contrib').classList.add('open');
+  document.getElementById('app-screen').style.display='none';
+  
 }
 
 async function saveContrib(){
@@ -1170,3 +1212,4 @@ document.getElementById('s-dashboard').classList.add('on');
 </script>
 </body>
 </html>
+
