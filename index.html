@@ -392,8 +392,7 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--sp-viole
 
 <!-- MODAL NUEVO EVENTO -->
 <div class="page-view" id="modal-new"><div class="page-header"><div class="page-header-brand"><div class="page-header-dot"><div class="page-header-ring"></div></div><span style="font-size:15px;font-weight:500;color:var(--sp-text)">SAPPIA</span></div><button class="page-back" onclick="closeM('modal-new')"><i class="ti ti-arrow-left"></i> Volver</button></div><div class="page-body">
-<div class="modal-topbar">
-  <div class="modal-topbar-brand"><div class="modal-topbar-dot"><div class="modal-topbar-ring"></div></div><div class="modal-topbar-name">SAPPIA</div></div>
+</div><div class="modal-topbar-name">SAPPIA</div></div>
   
 </div>
 <div class="modal">
@@ -453,12 +452,20 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--sp-viole
     <textarea id="post-obs" placeholder="¿Qué quedó pendiente? ¿Qué mejorar?"></textarea>
   </div>
   <hr class="divider">
-  <label>Destacados <span style="font-size:11px;color:var(--sp-text2)">(uno por línea)</span></label>
-  <textarea id="en-destacados" placeholder="Ej:&#10;El diseño fue muy valorado por el cliente"></textarea>
+  <div class="form-section-label" style="font-size:12px;font-weight:500;color:var(--sp-text);text-transform:uppercase;letter-spacing:.06em;margin-bottom:12px;display:flex;align-items:center;gap:6px"><span style="font-size:16px">⭐</span> Qué salió bien</div>
+  <label>Destacados del evento <span style="font-size:11px;color:var(--sp-text2)">(uno por línea)</span></label>
+  <textarea id="en-destacados" placeholder="Ej:&#10;El diseño fue muy valorado por el cliente&#10;La logística funcionó perfectamente"></textarea>
+  <label>Observaciones para producción</label>
+  <textarea id="en-oprod" placeholder="Aspectos positivos o a destacar para el área de producción..."></textarea>
+  <label>Observaciones para cuentas</label>
+  <textarea id="en-ocuen" placeholder="Aspectos positivos o a destacar para el área de cuentas..."></textarea>
+
+  <hr class="divider">
+  <div class="form-section-label" style="font-size:12px;font-weight:500;color:var(--sp-text);text-transform:uppercase;letter-spacing:.06em;margin-bottom:12px;display:flex;align-items:center;gap:6px"><span style="font-size:16px">📈</span> Qué mejorar</div>
   <label>¿Qué se mejoró respecto al evento anterior? <span style="font-size:11px;color:var(--sp-text2)">(uno por línea)</span></label>
-  <textarea id="en-mejoras"></textarea>
-  <label>Observaciones para producción</label><textarea id="en-oprod"></textarea>
-  <label>Observaciones para cuentas</label><textarea id="en-ocuen"></textarea>
+  <textarea id="en-mejoras" placeholder="Ej:&#10;Se armó el cashflow con más anticipación&#10;Mejor comunicación con el cliente"></textarea>
+  <label>¿Qué haríamos diferente la próxima vez? <span style="font-size:11px;color:var(--sp-text2)">(uno por línea)</span></label>
+  <textarea id="en-mal" placeholder="Ej:&#10;Confirmar pañol con más anticipación&#10;Evitar comunicación por WhatsApp con el cliente"></textarea>
   <hr class="divider">
   <div class="form-section-label"><i class="ti ti-users"></i> Equipo del evento</div>
   <div id="ev-team-sel" style="margin-bottom:12px"></div>
@@ -481,8 +488,7 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--sp-viole
 
 <!-- MODAL PERFIL -->
 <div class="page-view" id="modal-profile"><div class="page-header"><div class="page-header-brand"><div class="page-header-dot"><div class="page-header-ring"></div></div><span style="font-size:15px;font-weight:500;color:var(--sp-text)">SAPPIA</span></div><button class="page-back" onclick="closeM('modal-profile')"><i class="ti ti-arrow-left"></i> Volver</button></div><div class="page-body">
-<div class="modal-topbar">
-  <div class="modal-topbar-brand"><div class="modal-topbar-dot"><div class="modal-topbar-ring"></div></div><div class="modal-topbar-name">SAPPIA</div></div>
+</div><div class="modal-topbar-name">SAPPIA</div></div>
   
 </div>
 <div class="modal">
@@ -493,8 +499,7 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--sp-viole
 
 <!-- MODAL CONTRIB FORM -->
 <div class="page-view" id="modal-contrib"><div class="page-header"><div class="page-header-brand"><div class="page-header-dot"><div class="page-header-ring"></div></div><span style="font-size:15px;font-weight:500;color:var(--sp-text)">SAPPIA</span></div><button class="page-back" onclick="closeM('modal-contrib')"><i class="ti ti-arrow-left"></i> Volver</button></div><div class="page-body">
-<div class="modal-topbar">
-  <div class="modal-topbar-brand"><div class="modal-topbar-dot"><div class="modal-topbar-ring"></div></div><div class="modal-topbar-name">SAPPIA</div></div>
+</div><div class="modal-topbar-name">SAPPIA</div></div>
   
 </div>
 <div class="modal">
@@ -512,8 +517,7 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--sp-viole
 
 <!-- MODAL DETALLE EVENTO -->
 <div class="page-view" id="modal-det"><div class="page-header"><div class="page-header-brand"><div class="page-header-dot"><div class="page-header-ring"></div></div><span style="font-size:15px;font-weight:500;color:var(--sp-text)">SAPPIA</span></div><button class="page-back" onclick="closeM('modal-det')"><i class="ti ti-arrow-left"></i> Volver</button></div><div class="page-body">
-<div class="modal-topbar">
-  <div class="modal-topbar-brand"><div class="modal-topbar-dot"><div class="modal-topbar-ring"></div></div><div class="modal-topbar-name">SAPPIA</div></div>
+</div><div class="modal-topbar-name">SAPPIA</div></div>
   
 </div>
 <div class="modal">
@@ -872,7 +876,9 @@ function openProfile(id){
   h+=`</div>`;
   if(isAdmin())h+=`<hr class="divider"><button class="btn-d" onclick="delContrib('${c.id}')"><i class="ti ti-trash"></i> Eliminar perfil</button>`;
   document.getElementById('profile-content').innerHTML=h;
-  document.getElementById('modal-profile').classList.add('open');
+  const pv_modal_profile=document.getElementById('modal-profile');
+  pv_modal_profile.classList.add('open');
+  pv_modal_profile.scrollTop=0;
   document.getElementById('app-screen').style.display='none';
   
 }
@@ -975,7 +981,9 @@ function openDet(id){
 
   document.getElementById('det-title').textContent=e.nombre;
   document.getElementById('det-content').innerHTML=h;
-  document.getElementById('modal-det').classList.add('open');
+  const pv_modal_det=document.getElementById('modal-det');
+  pv_modal_det.classList.add('open');
+  pv_modal_det.scrollTop=0;
   document.getElementById('app-screen').style.display='none';
   
 }
@@ -1006,14 +1014,16 @@ function getSelectedTeam(){return[...document.querySelectorAll('.ev-team-cb:chec
 
 function openNew(){
   if(!isAdmin()){alert('Solo los admins pueden registrar eventos.');return}
-  ['en-nombre','en-cliente','en-destacados','en-mejoras','en-oprod','en-ocuen','pre-obs','live-obs','post-obs','en-cpartic','en-caprendizajes','en-cvoces','en-cacciones'].forEach(id=>{const el=document.getElementById(id);if(el)el.value=''});
+  ['en-nombre','en-cliente','en-destacados','en-mejoras','en-mal','en-oprod','en-ocuen','pre-obs','live-obs','post-obs','en-cpartic','en-caprendizajes','en-cvoces','en-cacciones'].forEach(id=>{const el=document.getElementById(id);if(el)el.value=''});
   ['r-prod','r-cuen'].forEach(id=>{const el=document.getElementById(id);if(el){el.dataset.v=0;el.querySelectorAll('.star').forEach(s=>s.classList.remove('on'))}});
   ['pre-cc','pre-carpeta','pre-cashflow','pre-provee','pre-comun','pre-producer','live-crono','live-planos','live-diseno','live-panol','live-roles','live-provee','live-comun','post-cc','post-facturas','post-envio','post-cargado','post-extras'].forEach(id=>{const el=document.getElementById(id);if(el){el.dataset.v=0;el.querySelectorAll('.rstar').forEach(s=>s.classList.remove('on'))}});
   ['en-tiempos','en-addcierre'].forEach(id=>{const el=document.getElementById(id);if(el)el.checked=false});
   document.getElementById('cierre-inline').style.display='none';
   document.getElementById('en-fecha').value=new Date().toISOString().split('T')[0];
   renderTeamSelector();renderParticChips('pre-partic-chips',[]);renderParticChips('live-partic-chips',[]);
-  document.getElementById('modal-new').classList.add('open');
+  const mv=document.getElementById('modal-new');
+  mv.classList.add('open');
+  mv.scrollTop=0;
   document.getElementById('app-screen').style.display='none';
   
 }
@@ -1040,7 +1050,8 @@ async function saveEvent(){
     ocuen:document.getElementById('en-ocuen').value,
     destacados:JSON.stringify(parseLines(document.getElementById('en-destacados').value)),
     mejoras:JSON.stringify(parseLines(document.getElementById('en-mejoras').value)),
-    mal:'',
+    mal:JSON.stringify(parseLines(document.getElementById('en-mal')?document.getElementById('en-mal').value:'')),
+
     team:JSON.stringify(getSelectedTeam()),
   };
 
@@ -1114,7 +1125,9 @@ function openContribForm(id){
   document.getElementById('cf-ingreso').value=c?c.ingreso||'':'';
   document.getElementById('cf-fortalezas').value=c?(parseJ(c.fortalezas)||[]).join('\n'):'';
   document.getElementById('cf-oportunidades').value=c?(parseJ(c.oportunidades)||[]).join('\n'):'';
-  document.getElementById('modal-contrib').classList.add('open');
+  const pv_modal_contrib=document.getElementById('modal-contrib');
+  pv_modal_contrib.classList.add('open');
+  pv_modal_contrib.scrollTop=0;
   document.getElementById('app-screen').style.display='none';
   
 }
@@ -1212,4 +1225,5 @@ document.getElementById('s-dashboard').classList.add('on');
 </script>
 </body>
 </html>
+
 
