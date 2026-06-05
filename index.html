@@ -681,7 +681,9 @@ function goSec(id,btn){
 }
 function closeM(id){
   document.getElementById(id).classList.remove('open');
-  document.getElementById('app-screen').style.display='block';
+  // Only show app-screen if no other page-view is open
+  const anyOpen = ['modal-new','modal-det','modal-contrib','modal-profile'].some(m=>m!==id && document.getElementById(m).classList.contains('open'));
+  if(!anyOpen) document.getElementById('app-screen').style.display='block';
 }
 function filterH(f,btn){hFilt=f;document.querySelectorAll('.chip').forEach(b=>b.classList.remove('on'));btn.classList.add('on');renderHistorial()}
 function filterMej(f,btn){mejFilt=f;document.querySelectorAll('.chip').forEach(b=>b.classList.remove('on'));btn.classList.add('on');renderMejoras()}
@@ -1158,7 +1160,19 @@ async function saveContrib(){
       await apiPost({action:'saveEquipo',data});
       db.contributors.push(data);
     }
-    closeM('modal-contrib');renderContributors();
+    closeM('modal-contrib');
+    renderContributors();
+    if(_returnToNewEvent){
+      // reopen new event form and refresh team selector
+      const mv=document.getElementById('modal-new');
+      mv.classList.add('open');
+      mv.scrollTop=0;
+      document.getElementById('app-screen').style.display='none';
+      renderTeamSelector();
+      renderParticChips('pre-partic-chips',[]);
+      renderParticChips('live-partic-chips',[]);
+      _returnToNewEvent=false;
+    }
   }catch(err){alert('Error al guardar.');}
 }
 
