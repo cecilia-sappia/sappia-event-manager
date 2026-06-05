@@ -1001,14 +1001,18 @@ async function delEvent(id){
 // ── NUEVO EVENTO ──
 function renderParticChips(cid,sel){
   const el=document.getElementById(cid);if(!el)return;
-  if(!db.contributors.length){el.innerHTML='<div style="font-size:12px;color:var(--sp-text2)">Agregá personas desde Equipo primero.</div>';return;}
+  if(!db.contributors.length){el.innerHTML='';return;}
   el.innerHTML=db.contributors.map(c=>{const s=(sel||[]).map(String).includes(String(c.id));return`<button class="pc${s?' sel':''}" onclick="togglePartic(this)" data-id="${c.id}">${initials(c)} ${c.nombre}</button>`;}).join('');
 }
 function togglePartic(btn){btn.classList.toggle('sel')}
 function getSelectedPartic(cid){const el=document.getElementById(cid);if(!el)return[];return[...el.querySelectorAll('.pc.sel')].map(b=>b.dataset.id)}
 function renderTeamSelector(){
   const el=document.getElementById('ev-team-sel');if(!el)return;
-  el.innerHTML=db.contributors.map(c=>`<label style="display:inline-flex;align-items:center;gap:6px;margin-right:10px;margin-bottom:6px;cursor:pointer;font-size:13px;color:var(--sp-text)"><input type="checkbox" class="ev-team-cb" value="${c.id}" style="width:auto"><div style="width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:500;${avStyle(c.color)}">${initials(c)}</div>${c.nombre}</label>`).join('')||'Sin personas en el equipo.';
+  if(!db.contributors.length){
+    el.innerHTML='<div style="font-size:13px;color:var(--sp-text2);padding:8px 12px;background:var(--sp-gray);border-radius:8px;display:flex;align-items:center;gap:8px"><i class="ti ti-info-circle" style="color:var(--sp-violet)"></i> No hay personas en el equipo todavía. Agregalas desde la sección <strong style="color:var(--sp-text)">Equipo</strong> antes de cargar el evento.</div>';
+    return;
+  }
+  el.innerHTML=db.contributors.map(c=>`<label style="display:inline-flex;align-items:center;gap:6px;margin-right:10px;margin-bottom:6px;cursor:pointer;font-size:13px;color:var(--sp-text)"><input type="checkbox" class="ev-team-cb" value="${c.id}" style="width:auto"><div style="width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:500;${avStyle(c.color)}">${initials(c)}</div>${c.nombre}</label>`).join('');
 }
 function getSelectedTeam(){return[...document.querySelectorAll('.ev-team-cb:checked')].map(cb=>cb.value)}
 
@@ -1225,5 +1229,4 @@ document.getElementById('s-dashboard').classList.add('on');
 </script>
 </body>
 </html>
-
 
