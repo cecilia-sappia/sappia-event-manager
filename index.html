@@ -75,6 +75,8 @@ body{font-family:'DM Sans',sans-serif;color:var(--sp-text);background:var(--colo
 .nb{flex:1;padding:8px 3px;border:none;background:transparent;font-size:11px;color:var(--sp-text2);cursor:pointer;border-right:0.5px solid var(--color-border-tertiary);display:flex;align-items:center;justify-content:center;gap:4px;transition:all .15s;font-family:'DM Sans',sans-serif}
 .nb:last-child{border-right:none}
 .nb.on{background:var(--color-background-primary);color:var(--sp-violet-dark);font-weight:500}
+.sec{display:none}
+.sec.on{display:block}
 
 /* ── READONLY BAR ── */
 .readonly-bar{background:var(--sp-blue-light);border:0.5px solid var(--sp-blue);border-radius:10px;padding:.6rem 1rem;margin-bottom:1rem;display:flex;align-items:center;gap:8px;font-size:13px;color:var(--sp-blue-text)}
@@ -348,6 +350,7 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--sp-viole
   </nav>
 
   <div id="admin-actions" style="display:none;margin-bottom:1rem;text-align:right">
+    <button class="btn-s" onclick="openContribForm()" style="margin-right:8px"><i class="ti ti-user-plus"></i> Agregar persona</button>
     <button class="btn-s" onclick="openNew()" style="background:var(--sp-violet);color:#fff;border-color:var(--sp-violet)"><i class="ti ti-plus"></i> Nuevo evento</button>
   </div>
 
