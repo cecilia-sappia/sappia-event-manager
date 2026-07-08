@@ -14,6 +14,9 @@
   --sp-mint:#afd8d9;--sp-mint-light:#d8f0f0;--sp-mint-dark:#6ab0b2;--sp-mint-text:#2d7476;
   --sp-gray:#f4f2f6;--sp-gray2:#e8e4ee;--sp-gray3:#c4bcd0;
   --sp-text:#1a1020;--sp-text2:#6b5f78;
+  --color-background-primary:#ffffff;
+  --color-border-secondary:#e8e4ee;
+  --color-border-tertiary:#e8e4ee;
 }
 @media(prefers-color-scheme:dark){:root{
   --sp-violet-light:#3d2450;--sp-violet-text:#d4a8e8;
@@ -21,11 +24,14 @@
   --sp-mint-light:#0e3032;--sp-mint-text:#8ed4d6;
   --sp-gray:#1e1628;--sp-gray2:#2a1f38;--sp-gray3:#4a3d58;
   --sp-text:#f0ebf8;--sp-text2:#a090b8;
+  --color-background-primary:#1e1628;
+  --color-border-secondary:#2a1f38;
+  --color-border-tertiary:#2a1f38;
 }}
 
 /* ── BASE ── */
 body{font-family:'DM Sans',sans-serif;color:var(--sp-text);background:var(--color-background-primary)}
-.app{padding:1.5rem 0 3rem;display:none}
+.app{padding:1.5rem 1.25rem 3rem;display:none;max-width:680px;margin:0 auto}
 .app.visible{display:block}
 
 /* ── LOGIN ── */
