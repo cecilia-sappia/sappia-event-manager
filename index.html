@@ -97,6 +97,8 @@ body{font-family:'DM Sans',sans-serif;color:var(--t);min-height:100vh}
 .spinner{width:28px;height:28px;border:3px solid var(--g2);border-top-color:var(--v);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 10px}
 @keyframes spin{to{transform:rotate(360deg)}}
 .divider{border:none;border-top:0.5px solid #e0d8ec;margin:1rem 0}
+.area-tab-content{animation:fadeIn .2s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 @media(prefers-color-scheme:dark){.divider{border-color:#2a1f38}}
 .chip-g{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1rem}
 .chip{padding:4px 12px;border-radius:20px;font-size:12px;border:0.5px solid #e0d8ec;background:transparent;color:var(--t2);cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .15s}
@@ -299,49 +301,72 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--v)}
     <div class="g2"><div><label>Nombre *</label><input type="text" id="en-nombre" placeholder="Ej: Gala Fin de Año"></div><div><label>Fecha *</label><input type="date" id="en-fecha"></div></div>
     <div class="g3"><div><label>Tipo</label><select id="en-tipo"><option>Corporativo</option><option>Lanzamiento</option><option>Congreso</option><option>Gala</option><option>Capacitación</option><option>Social</option><option>Otro</option></select></div><div><label>Cliente</label><input type="text" id="en-cliente"></div><div><label>Asistentes</label><input type="number" id="en-asist" min="0"></div></div>
     <div class="divider"></div>
-    <div class="fs-ttl"><i class="ti ti-tool"></i> Calidad por área</div>
-    <div class="g2" style="margin-bottom:1rem">
-      <div style="background:var(--ml);border-radius:12px;padding:1rem"><div style="font-size:12px;color:var(--mt);font-weight:500;margin-bottom:8px">🔧 Producción</div><div class="stars" id="r-prod" data-v="0"><span class="star" onclick="setR('r-prod',1)">★</span><span class="star" onclick="setR('r-prod',2)">★</span><span class="star" onclick="setR('r-prod',3)">★</span><span class="star" onclick="setR('r-prod',4)">★</span><span class="star" onclick="setR('r-prod',5)">★</span></div></div>
-      <div style="background:var(--vl);border-radius:12px;padding:1rem"><div style="font-size:12px;color:var(--vt);font-weight:500;margin-bottom:8px">💰 Cuentas</div><div class="stars" id="r-cuen" data-v="0"><span class="star" onclick="setR('r-cuen',1)">★</span><span class="star" onclick="setR('r-cuen',2)">★</span><span class="star" onclick="setR('r-cuen',3)">★</span><span class="star" onclick="setR('r-cuen',4)">★</span><span class="star" onclick="setR('r-cuen',5)">★</span></div></div>
+    <div class="fs-ttl"><i class="ti ti-chart-bar"></i> Evaluación por área</div>
+
+    <!-- TABS DE ÁREA -->
+    <div class="stabs" id="area-tabs" style="margin-bottom:1rem">
+      <button class="stab on" onclick="switchAreaTab('tab-prod',this)">🔧 Producción</button>
+      <button class="stab" onclick="switchAreaTab('tab-cuen',this)">💰 Cuentas</button>
+      <button class="stab" onclick="switchAreaTab('tab-creat',this)">🎨 Creatividad</button>
     </div>
-    <!-- PREVIA -->
-    <div class="etapa-block">
-      <div class="etapa-hdr"><div class="etapa-ico eico-pre"><i class="ti ti-settings" style="font-size:18px;color:var(--bd)"></i></div><div><div class="etapa-ttl">Previa: Planificación</div><div class="etapa-sub">Participantes en esta etapa</div></div></div>
-      <div class="partic-c" id="pre-partic"></div>
-      <div id="pre-ratings">
+
+    <!-- PRODUCCIÓN -->
+    <div id="tab-prod" class="area-tab-content">
+      <div class="etapa-block">
+        <div class="etapa-hdr"><div class="etapa-ico eico-pre"><i class="ti ti-settings" style="font-size:18px;color:var(--bd)"></i></div><div><div class="etapa-ttl">Previa: Planificación</div><div class="etapa-sub">Participantes en esta etapa</div></div></div>
+        <div class="partic-c" id="pre-partic"></div>
         <div class="rrow"><div class="rrow-l">Armado de CC y entrega en tiempo y forma</div><div style="display:flex;gap:2px" id="rs-pre-cc" data-v="0"><span class="rstar" onclick="setRS('rs-pre-cc',1)">★</span><span class="rstar" onclick="setRS('rs-pre-cc',2)">★</span><span class="rstar" onclick="setRS('rs-pre-cc',3)">★</span><span class="rstar" onclick="setRS('rs-pre-cc',4)">★</span><span class="rstar" onclick="setRS('rs-pre-cc',5)">★</span></div></div>
         <div class="rrow"><div class="rrow-l">Administración carpeta producción</div><div style="display:flex;gap:2px" id="rs-pre-carp" data-v="0"><span class="rstar" onclick="setRS('rs-pre-carp',1)">★</span><span class="rstar" onclick="setRS('rs-pre-carp',2)">★</span><span class="rstar" onclick="setRS('rs-pre-carp',3)">★</span><span class="rstar" onclick="setRS('rs-pre-carp',4)">★</span><span class="rstar" onclick="setRS('rs-pre-carp',5)">★</span></div></div>
         <div class="rrow"><div class="rrow-l">Armado de cashflow y validación</div><div style="display:flex;gap:2px" id="rs-pre-cash" data-v="0"><span class="rstar" onclick="setRS('rs-pre-cash',1)">★</span><span class="rstar" onclick="setRS('rs-pre-cash',2)">★</span><span class="rstar" onclick="setRS('rs-pre-cash',3)">★</span><span class="rstar" onclick="setRS('rs-pre-cash',4)">★</span><span class="rstar" onclick="setRS('rs-pre-cash',5)">★</span></div></div>
         <div class="rrow"><div class="rrow-l">Selección de proveedores y negociación</div><div style="display:flex;gap:2px" id="rs-pre-prov" data-v="0"><span class="rstar" onclick="setRS('rs-pre-prov',1)">★</span><span class="rstar" onclick="setRS('rs-pre-prov',2)">★</span><span class="rstar" onclick="setRS('rs-pre-prov',3)">★</span><span class="rstar" onclick="setRS('rs-pre-prov',4)">★</span><span class="rstar" onclick="setRS('rs-pre-prov',5)">★</span></div></div>
-        <div class="rrow"><div class="rrow-l">Comunicación con el equipo de cuentas</div><div style="display:flex;gap:2px" id="rs-pre-com" data-v="0"><span class="rstar" onclick="setRS('rs-pre-com',1)">★</span><span class="rstar" onclick="setRS('rs-pre-com',2)">★</span><span class="rstar" onclick="setRS('rs-pre-com',3)">★</span><span class="rstar" onclick="setRS('rs-pre-com',4)">★</span><span class="rstar" onclick="setRS('rs-pre-com',5)">★</span></div></div>
+        <div class="rrow"><div class="rrow-l">Comunicación con cuentas</div><div style="display:flex;gap:2px" id="rs-pre-com" data-v="0"><span class="rstar" onclick="setRS('rs-pre-com',1)">★</span><span class="rstar" onclick="setRS('rs-pre-com',2)">★</span><span class="rstar" onclick="setRS('rs-pre-com',3)">★</span><span class="rstar" onclick="setRS('rs-pre-com',4)">★</span><span class="rstar" onclick="setRS('rs-pre-com',5)">★</span></div></div>
         <div class="rrow"><div class="rrow-l">Seguimiento con Sr. Producer Manager</div><div style="display:flex;gap:2px" id="rs-pre-prod" data-v="0"><span class="rstar" onclick="setRS('rs-pre-prod',1)">★</span><span class="rstar" onclick="setRS('rs-pre-prod',2)">★</span><span class="rstar" onclick="setRS('rs-pre-prod',3)">★</span><span class="rstar" onclick="setRS('rs-pre-prod',4)">★</span><span class="rstar" onclick="setRS('rs-pre-prod',5)">★</span></div></div>
+        <label>Observaciones previa</label><textarea id="obs-pre" placeholder="¿Qué funcionó bien? ¿Qué mejorar?"></textarea>
       </div>
-      <label>Observaciones</label><textarea id="obs-pre" placeholder="¿Qué funcionó bien? ¿Qué mejorar?"></textarea>
-    </div>
-    <!-- EJECUCIÓN -->
-    <div class="etapa-block">
-      <div class="etapa-hdr"><div class="etapa-ico eico-live"><i class="ti ti-player-play" style="font-size:18px;color:var(--vd)"></i></div><div><div class="etapa-ttl">Evento: Ejecución</div><div class="etapa-sub">Participantes en esta etapa</div></div></div>
-      <div class="partic-c" id="live-partic"></div>
-      <div id="live-ratings">
+      <div class="etapa-block">
+        <div class="etapa-hdr"><div class="etapa-ico eico-live"><i class="ti ti-player-play" style="font-size:18px;color:var(--vd)"></i></div><div><div class="etapa-ttl">Evento: Ejecución</div><div class="etapa-sub">Participantes en esta etapa</div></div></div>
+        <div class="partic-c" id="live-partic"></div>
         <div class="rrow"><div class="rrow-l">Cronograma de armado y desarme</div><div style="display:flex;gap:2px" id="rs-live-crono" data-v="0"><span class="rstar" onclick="setRS('rs-live-crono',1)">★</span><span class="rstar" onclick="setRS('rs-live-crono',2)">★</span><span class="rstar" onclick="setRS('rs-live-crono',3)">★</span><span class="rstar" onclick="setRS('rs-live-crono',4)">★</span><span class="rstar" onclick="setRS('rs-live-crono',5)">★</span></div></div>
         <div class="rrow"><div class="rrow-l"><div>Armado de planos</div><div class="rrow-na">Si aplica</div></div><div style="display:flex;gap:2px" id="rs-live-planos" data-v="0"><span class="rstar" onclick="setRS('rs-live-planos',1)">★</span><span class="rstar" onclick="setRS('rs-live-planos',2)">★</span><span class="rstar" onclick="setRS('rs-live-planos',3)">★</span><span class="rstar" onclick="setRS('rs-live-planos',4)">★</span><span class="rstar" onclick="setRS('rs-live-planos',5)">★</span></div></div>
-        <div class="rrow"><div class="rrow-l"><div>Armado de planilla de diseño</div><div class="rrow-na">Si aplica</div></div><div style="display:flex;gap:2px" id="rs-live-diseno" data-v="0"><span class="rstar" onclick="setRS('rs-live-diseno',1)">★</span><span class="rstar" onclick="setRS('rs-live-diseno',2)">★</span><span class="rstar" onclick="setRS('rs-live-diseno',3)">★</span><span class="rstar" onclick="setRS('rs-live-diseno',4)">★</span><span class="rstar" onclick="setRS('rs-live-diseno',5)">★</span></div></div>
         <div class="rrow"><div class="rrow-l">Armado de pañol</div><div style="display:flex;gap:2px" id="rs-live-panol" data-v="0"><span class="rstar" onclick="setRS('rs-live-panol',1)">★</span><span class="rstar" onclick="setRS('rs-live-panol',2)">★</span><span class="rstar" onclick="setRS('rs-live-panol',3)">★</span><span class="rstar" onclick="setRS('rs-live-panol',4)">★</span><span class="rstar" onclick="setRS('rs-live-panol',5)">★</span></div></div>
         <div class="rrow"><div class="rrow-l">Cumplimiento de roles y desempeño</div><div style="display:flex;gap:2px" id="rs-live-roles" data-v="0"><span class="rstar" onclick="setRS('rs-live-roles',1)">★</span><span class="rstar" onclick="setRS('rs-live-roles',2)">★</span><span class="rstar" onclick="setRS('rs-live-roles',3)">★</span><span class="rstar" onclick="setRS('rs-live-roles',4)">★</span><span class="rstar" onclick="setRS('rs-live-roles',5)">★</span></div></div>
-        <div class="rrow"><div class="rrow-l">Gestión de proveedores en armado y evento</div><div style="display:flex;gap:2px" id="rs-live-prov" data-v="0"><span class="rstar" onclick="setRS('rs-live-prov',1)">★</span><span class="rstar" onclick="setRS('rs-live-prov',2)">★</span><span class="rstar" onclick="setRS('rs-live-prov',3)">★</span><span class="rstar" onclick="setRS('rs-live-prov',4)">★</span><span class="rstar" onclick="setRS('rs-live-prov',5)">★</span></div></div>
-        <div class="rrow"><div class="rrow-l">Comunicación con el equipo de cuentas</div><div style="display:flex;gap:2px" id="rs-live-com" data-v="0"><span class="rstar" onclick="setRS('rs-live-com',1)">★</span><span class="rstar" onclick="setRS('rs-live-com',2)">★</span><span class="rstar" onclick="setRS('rs-live-com',3)">★</span><span class="rstar" onclick="setRS('rs-live-com',4)">★</span><span class="rstar" onclick="setRS('rs-live-com',5)">★</span></div></div>
+        <div class="rrow"><div class="rrow-l">Gestión de proveedores en el evento</div><div style="display:flex;gap:2px" id="rs-live-prov" data-v="0"><span class="rstar" onclick="setRS('rs-live-prov',1)">★</span><span class="rstar" onclick="setRS('rs-live-prov',2)">★</span><span class="rstar" onclick="setRS('rs-live-prov',3)">★</span><span class="rstar" onclick="setRS('rs-live-prov',4)">★</span><span class="rstar" onclick="setRS('rs-live-prov',5)">★</span></div></div>
+        <div class="rrow"><div class="rrow-l">Comunicación con cuentas en el vivo</div><div style="display:flex;gap:2px" id="rs-live-com" data-v="0"><span class="rstar" onclick="setRS('rs-live-com',1)">★</span><span class="rstar" onclick="setRS('rs-live-com',2)">★</span><span class="rstar" onclick="setRS('rs-live-com',3)">★</span><span class="rstar" onclick="setRS('rs-live-com',4)">★</span><span class="rstar" onclick="setRS('rs-live-com',5)">★</span></div></div>
+        <label>Observaciones ejecución</label><textarea id="obs-live" placeholder="¿Qué funcionó bien? ¿Qué mejorar?"></textarea>
       </div>
-      <label>Observaciones</label><textarea id="obs-live" placeholder="¿Qué funcionó bien? ¿Qué mejorar?"></textarea>
+      <div class="etapa-block">
+        <div class="etapa-hdr"><div class="etapa-ico eico-post"><i class="ti ti-file-invoice" style="font-size:18px;color:var(--md)"></i></div><div><div class="etapa-ttl">Post: Cierre administrativo</div></div></div>
+        <div class="rrow"><div class="rrow-l">Cierre de la CC — actualización de valores</div><div style="display:flex;gap:2px" id="rs-post-cc" data-v="0"><span class="rstar" onclick="setRS('rs-post-cc',1)">★</span><span class="rstar" onclick="setRS('rs-post-cc',2)">★</span><span class="rstar" onclick="setRS('rs-post-cc',3)">★</span><span class="rstar" onclick="setRS('rs-post-cc',4)">★</span><span class="rstar" onclick="setRS('rs-post-cc',5)">★</span></div></div>
+        <div class="rrow"><div class="rrow-l">Seguimiento de facturas pendientes</div><div style="display:flex;gap:2px" id="rs-post-fact" data-v="0"><span class="rstar" onclick="setRS('rs-post-fact',1)">★</span><span class="rstar" onclick="setRS('rs-post-fact',2)">★</span><span class="rstar" onclick="setRS('rs-post-fact',3)">★</span><span class="rstar" onclick="setRS('rs-post-fact',4)">★</span><span class="rstar" onclick="setRS('rs-post-fact',5)">★</span></div></div>
+        <div class="rrow"><div class="rrow-l">Envío de cierre a administración</div><div style="display:flex;gap:2px" id="rs-post-envio" data-v="0"><span class="rstar" onclick="setRS('rs-post-envio',1)">★</span><span class="rstar" onclick="setRS('rs-post-envio',2)">★</span><span class="rstar" onclick="setRS('rs-post-envio',3)">★</span><span class="rstar" onclick="setRS('rs-post-envio',4)">★</span><span class="rstar" onclick="setRS('rs-post-envio',5)">★</span></div></div>
+        <div class="rrow"><div class="rrow-l">Cargado de facturas en planilla y carpeta</div><div style="display:flex;gap:2px" id="rs-post-carg" data-v="0"><span class="rstar" onclick="setRS('rs-post-carg',1)">★</span><span class="rstar" onclick="setRS('rs-post-carg',2)">★</span><span class="rstar" onclick="setRS('rs-post-carg',3)">★</span><span class="rstar" onclick="setRS('rs-post-carg',4)">★</span><span class="rstar" onclick="setRS('rs-post-carg',5)">★</span></div></div>
+        <div class="rrow"><div class="rrow-l">Comunicación con cuentas por extras</div><div style="display:flex;gap:2px" id="rs-post-ext" data-v="0"><span class="rstar" onclick="setRS('rs-post-ext',1)">★</span><span class="rstar" onclick="setRS('rs-post-ext',2)">★</span><span class="rstar" onclick="setRS('rs-post-ext',3)">★</span><span class="rstar" onclick="setRS('rs-post-ext',4)">★</span><span class="rstar" onclick="setRS('rs-post-ext',5)">★</span></div></div>
+        <label>Observaciones post</label><textarea id="obs-post" placeholder="¿Qué quedó pendiente?"></textarea>
+      </div>
     </div>
-    <!-- POST -->
-    <div class="etapa-block">
-      <div class="etapa-hdr"><div class="etapa-ico eico-post"><i class="ti ti-file-invoice" style="font-size:18px;color:var(--md)"></i></div><div><div class="etapa-ttl">Post: Cierre de evento</div><div class="etapa-sub">Cierre administrativo y operativo</div></div></div>
-      <div class="rrow"><div class="rrow-l">Cierre de la CC — actualización de valores</div><div style="display:flex;gap:2px" id="rs-post-cc" data-v="0"><span class="rstar" onclick="setRS('rs-post-cc',1)">★</span><span class="rstar" onclick="setRS('rs-post-cc',2)">★</span><span class="rstar" onclick="setRS('rs-post-cc',3)">★</span><span class="rstar" onclick="setRS('rs-post-cc',4)">★</span><span class="rstar" onclick="setRS('rs-post-cc',5)">★</span></div></div>
-      <div class="rrow"><div class="rrow-l">Seguimiento de facturas pendientes</div><div style="display:flex;gap:2px" id="rs-post-fact" data-v="0"><span class="rstar" onclick="setRS('rs-post-fact',1)">★</span><span class="rstar" onclick="setRS('rs-post-fact',2)">★</span><span class="rstar" onclick="setRS('rs-post-fact',3)">★</span><span class="rstar" onclick="setRS('rs-post-fact',4)">★</span><span class="rstar" onclick="setRS('rs-post-fact',5)">★</span></div></div>
-      <div class="rrow"><div class="rrow-l">Envío de cierre a administración</div><div style="display:flex;gap:2px" id="rs-post-envio" data-v="0"><span class="rstar" onclick="setRS('rs-post-envio',1)">★</span><span class="rstar" onclick="setRS('rs-post-envio',2)">★</span><span class="rstar" onclick="setRS('rs-post-envio',3)">★</span><span class="rstar" onclick="setRS('rs-post-envio',4)">★</span><span class="rstar" onclick="setRS('rs-post-envio',5)">★</span></div></div>
-      <div class="rrow"><div class="rrow-l">Cargado de facturas en planilla y carpeta</div><div style="display:flex;gap:2px" id="rs-post-carg" data-v="0"><span class="rstar" onclick="setRS('rs-post-carg',1)">★</span><span class="rstar" onclick="setRS('rs-post-carg',2)">★</span><span class="rstar" onclick="setRS('rs-post-carg',3)">★</span><span class="rstar" onclick="setRS('rs-post-carg',4)">★</span><span class="rstar" onclick="setRS('rs-post-carg',5)">★</span></div></div>
-      <div class="rrow"><div class="rrow-l">Comunicación con cuentas por extras</div><div style="display:flex;gap:2px" id="rs-post-ext" data-v="0"><span class="rstar" onclick="setRS('rs-post-ext',1)">★</span><span class="rstar" onclick="setRS('rs-post-ext',2)">★</span><span class="rstar" onclick="setRS('rs-post-ext',3)">★</span><span class="rstar" onclick="setRS('rs-post-ext',4)">★</span><span class="rstar" onclick="setRS('rs-post-ext',5)">★</span></div></div>
-      <label>Observaciones</label><textarea id="obs-post" placeholder="¿Qué quedó pendiente?"></textarea>
+
+    <!-- CUENTAS -->
+    <div id="tab-cuen" class="area-tab-content" style="display:none">
+      <div class="etapa-block">
+        <div class="etapa-hdr"><div class="etapa-ico" style="background:var(--vl)"><i class="ti ti-currency-dollar" style="font-size:18px;color:var(--vd)"></i></div><div><div class="etapa-ttl">Evaluación de Cuentas</div><div class="etapa-sub">Relación con el cliente y performance del área</div></div></div>
+        <div class="rrow"><div class="rrow-l">Vínculo con el cliente</div><div style="display:flex;gap:2px" id="rs-cuen-vinculo" data-v="0"><span class="rstar" onclick="setRS('rs-cuen-vinculo',1)">★</span><span class="rstar" onclick="setRS('rs-cuen-vinculo',2)">★</span><span class="rstar" onclick="setRS('rs-cuen-vinculo',3)">★</span><span class="rstar" onclick="setRS('rs-cuen-vinculo',4)">★</span><span class="rstar" onclick="setRS('rs-cuen-vinculo',5)">★</span></div></div>
+        <div class="rrow"><div class="rrow-l">Cumplimiento de plazos de entrega</div><div style="display:flex;gap:2px" id="rs-cuen-plazos" data-v="0"><span class="rstar" onclick="setRS('rs-cuen-plazos',1)">★</span><span class="rstar" onclick="setRS('rs-cuen-plazos',2)">★</span><span class="rstar" onclick="setRS('rs-cuen-plazos',3)">★</span><span class="rstar" onclick="setRS('rs-cuen-plazos',4)">★</span><span class="rstar" onclick="setRS('rs-cuen-plazos',5)">★</span></div></div>
+        <div class="rrow"><div class="rrow-l">Performance interna</div><div style="display:flex;gap:2px" id="rs-cuen-perf" data-v="0"><span class="rstar" onclick="setRS('rs-cuen-perf',1)">★</span><span class="rstar" onclick="setRS('rs-cuen-perf',2)">★</span><span class="rstar" onclick="setRS('rs-cuen-perf',3)">★</span><span class="rstar" onclick="setRS('rs-cuen-perf',4)">★</span><span class="rstar" onclick="setRS('rs-cuen-perf',5)">★</span></div></div>
+        <label>Observaciones cuentas</label><textarea id="obs-cuen" placeholder="¿Cómo estuvo la relación con el cliente? ¿Qué mejorar?"></textarea>
+      </div>
+    </div>
+
+    <!-- CREATIVIDAD -->
+    <div id="tab-creat" class="area-tab-content" style="display:none">
+      <div class="etapa-block">
+        <div class="etapa-hdr"><div class="etapa-ico" style="background:#f0e3f8"><i class="ti ti-palette" style="font-size:18px;color:#7a4d9a"></i></div><div><div class="etapa-ttl">Evaluación de Creatividad</div><div class="etapa-sub">Calidad y eficiencia del área creativa</div></div></div>
+        <div class="rrow"><div class="rrow-l">Eficiencia creativa</div><div style="display:flex;gap:2px" id="rs-creat-efic" data-v="0"><span class="rstar" onclick="setRS('rs-creat-efic',1)">★</span><span class="rstar" onclick="setRS('rs-creat-efic',2)">★</span><span class="rstar" onclick="setRS('rs-creat-efic',3)">★</span><span class="rstar" onclick="setRS('rs-creat-efic',4)">★</span><span class="rstar" onclick="setRS('rs-creat-efic',5)">★</span></div></div>
+        <div class="rrow"><div class="rrow-l">Calidad de la propuesta creativa</div><div style="display:flex;gap:2px" id="rs-creat-cal" data-v="0"><span class="rstar" onclick="setRS('rs-creat-cal',1)">★</span><span class="rstar" onclick="setRS('rs-creat-cal',2)">★</span><span class="rstar" onclick="setRS('rs-creat-cal',3)">★</span><span class="rstar" onclick="setRS('rs-creat-cal',4)">★</span><span class="rstar" onclick="setRS('rs-creat-cal',5)">★</span></div></div>
+        <div class="rrow"><div class="rrow-l">Alineación con el brief del cliente</div><div style="display:flex;gap:2px" id="rs-creat-alin" data-v="0"><span class="rstar" onclick="setRS('rs-creat-alin',1)">★</span><span class="rstar" onclick="setRS('rs-creat-alin',2)">★</span><span class="rstar" onclick="setRS('rs-creat-alin',3)">★</span><span class="rstar" onclick="setRS('rs-creat-alin',4)">★</span><span class="rstar" onclick="setRS('rs-creat-alin',5)">★</span></div></div>
+        <div class="rrow"><div class="rrow-l">Tiempos de entrega creativos</div><div style="display:flex;gap:2px" id="rs-creat-tiem" data-v="0"><span class="rstar" onclick="setRS('rs-creat-tiem',1)">★</span><span class="rstar" onclick="setRS('rs-creat-tiem',2)">★</span><span class="rstar" onclick="setRS('rs-creat-tiem',3)">★</span><span class="rstar" onclick="setRS('rs-creat-tiem',4)">★</span><span class="rstar" onclick="setRS('rs-creat-tiem',5)">★</span></div></div>
+        <div class="rrow"><div class="rrow-l">Comunicación con producción y cuentas</div><div style="display:flex;gap:2px" id="rs-creat-com" data-v="0"><span class="rstar" onclick="setRS('rs-creat-com',1)">★</span><span class="rstar" onclick="setRS('rs-creat-com',2)">★</span><span class="rstar" onclick="setRS('rs-creat-com',3)">★</span><span class="rstar" onclick="setRS('rs-creat-com',4)">★</span><span class="rstar" onclick="setRS('rs-creat-com',5)">★</span></div></div>
+        <label>Observaciones creatividad</label><textarea id="obs-creat" placeholder="¿Cómo estuvo la propuesta creativa? ¿Qué mejorar?"></textarea>
+      </div>
     </div>
     <div class="divider"></div>
     <div class="fs-ttl"><i class="ti ti-star"></i> ⭐ Qué salió bien</div>
@@ -451,33 +476,92 @@ async function handleGoogleLogin(response){
   document.getElementById('google-btn').style.display='none';
   document.getElementById('login-err').textContent='';
   try{
-    // Decode JWT to get user info
     const payload = JSON.parse(atob(response.credential.split('.')[1]));
     const email = payload.email;
     const name = payload.name;
     const picture = payload.picture;
-    // Only allow sappia.la accounts
     if(!email.endsWith('@sappia.la')){
       document.getElementById('login-err').textContent='Solo cuentas @sappia.la pueden acceder.';
       document.getElementById('login-loading').style.display='none';
       document.getElementById('google-btn').style.display='flex';
       return;
     }
-    currentUser = {email, name, picture};
-    token = response.credential;
-    role = 'admin';
-    enterApp();
+    // Get session token from Apps Script
+    const res = await fetch(API,{method:'POST',body:JSON.stringify({action:'loginGoogle',email,googleToken:response.credential})});
+    const data = await res.json();
+    if(data.ok){
+      currentUser = {email, name, picture};
+      token = data.token;
+      role = 'admin';
+      enterApp();
+    } else {
+      document.getElementById('login-err').textContent = data.error || 'Error al ingresar.';
+      document.getElementById('login-loading').style.display='none';
+      document.getElementById('google-btn').style.display='flex';
+    }
   }catch(e){
-    document.getElementById('login-err').textContent='Error al verificar. Intentá de nuevo.';
+    document.getElementById('login-err').textContent='Error de conexión. Intentá de nuevo.';
     document.getElementById('login-loading').style.display='none';
     document.getElementById('google-btn').style.display='flex';
   }
 }
 
 window.addEventListener('load', ()=>{
-  if(typeof google !== 'undefined') initGoogleLogin();
-  else setTimeout(initGoogleLogin, 1000);
+  let attempts = 0;
+  const tryInit = () => {
+    if(typeof google !== 'undefined' && google.accounts){
+      initGoogleLogin();
+    } else if(attempts < 10){
+      attempts++;
+      setTimeout(tryInit, 500);
+    } else {
+      // Fallback: show password login if Google doesn't load
+      showFallbackLogin();
+    }
+  };
+  tryInit();
 });
+
+function showFallbackLogin(){
+  document.getElementById('google-btn').innerHTML = `
+    <div style="text-align:center">
+      <div style="font-size:13px;color:var(--t2);margin-bottom:12px">Login con contraseña</div>
+      <div class="pw-wrap" style="position:relative;margin-bottom:1rem">
+        <input type="password" id="pw" placeholder="Contraseña" onkeydown="if(event.key==='Enter')doFallbackLogin()" style="width:100%;padding:9px 40px 9px 12px;border:0.5px solid #e0d8ec;border-radius:8px;font-size:14px;font-family:'DM Sans',sans-serif">
+        <button onclick="togglePw()" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--t2)"><i class="ti ti-eye" id="eye-i"></i></button>
+      </div>
+      <button onclick="doFallbackLogin()" style="width:100%;background:var(--v);color:#fff;border:none;border-radius:8px;padding:10px;font-size:14px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif">Ingresar</button>
+    </div>`;
+}
+
+function togglePw(){
+  const i = document.getElementById('pw');
+  if(!i) return;
+  i.type = i.type==='password'?'text':'password';
+  const icon = document.getElementById('eye-i');
+  if(icon) icon.className = i.type==='password'?'ti ti-eye':'ti ti-eye-off';
+}
+
+async function doFallbackLogin(){
+  const pw = document.getElementById('pw');
+  if(!pw) return;
+  const pass = pw.value;
+  const err = document.getElementById('login-err');
+  if(!pass){err.textContent='Ingresá la contraseña';return}
+  err.textContent='Verificando...';
+  try{
+    const res = await fetch(API,{method:'POST',body:JSON.stringify({action:'login',rol:'admin',password:pass})});
+    const data = await res.json();
+    if(data.ok){
+      role='admin'; token=data.token;
+      currentUser={email:'usuario@sappia.la', name:'Usuario', picture:''};
+      enterApp();
+    } else {
+      err.textContent='Contraseña incorrecta.';
+      setTimeout(()=>{err.textContent=''},3000);
+    }
+  }catch(e){err.textContent='Error de conexión.';}
+}
 
 function enterApp(){
   document.getElementById('login-screen').style.display='none';
@@ -552,7 +636,7 @@ async function apiPost(body){
 
 // ── HELPERS ──
 function getEtapaAvg(eid,etapa){const ev=db.evals.filter(e=>e.evento_id==eid&&e.etapa===etapa);if(!ev.length)return 0;const vals=ev.map(e=>parseFloat(e.valor)||0).filter(v=>v>0);return vals.length?vals.reduce((a,b)=>a+b)/vals.length:0}
-function getOverall(e){const parts=[];if(parseFloat(e.prod_rating)>0)parts.push(parseFloat(e.prod_rating));if(parseFloat(e.cuen_rating)>0)parts.push(parseFloat(e.cuen_rating));['pre','live','post'].forEach(et=>{const a=getEtapaAvg(e.id,et);if(a>0)parts.push(a)});return parts.length?parts.reduce((a,b)=>a+b)/parts.length:0}
+function getOverall(e){const parts=[];['pre','live','post','cuen','creat'].forEach(et=>{const a=getEtapaAvg(e.id,et);if(a>0)parts.push(a)});return parts.length?parts.reduce((a,b)=>a+b)/parts.length:0}
 function scoreLabel(a){if(a>=4.5)return['Excelente','bm'];if(a>=3.5)return['Bueno','bb'];if(a>=2.5)return['Regular','ba'];if(a>0)return['A mejorar','br'];return['','bg']}
 function setR(id,v){const el=document.getElementById(id);if(!el)return;el.dataset.v=v;el.querySelectorAll('.star').forEach((s,i)=>s.classList.toggle('on',i<v))}
 function getR(id){const el=document.getElementById(id);return el?parseInt(el.dataset.v)||0:0}
@@ -606,7 +690,7 @@ function renderHist(){
   let h='';
   evs.forEach(e=>{
     const ov=getOverall(e);const[l,c]=scoreLabel(ov);
-    const preA=getEtapaAvg(e.id,'pre');const liveA=getEtapaAvg(e.id,'live');const postA=getEtapaAvg(e.id,'post');
+    const preA=getEtapaAvg(e.id,'pre');const liveA=getEtapaAvg(e.id,'live');const postA=getEtapaAvg(e.id,'post');const cuenA=getEtapaAvg(e.id,'cuen');const creatA=getEtapaAvg(e.id,'creat');
     const hasCierre=db.cierres.some(ci=>ci.evento_id==e.id);
     h+=`<div class="erow" onclick="openDet('${e.id}')"><div style="flex:1;min-width:0"><div class="er-n">${e.nombre}</div><div class="er-s">${e.fecha||'—'} · ${e.tipo||'—'} · ${e.cliente||'—'}${e.cargado_nombre?` · <i class="ti ti-user" style="font-size:10px"></i> ${e.cargado_nombre}`:''}${e.created_at?` · <i class="ti ti-clock" style="font-size:10px"></i> ${new Date(e.created_at).toLocaleDateString('es-AR',{day:'2-digit',month:'2-digit',year:'numeric'})}`:''}
 </div></div><div style="display:flex;gap:5px;flex-wrap:wrap;justify-content:flex-end;flex-shrink:0">${parseFloat(e.prod_rating)>0?`<span class="sp sp-prod">🔧${e.prod_rating}</span>`:''} ${parseFloat(e.cuen_rating)>0?`<span class="sp sp-live">💰${e.cuen_rating}</span>`:''} ${preA>0?`<span class="sp sp-pre">⚙️${preA.toFixed(1)}</span>`:''} ${liveA>0?`<span class="sp sp-live">▶️${liveA.toFixed(1)}</span>`:''} ${postA>0?`<span class="sp sp-post">📋${postA.toFixed(1)}</span>`:''} ${l?`<span class="badge ${c}">${l}</span>`:''} ${hasCierre?`<span class="badge bg"><i class="ti ti-clipboard-check" style="font-size:10px"></i></span>`:''}</div></div>`;
@@ -687,14 +771,19 @@ function toggleCierre(cb){document.getElementById('cierre-section').style.displa
 
 function openNewEvento(){
   
-  ['en-nombre','en-cliente','en-dest','en-mej','en-mal','en-oprod','en-ocuen','obs-pre','obs-live','obs-post','ci-partic','ci-apr','ci-voces','ci-acc'].forEach(id=>{const el=document.getElementById(id);if(el)el.value=''});
+  ['en-nombre','en-cliente','en-dest','en-mej','en-mal','en-oprod','en-ocuen','obs-pre','obs-live','obs-post','obs-cuen','obs-creat','ci-partic','ci-apr','ci-voces','ci-acc'].forEach(id=>{const el=document.getElementById(id);if(el)el.value=''});
   ['r-prod','r-cuen'].forEach(id=>setR(id,0));
-  ['rs-pre-cc','rs-pre-carp','rs-pre-cash','rs-pre-prov','rs-pre-com','rs-pre-prod','rs-live-crono','rs-live-planos','rs-live-diseno','rs-live-panol','rs-live-roles','rs-live-prov','rs-live-com','rs-post-cc','rs-post-fact','rs-post-envio','rs-post-carg','rs-post-ext'].forEach(id=>setRS(id,0));
+  ['rs-pre-cc','rs-pre-carp','rs-pre-cash','rs-pre-prov','rs-pre-com','rs-pre-prod','rs-live-crono','rs-live-planos','rs-live-panol','rs-live-roles','rs-live-prov','rs-live-com','rs-post-cc','rs-post-fact','rs-post-envio','rs-post-carg','rs-post-ext','rs-cuen-vinculo','rs-cuen-plazos','rs-cuen-perf','rs-creat-efic','rs-creat-cal','rs-creat-alin','rs-creat-tiem','rs-creat-com'].forEach(id=>setRS(id,0));
   document.getElementById('en-tiempos').checked=false;
   document.getElementById('en-addcierre').checked=false;
   document.getElementById('cierre-section').style.display='none';
   document.getElementById('en-fecha').value=new Date().toISOString().split('T')[0];
   document.getElementById('en-asist').value='';
+  // Reset area tabs to producción
+  document.querySelectorAll('.area-tab-content').forEach(t=>t.style.display='none');
+  const prodTab = document.getElementById('tab-prod');
+  if(prodTab) prodTab.style.display='block';
+  document.querySelectorAll('#area-tabs .stab').forEach((b,i)=>{b.classList.toggle('on',i===0)});
   renderTeamChips();
   renderParticChips('pre-partic');
   renderParticChips('live-partic');
@@ -732,15 +821,23 @@ async function saveEvento(){
     {id:'rs-pre-cash',campo:'Cashflow',etapa:'pre'},{id:'rs-pre-prov',campo:'Selección proveedores',etapa:'pre'},
     {id:'rs-pre-com',campo:'Comunicación cuentas',etapa:'pre'},{id:'rs-pre-prod',campo:'Producer Manager',etapa:'pre'},
     {id:'rs-live-crono',campo:'Cronograma armado',etapa:'live'},{id:'rs-live-planos',campo:'Armado planos',etapa:'live'},
-    {id:'rs-live-diseno',campo:'Planilla diseño',etapa:'live'},{id:'rs-live-panol',campo:'Armado pañol',etapa:'live'},
-    {id:'rs-live-roles',campo:'Cumplimiento roles',etapa:'live'},{id:'rs-live-prov',campo:'Gestión proveedores',etapa:'live'},
-    {id:'rs-live-com',campo:'Comunicación cuentas',etapa:'live'},{id:'rs-post-cc',campo:'Cierre CC',etapa:'post'},
-    {id:'rs-post-fact',campo:'Facturas pendientes',etapa:'post'},{id:'rs-post-envio',campo:'Envío administración',etapa:'post'},
-    {id:'rs-post-carg',campo:'Carga facturas',etapa:'post'},{id:'rs-post-ext',campo:'Extras cuentas',etapa:'post'},
+    {id:'rs-live-panol',campo:'Armado pañol',etapa:'live'},{id:'rs-live-roles',campo:'Cumplimiento roles',etapa:'live'},
+    {id:'rs-live-prov',campo:'Gestión proveedores',etapa:'live'},{id:'rs-live-com',campo:'Comunicación cuentas',etapa:'live'},
+    {id:'rs-post-cc',campo:'Cierre CC',etapa:'post'},{id:'rs-post-fact',campo:'Facturas pendientes',etapa:'post'},
+    {id:'rs-post-envio',campo:'Envío administración',etapa:'post'},{id:'rs-post-carg',campo:'Carga facturas',etapa:'post'},
+    {id:'rs-post-ext',campo:'Extras cuentas',etapa:'post'},
+    {id:'rs-cuen-vinculo',campo:'Vínculo con el cliente',etapa:'cuen'},
+    {id:'rs-cuen-plazos',campo:'Cumplimiento de plazos',etapa:'cuen'},
+    {id:'rs-cuen-perf',campo:'Performance interna',etapa:'cuen'},
+    {id:'rs-creat-efic',campo:'Eficiencia creativa',etapa:'creat'},
+    {id:'rs-creat-cal',campo:'Calidad propuesta',etapa:'creat'},
+    {id:'rs-creat-alin',campo:'Alineación con brief',etapa:'creat'},
+    {id:'rs-creat-tiem',campo:'Tiempos creativos',etapa:'creat'},
+    {id:'rs-creat-com',campo:'Comunicación creativa',etapa:'creat'},
   ];
   try{
     await apiPost({action:'saveEvento',data:evento});
-    for(const ev of evals){const val=getRS(ev.id);if(!val)continue;const obs=ev.etapa==='pre'?document.getElementById('obs-pre').value:ev.etapa==='live'?document.getElementById('obs-live').value:document.getElementById('obs-post').value;const ptcs=ev.etapa==='pre'?getPartic('pre-partic'):ev.etapa==='live'?getPartic('live-partic'):[];await apiPost({action:'saveEvaluacion',data:{evento_id:eid,etapa:ev.etapa,campo:ev.campo,valor:val,obs,participantes:JSON.stringify(ptcs)}})}
+    for(const ev of evals){const val=getRS(ev.id);if(!val)continue;const obs=ev.etapa==='pre'?document.getElementById('obs-pre').value:ev.etapa==='live'?document.getElementById('obs-live').value:ev.etapa==='cuen'?document.getElementById('obs-cuen').value:ev.etapa==='creat'?document.getElementById('obs-creat').value:document.getElementById('obs-post').value;const ptcs=ev.etapa==='pre'?getPartic('pre-partic'):ev.etapa==='live'?getPartic('live-partic'):[];await apiPost({action:'saveEvaluacion',data:{evento_id:eid,etapa:ev.etapa,campo:ev.campo,valor:val,obs,participantes:JSON.stringify(ptcs)}})}
     if(document.getElementById('en-addcierre').checked){const vr=pKV(document.getElementById('ci-voces').value);await apiPost({action:'saveCierre',data:{evento_id:eid,participantes:document.getElementById('ci-partic').value,aprendizajes:JSON.stringify(pLines(document.getElementById('ci-apr').value)),voces:JSON.stringify(vr.map(v=>({nombre:v.k,obs:v.v}))),acciones:JSON.stringify(pLines(document.getElementById('ci-acc').value))}})}
     closePV('pv-evento');
     await loadData();
@@ -757,16 +854,34 @@ function openDet(id){
   const teamCards=(pJ(e.team)||[]).map(tid=>{const p=db.team.find(x=>x.id==tid||x.id==String(tid));if(!p)return'';return`<span style="display:inline-flex;align-items:center;gap:4px;padding:3px 8px;background:${(AVC[p.color||'v']||AVC.v).bg};border-radius:12px;font-size:12px;color:${(AVC[p.color||'v']||AVC.v).fg};margin-right:4px;margin-bottom:4px">${p.nombre}</span>`}).join('');
   let h=`<div style="margin-bottom:1rem"><div style="font-size:20px;font-weight:500;color:var(--t);font-family:'DM Serif Display',serif;margin-bottom:4px">${e.nombre}</div><div style="font-size:13px;color:var(--t2);margin-bottom:8px">${e.cliente||'—'} · ${e.fecha||'—'} · ${e.tipo||'—'} · ${e.asistentes||'—'} asistentes</div>
   ${e.cargado_nombre?'<div style="font-size:12px;color:var(--t2);margin-bottom:8px;display:flex;align-items:center;gap:5px"><i class="ti ti-user" style="font-size:11px;color:var(--v)"></i> Cargado por <strong>'+e.cargado_nombre+'</strong>'+(e.created_at?' el '+new Date(e.created_at).toLocaleDateString('es-AR',{day:'2-digit',month:'2-digit',year:'numeric'}):'')+'</div>':''}<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:${teamCards?'8':'0'}px">${l?`<span class="badge ${c}">${l}</span>`:''} ${parseFloat(e.prod_rating)>0?`<span class="sp sp-prod">🔧 ${e.prod_rating}</span>`:''} ${parseFloat(e.cuen_rating)>0?`<span class="sp sp-live">💰 ${e.cuen_rating}</span>`:''} ${preA>0?`<span class="sp sp-pre">⚙️ ${preA.toFixed(1)}</span>`:''} ${liveA>0?`<span class="sp sp-live">▶️ ${liveA.toFixed(1)}</span>`:''} ${postA>0?`<span class="sp sp-post">📋 ${postA.toFixed(1)}</span>`:''}</div>${teamCards?`<div>${teamCards}</div>`:''}</div>
-  <div class="stabs"><button class="stab on" onclick="swDT('dt-ar',this)">🔧💰 Áreas</button><button class="stab" onclick="swDT('dt-pre',this)">⚙️ Previa</button><button class="stab" onclick="swDT('dt-live',this)">▶️ Ejecución</button><button class="stab" onclick="swDT('dt-post',this)">📋 Post</button><button class="stab" onclick="swDT('dt-gen',this)">General</button>${cierre?`<button class="stab" onclick="swDT('dt-ci',this)">Cierre</button>`:''}</div>`;
-  h+=`<div id="dt-ar" class="sv on"><div class="g2" style="margin-bottom:12px"><div style="background:var(--ml);border-radius:12px;padding:1rem;text-align:center"><div style="font-size:11px;color:var(--mt);font-weight:500;margin-bottom:8px;text-transform:uppercase">🔧 Producción</div>${parseFloat(e.prod_rating)>0?`<div style="font-size:26px;font-weight:500;color:var(--md)">${e.prod_rating}/5</div><div style="margin-top:6px;display:flex;justify-content:center">${miniStars(e.prod_rating)}</div>`:'<div style="font-size:13px;color:var(--mt)">Sin evaluar</div>'}</div><div style="background:var(--vl);border-radius:12px;padding:1rem;text-align:center"><div style="font-size:11px;color:var(--vt);font-weight:500;margin-bottom:8px;text-transform:uppercase">💰 Cuentas</div>${parseFloat(e.cuen_rating)>0?`<div style="font-size:26px;font-weight:500;color:var(--vd)">${e.cuen_rating}/5</div><div style="margin-top:6px;display:flex;justify-content:center">${miniStars(e.cuen_rating)}</div>`:'<div style="font-size:13px;color:var(--vt)">Sin evaluar</div>'}</div></div>${e.oprod?`<div style="margin-bottom:10px"><div class="dl">Para producción</div><div style="font-size:13px;color:var(--t);line-height:1.6">${e.oprod}</div></div>`:''} ${e.ocuen?`<div><div class="dl">Para cuentas</div><div style="font-size:13px;color:var(--t);line-height:1.6">${e.ocuen}</div></div>`:''} ${role==='admin'?`<hr class="divider"><button class="btn-d" onclick="delEvento('${e.id}')"><i class="ti ti-trash"></i> Eliminar evento</button>`:''}</div>`;
-  ['pre','live','post'].forEach(et=>{const ids={pre:'dt-pre',live:'dt-live',post:'dt-post'};const evs=db.evals.filter(ev=>ev.evento_id==id&&ev.etapa===et);const obs=et==='pre'?e.pre_obs:et==='live'?e.live_obs:e.post_obs;const bg={pre:'var(--bl)',live:'var(--vl)',post:'var(--ml)'};h+=`<div id="${ids[et]}" class="sv">${evs.length?`<table style="width:100%;border-collapse:collapse;font-size:13px">${evs.map(ev=>`<tr><td style="padding:7px 8px;border-bottom:0.5px solid #e0d8ec;color:var(--t2)">${ev.campo}</td><td style="padding:7px 8px;border-bottom:0.5px solid #e0d8ec"><div style="display:flex;gap:2px">${miniStars(parseFloat(ev.valor||0))}</div></td><td style="padding:7px 8px;border-bottom:0.5px solid #e0d8ec;color:var(--t2)">${ev.valor}/5</td></tr>`).join('')}</table>${obs?`<div style="margin-top:10px;font-size:13px;color:var(--t);line-height:1.6;padding:10px;background:${bg[et]};border-radius:8px">${obs}</div>`:''}`:'<div class="empty">Sin evaluación</div>'}</div>`;});
+  <div class="stabs"><button class="stab on" onclick="swDT('dt-prod',this)">🔧 Prod.</button><button class="stab" onclick="swDT('dt-cuen',this)">💰 Cuentas</button><button class="stab" onclick="swDT('dt-creat',this)">🎨 Creat.</button><button class="stab" onclick="swDT('dt-gen',this)">General</button>${cierre?`<button class="stab" onclick="swDT('dt-ci',this)">Cierre</button>`:''}</div>`;
+  // Render production, cuentas, creatividad tabs
+  function renderEtapaTab(tabId, etapas, bgColor, obsKey){
+    const allEvs = etapas.flatMap(et => db.evals.filter(ev=>ev.evento_id==id&&ev.etapa===et));
+    const obs = e[obsKey]||'';
+    return `<div id="${tabId}" class="sv">${allEvs.length?`<table style="width:100%;border-collapse:collapse;font-size:13px">${allEvs.map(ev=>`<tr><td style="padding:7px 8px;border-bottom:0.5px solid #e0d8ec;color:var(--t2)">${ev.campo}</td><td style="padding:7px 8px;border-bottom:0.5px solid #e0d8ec"><div style="display:flex;gap:2px">${miniStars(parseFloat(ev.valor||0))}</div></td><td style="padding:7px 8px;border-bottom:0.5px solid #e0d8ec;font-weight:500;color:var(--t)">${ev.valor}/5</td></tr>`).join('')}</table>${allEvs.length?`<div style="margin-top:10px;padding:8px 12px;background:var(--g);border-radius:8px;font-size:13px;display:flex;align-items:center;gap:8px"><span style="color:var(--t2)">Promedio</span><strong>${(allEvs.reduce((a,ev)=>a+parseFloat(ev.valor||0),0)/allEvs.length).toFixed(1)}/5</strong></div>`:''}`:'<div class="empty">Sin evaluación registrada</div>'}</div>`;
+  }
+  h += renderEtapaTab('dt-prod', ['pre','live','post'], 'var(--ml)', 'oprod');
+  // Cuentas tab
+  const cuenEvs = db.evals.filter(ev=>ev.evento_id==id&&ev.etapa==='cuen');
+  h += `<div id="dt-cuen" class="sv">${cuenEvs.length?`<table style="width:100%;border-collapse:collapse;font-size:13px">${cuenEvs.map(ev=>`<tr><td style="padding:7px 8px;border-bottom:0.5px solid #e0d8ec;color:var(--t2)">${ev.campo}</td><td style="padding:7px 8px;border-bottom:0.5px solid #e0d8ec"><div style="display:flex;gap:2px">${miniStars(parseFloat(ev.valor||0))}</div></td><td style="padding:7px 8px;border-bottom:0.5px solid #e0d8ec;font-weight:500;color:var(--t)">${ev.valor}/5</td></tr>`).join('')}</table><div style="margin-top:10px;padding:8px 12px;background:var(--g);border-radius:8px;font-size:13px;display:flex;align-items:center;gap:8px"><span style="color:var(--t2)">Promedio</span><strong>${(cuenEvs.reduce((a,ev)=>a+parseFloat(ev.valor||0),0)/cuenEvs.length).toFixed(1)}/5</strong></div>`:'<div class="empty">Sin evaluación registrada</div>'}</div>`;
+  // Creatividad tab
+  const creatEvs = db.evals.filter(ev=>ev.evento_id==id&&ev.etapa==='creat');
+  h += `<div id="dt-creat" class="sv">${creatEvs.length?`<table style="width:100%;border-collapse:collapse;font-size:13px">${creatEvs.map(ev=>`<tr><td style="padding:7px 8px;border-bottom:0.5px solid #e0d8ec;color:var(--t2)">${ev.campo}</td><td style="padding:7px 8px;border-bottom:0.5px solid #e0d8ec"><div style="display:flex;gap:2px">${miniStars(parseFloat(ev.valor||0))}</div></td><td style="padding:7px 8px;border-bottom:0.5px solid #e0d8ec;font-weight:500;color:var(--t)">${ev.valor}/5</td></tr>`).join('')}</table><div style="margin-top:10px;padding:8px 12px;background:var(--g);border-radius:8px;font-size:13px;display:flex;align-items:center;gap:8px"><span style="color:var(--t2)">Promedio</span><strong>${(creatEvs.reduce((a,ev)=>a+parseFloat(ev.valor||0),0)/creatEvs.length).toFixed(1)}/5</strong></div>`:'<div class="empty">Sin evaluación registrada</div>'}</div>`;
   const dests=pJ(e.destacados)||[];const mejoras=pJ(e.mejoras)||[];const mal=pJ(e.mal)||[];
   h+=`<div id="dt-gen" class="sv">${dests.length?`<div style="margin-bottom:12px"><div class="dl">⭐ Destacados</div>${dests.map(d=>`<div class="dest">${d}</div>`).join('')}</div>`:''} ${mejoras.length?`<div style="margin-bottom:10px"><div class="dl">📈 Mejoras vs anterior</div>${mejoras.map(m=>`<div class="item"><span class="dot dm"></span>${m}</div>`).join('')}</div>`:''} ${mal.length?`<div><div class="dl">🔄 Próxima vez</div>${mal.map(m=>`<div class="item"><span class="dot db"></span>${m}</div>`).join('')}</div>`:''} ${!dests.length&&!mejoras.length&&!mal.length?'<div class="empty">Sin datos generales</div>':''}</div>`;
   if(cierre){const aprs=pJ(cierre.aprendizajes)||[];const acc=pJ(cierre.acciones)||[];const voces=pJ(cierre.voces)||[];h+=`<div id="dt-ci" class="sv"><div class="cierre-banner"><i class="ti ti-clipboard-check"></i> Participantes: ${cierre.participantes||'—'}</div><div class="stabs"><button class="stab on" onclick="swCI('ci-a',this)">Aprendizajes</button><button class="stab" onclick="swCI('ci-v',this)">Voces</button><button class="stab" onclick="swCI('ci-ac',this)">Acciones</button></div><div id="ci-a" class="sv on">${aprs.length?aprs.map(a=>`<div class="item"><span class="dot dv"></span>${a}</div>`).join(''):'<div class="empty">Sin aprendizajes</div>'}</div><div id="ci-v" class="sv">${voces.length?voces.map(v=>`<div class="voice-r"><div class="av" style="${avStyle('v')};width:30px;height:30px;font-size:10px">${(v.nombre||'?').slice(0,2).toUpperCase()}</div><div><div style="font-size:12px;font-weight:500;color:var(--t)">${v.nombre||''}</div><div class="qt">${v.obs||''}</div></div></div>`).join(''):'<div class="empty">Sin voces</div>'}</div><div id="ci-ac" class="sv">${acc.length?acc.map((a,i)=>`<div style="display:flex;gap:10px;padding:8px 0;border-bottom:0.5px solid #e0d8ec"><div style="font-size:11px;color:var(--t2);min-width:20px">${String(i+1).padStart(2,'0')}</div><div style="font-size:13px;color:var(--t)">${typeof a==='string'?a:a.titulo||a}</div></div>`).join(''):'<div class="empty">Sin acciones</div>'}</div></div>`}
   document.getElementById('det-body').innerHTML=h;
   openPV('pv-det');
 }
-function swDT(id,btn){document.getElementById('det-body').querySelectorAll(':scope > .sv').forEach(v=>v.classList.remove('on'));document.getElementById(id).classList.add('on');document.getElementById('det-body').querySelectorAll(':scope > .stabs > .stab').forEach(b=>b.classList.remove('on'));btn.classList.add('on')}
+function switchAreaTab(id, btn){
+  document.querySelectorAll('.area-tab-content').forEach(t=>t.style.display='none');
+  document.getElementById(id).style.display='block';
+  document.querySelectorAll('#area-tabs .stab').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+}
+
+function swDT(id,btn){document.getElementById('det-body').querySelectorAll('.sv').forEach(v=>v.classList.remove('on'));document.getElementById(id).classList.add('on');document.getElementById('det-body').querySelectorAll('.stabs .stab').forEach(b=>b.classList.remove('on'));btn.classList.add('on')}
 function swCI(id,btn){['ci-a','ci-v','ci-ac'].forEach(k=>{const el=document.getElementById(k);if(el)el.classList.remove('on')});document.getElementById(id).classList.add('on');btn.parentElement.querySelectorAll('.stab').forEach(b=>b.classList.remove('on'));btn.classList.add('on')}
 async function delEvento(id){if(!confirm('¿Eliminar este evento?'))return;await apiPost({action:'deleteRow',sheet:'eventos',id});db.events=db.events.filter(e=>e.id!=id);closePV('pv-det');renderAll()}
 
@@ -822,7 +937,7 @@ function swPT(id,btn){['pt-f','pt-o','pt-e'].forEach(k=>{const el=document.getEl
 async function delPersona(id){if(!confirm('¿Eliminar este perfil?'))return;await apiPost({action:'deleteRow',sheet:'equipo',id});db.team=db.team.filter(p=>p.id!=id);closePV('pv-perfil');renderEquipo()}
 
 // ── AI ──
-function buildCtx(){if(!db.events.length)return'No hay eventos registrados.';const s=db.events.map(e=>{const preA=getEtapaAvg(e.id,'pre');const liveA=getEtapaAvg(e.id,'live');const postA=getEtapaAvg(e.id,'post');const ci=db.cierres.find(c=>c.evento_id==e.id);return`- ${e.nombre} (${e.fecha}, ${e.tipo||'—'}, cliente: ${e.cliente||'—'}): Prod ${e.prod_rating||0}/5, Cuen ${e.cuen_rating||0}/5, Previa ${preA.toFixed(1)}/5, Ejecución ${liveA.toFixed(1)}/5, Post ${postA.toFixed(1)}/5. Destacados: ${(pJ(e.destacados)||[]).join('; ')||'ninguno'}.${ci?` Cierre: ${(pJ(ci.aprendizajes)||[]).length} aprendizajes.`:''}`}).join('\n');const t=db.team.map(p=>`- ${p.nombre} ${p.apellido||''} (${p.rol||'—'})`).join('\n');return`Sos el asistente de SAPPIA Event Manager. Respondé en español, conciso y práctico.\n\nEVENTOS:\n${s}\n\nEQUIPO:\n${t}`}
+function buildCtx(){if(!db.events.length)return'No hay eventos registrados.';const s=db.events.map(e=>{const preA=getEtapaAvg(e.id,'pre');const liveA=getEtapaAvg(e.id,'live');const postA=getEtapaAvg(e.id,'post');const cuenA=getEtapaAvg(e.id,'cuen');const creatA=getEtapaAvg(e.id,'creat');const ci=db.cierres.find(c=>c.evento_id==e.id);return`- ${e.nombre} (${e.fecha}, ${e.tipo||'—'}, cliente: ${e.cliente||'—'}): Prod ${e.prod_rating||0}/5, Cuen ${e.cuen_rating||0}/5, Previa ${preA.toFixed(1)}/5, Ejecución ${liveA.toFixed(1)}/5, Post ${postA.toFixed(1)}/5. Destacados: ${(pJ(e.destacados)||[]).join('; ')||'ninguno'}.${ci?` Cierre: ${(pJ(ci.aprendizajes)||[]).length} aprendizajes.`:''}`}).join('\n');const t=db.team.map(p=>`- ${p.nombre} ${p.apellido||''} (${p.rol||'—'})`).join('\n');return`Sos el asistente de SAPPIA Event Manager. Respondé en español, conciso y práctico.\n\nEVENTOS:\n${s}\n\nEQUIPO:\n${t}`}
 async function sendAI(){const inp=document.getElementById('ai-inp');const msg=inp.value.trim();if(!msg)return;inp.value='';autoR(inp);addMsg('user',msg);document.getElementById('ai-sugs').innerHTML='';document.getElementById('ai-btn').disabled=true;showThink();try{const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,system:buildCtx(),messages:[...aiHistory.slice(-6),{role:'user',content:msg}]})});rmThink();if(!res.ok)throw new Error();const data=await res.json();const reply=data.content?.[0]?.text||'Sin respuesta.';aiHistory.push({role:'user',content:msg},{role:'assistant',content:reply});addMsg('bot',reply);showSugs();}catch(e){rmThink();addMsg('bot','Error al conectar. Verificá la conexión.')}document.getElementById('ai-btn').disabled=false}
 function addMsg(r,t){const c=document.getElementById('ai-msgs');const d=document.createElement('div');d.className=`ai-msg ${r}`;const fmt=t.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/^- (.+)$/gm,'<li>$1</li>').replace(/(<li>.*<\/li>\n?)+/g,s=>`<ul>${s}</ul>`).replace(/\n/g,'<br>');d.innerHTML=`<div class="ai-mav ${r}">${r==='bot'?'✦':'Yo'}</div><div class="ai-bub ${r}">${fmt}</div>`;c.appendChild(d);c.scrollTop=c.scrollHeight}
 function showThink(){const c=document.getElementById('ai-msgs');const d=document.createElement('div');d.className='ai-msg';d.id='ai-think';d.innerHTML=`<div class="ai-mav bot">✦</div><div class="ai-bub bot"><span class="ai-think"><span></span><span></span><span></span></span></div>`;c.appendChild(d);c.scrollTop=c.scrollHeight}
@@ -839,3 +954,4 @@ function renderAll(){renderDash();renderHist();renderCierres();renderMejoras();r
 </script>
 </body>
 </html>
+
