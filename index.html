@@ -4,293 +4,210 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SAPPIA Event Manager</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
+<script src="https://accounts.google.com/gsi/client" async defer></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --sp-violet:#bc88d4;--sp-violet-light:#e8d4f2;--sp-violet-dark:#8a5ca0;--sp-violet-text:#5c3d6e;
-  --sp-blue:#91b5ef;--sp-blue-light:#dae8fb;--sp-blue-dark:#5a8bca;--sp-blue-text:#2d5a8a;
-  --sp-mint:#afd8d9;--sp-mint-light:#d8f0f0;--sp-mint-dark:#6ab0b2;--sp-mint-text:#2d7476;
-  --sp-gray:#f4f2f6;--sp-gray2:#e8e4ee;--sp-gray3:#c4bcd0;
-  --sp-text:#1a1020;--sp-text2:#6b5f78;
-  --color-background-primary:#ffffff;
-  --color-border-secondary:#e8e4ee;
-  --color-border-tertiary:#e8e4ee;
+  --v:#bc88d4;--vl:#e8d4f2;--vd:#8a5ca0;--vt:#5c3d6e;
+  --b:#91b5ef;--bl:#dae8fb;--bd:#5a8bca;--bt:#2d5a8a;
+  --m:#afd8d9;--ml:#d8f0f0;--md:#6ab0b2;--mt:#2d7476;
+  --g:#f4f2f6;--g2:#e8e4ee;--g3:#c4bcd0;
+  --t:#1a1020;--t2:#6b5f78;
 }
 @media(prefers-color-scheme:dark){:root{
-  --sp-violet-light:#3d2450;--sp-violet-text:#d4a8e8;
-  --sp-blue-light:#1a3050;--sp-blue-text:#aac8f4;
-  --sp-mint-light:#0e3032;--sp-mint-text:#8ed4d6;
-  --sp-gray:#1e1628;--sp-gray2:#2a1f38;--sp-gray3:#4a3d58;
-  --sp-text:#f0ebf8;--sp-text2:#a090b8;
-  --color-background-primary:#1e1628;
-  --color-border-secondary:#2a1f38;
-  --color-border-tertiary:#2a1f38;
+  --vl:#3d2450;--vt:#d4a8e8;--bl:#1a3050;--bt:#aac8f4;
+  --ml:#0e3032;--mt:#8ed4d6;--g:#1e1628;--g2:#2a1f38;--g3:#4a3d58;--t:#f0ebf8;--t2:#a090b8;
 }}
+body{font-family:'DM Sans',sans-serif;color:var(--t);min-height:100vh}
 
-/* ── BASE ── */
-body{font-family:'DM Sans',sans-serif;color:var(--sp-text);background:var(--color-background-primary)}
-.app{padding:1.5rem 1.25rem 3rem;display:none;max-width:680px;margin:0 auto}
-.app.visible{display:block}
-
-/* ── LOGIN ── */
+/* LOGIN */
 .login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:2rem 1rem;background:linear-gradient(135deg,#2d1a42 0%,#1a0d2e 60%,#0d1a2e 100%)}
-.login-card{background:#fff;border-radius:16px;padding:2rem;width:100%;max-width:360px;box-shadow:0 8px 32px rgba(60,30,90,.2)}
-@media(prefers-color-scheme:dark){.login-card{background:#1e1628;border:0.5px solid var(--sp-gray2)}}
-.login-brand{display:flex;align-items:center;gap:10px;justify-content:center;margin-bottom:1.5rem}
-.login-dot{width:40px;height:40px;border-radius:50%;background:var(--sp-violet);display:flex;align-items:center;justify-content:center}
-.login-dot-inner{width:18px;height:18px;border-radius:50%;border:2.5px solid rgba(255,255,255,.9)}
-.login-title{font-size:20px;font-weight:500;color:var(--sp-text);text-align:center;margin-bottom:4px}
-.login-sub{font-size:13px;color:var(--sp-text2);text-align:center;margin-bottom:1.5rem}
-.role-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:1.25rem}
-.role-btn{padding:1rem;border:1px solid var(--sp-gray2);border-radius:12px;background:transparent;cursor:pointer;text-align:center;transition:all .15s;font-family:'DM Sans',sans-serif}
-.role-btn.active{border:2px solid var(--sp-violet);background:var(--sp-violet-light)}
-.role-btn:hover{border-color:var(--sp-violet)}
-.role-icon{font-size:22px;margin-bottom:6px}
-.role-name{font-size:13px;font-weight:500;color:var(--sp-text)}
-.role-desc{font-size:11px;color:var(--sp-text2);margin-top:2px}
-.login-err{font-size:12px;color:#A32D2D;text-align:center;margin-bottom:8px;min-height:16px}
-.pass-wrap{position:relative;margin-bottom:1rem}
-.pass-wrap input{padding-right:40px}
-.pass-eye{position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--sp-text2)}
-.btn-login{width:100%;background:var(--sp-violet);color:#fff;border:none;border-radius:8px;padding:10px;font-size:14px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;margin-bottom:10px}
-.btn-login:hover{background:var(--sp-violet-dark)}
+.login-card{background:#fff;border-radius:16px;padding:2rem;width:100%;max-width:360px;box-shadow:0 8px 32px rgba(60,30,90,.25)}
+@media(prefers-color-scheme:dark){.login-card{background:#1e1628}}
+.ldot{width:40px;height:40px;border-radius:50%;background:var(--v);display:flex;align-items:center;justify-content:center;margin:0 auto 12px}
+.lring{width:18px;height:18px;border-radius:50%;border:2.5px solid rgba(255,255,255,.9)}
+.login-title{font-size:20px;font-weight:500;text-align:center;margin-bottom:4px}
+.login-sub{font-size:13px;color:var(--t2);text-align:center;margin-bottom:1.5rem}
+
+.login-err{font-size:12px;color:#a32d2d;text-align:center;min-height:16px;margin-bottom:8px}
+.pw-wrap{position:relative;margin-bottom:1rem}
+.pw-wrap input{padding-right:40px}
+.pw-eye{position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--t2)}
+.btn-login{width:100%;background:var(--v);color:#fff;border:none;border-radius:8px;padding:10px;font-size:14px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif}
+.btn-login:hover{background:var(--vd)}
 .btn-login:disabled{opacity:.6;cursor:not-allowed}
 
-/* ── TOPBAR / NAV ── */
-.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem}
+/* APP SHELL */
+.app{display:none}
+.app.on{display:block}
+
+/* TOPBAR */
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:12px 1.5rem;border-bottom:0.5px solid #e0d8ec;background:#fff;position:sticky;top:0;z-index:50}
+@media(prefers-color-scheme:dark){.topbar{background:#1e1628;border-color:#2a1f38}}
 .brand{display:flex;align-items:center;gap:10px}
-.brand-dot{width:32px;height:32px;border-radius:50%;background:var(--sp-violet);display:flex;align-items:center;justify-content:center}
-.brand-ring{width:14px;height:14px;border-radius:50%;border:2px solid rgba(255,255,255,.9)}
-.brand-name{font-size:18px;font-weight:500;color:var(--sp-text)}
-.brand-sub{font-size:12px;color:var(--sp-text2);margin-top:1px}
-.topbar-right{display:flex;align-items:center;gap:8px}
-.role-pill{display:flex;align-items:center;gap:6px;padding:5px 10px;background:var(--sp-gray);border-radius:20px;font-size:12px;color:var(--sp-text2)}
-.role-pill-dot{width:8px;height:8px;border-radius:50%}
-.dot-admin{background:var(--sp-violet)}.dot-manager{background:var(--sp-blue)}
-.btn-logout{background:none;border:0.5px solid var(--color-border-secondary);border-radius:8px;padding:5px 10px;font-size:12px;color:var(--sp-text2);cursor:pointer;font-family:'DM Sans',sans-serif}
-.btn-logout:hover{background:var(--sp-gray)}
-.nav{display:flex;border:0.5px solid var(--color-border-tertiary);border-radius:12px;overflow:hidden;background:var(--sp-gray);margin-bottom:1.5rem}
-.nb{flex:1;padding:8px 3px;border:none;background:transparent;font-size:11px;color:var(--sp-text2);cursor:pointer;border-right:0.5px solid var(--color-border-tertiary);display:flex;align-items:center;justify-content:center;gap:4px;transition:all .15s;font-family:'DM Sans',sans-serif}
-.nb:last-child{border-right:none}
-.nb.on{background:var(--color-background-primary);color:var(--sp-violet-dark);font-weight:500}
-.sec{display:none}
-.sec.on{display:block}
+.bdot{width:30px;height:30px;border-radius:50%;background:var(--v);display:flex;align-items:center;justify-content:center}
+.bring{width:13px;height:13px;border-radius:50%;border:2px solid rgba(255,255,255,.9)}
+.bname{font-family:'DM Serif Display',serif;font-size:18px;color:var(--t)}
+.bsub{font-size:11px;color:var(--t2);margin-top:1px}
+.rpill{display:flex;align-items:center;gap:6px;padding:4px 10px;background:var(--g);border-radius:20px;font-size:12px;color:var(--t2)}
+.rdot{width:7px;height:7px;border-radius:50%}
+.ra{background:var(--v)}.rm{background:var(--b)}
+.btn-out{background:none;border:0.5px solid #e0d8ec;border-radius:8px;padding:5px 10px;font-size:12px;color:var(--t2);cursor:pointer;font-family:'DM Sans',sans-serif}
 
-/* ── READONLY BAR ── */
-.readonly-bar{background:var(--sp-blue-light);border:0.5px solid var(--sp-blue);border-radius:10px;padding:.6rem 1rem;margin-bottom:1rem;display:flex;align-items:center;gap:8px;font-size:13px;color:var(--sp-blue-text)}
+/* NAV TABS */
+.nav{display:flex;background:var(--g);border-bottom:0.5px solid #e0d8ec;overflow-x:auto}
+.nb{flex:1;min-width:80px;padding:10px 4px;font-size:11px;color:var(--t2);border:none;background:transparent;cursor:pointer;border-bottom:2px solid transparent;display:flex;align-items:center;justify-content:center;gap:4px;font-family:'DM Sans',sans-serif;transition:all .15s;white-space:nowrap}
+.nb.on{background:#fff;color:var(--vd);border-bottom-color:var(--v);font-weight:500}
+@media(prefers-color-scheme:dark){.nb.on{background:#1e1628}}
 
-/* ── LOADING ── */
-.loading{text-align:center;padding:3rem;color:var(--sp-text2)}
-.spinner{width:32px;height:32px;border:3px solid var(--sp-gray2);border-top-color:var(--sp-violet);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 12px}
-@keyframes spin{to{transform:rotate(360deg)}}
+/* SECTIONS */
+.main{padding:1.5rem;max-width:1000px;margin:0 auto}
+.sec{display:none}.sec.on{display:block}
 
-/* ── CARDS / LAYOUT ── */
+/* CARDS / LAYOUT */
+.card{background:#fff;border:0.5px solid #e0d8ec;border-radius:12px;padding:1rem 1.25rem;margin-bottom:12px}
+@media(prefers-color-scheme:dark){.card{background:#1e1628;border-color:#2a1f38}}
+.cttl{font-size:11px;font-weight:500;color:var(--t2);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.cttl i{color:var(--v)}
 .g2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
 .g4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:1.25rem}
-.card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:12px;padding:1rem 1.1rem;margin-bottom:12px}
-.card-ttl{font-size:11px;font-weight:500;color:var(--sp-text2);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px;display:flex;align-items:center;gap:6px}
-.card-ttl i{color:var(--sp-violet)}
-.met{background:var(--sp-gray);border-radius:10px;padding:.75rem 1rem}
-.met-l{font-size:11px;color:var(--sp-text2);margin-bottom:4px}
-.met-v{font-size:22px;font-weight:500;color:var(--sp-text);display:flex;align-items:center;gap:6px}
-.met-acc{width:3px;height:28px;border-radius:2px;flex-shrink:0}
+.met{background:var(--g);border-radius:10px;padding:.75rem 1rem}
+.met-l{font-size:11px;color:var(--t2);margin-bottom:4px}
+.met-v{font-size:22px;font-weight:500;color:var(--t);display:flex;align-items:center;gap:6px}
+.acc{width:3px;height:26px;border-radius:2px;flex-shrink:0}
 .badge{display:inline-flex;align-items:center;gap:3px;padding:2px 9px;border-radius:20px;font-size:11px;font-weight:500}
-.b-violet{background:var(--sp-violet-light);color:var(--sp-violet-text)}
-.b-blue{background:var(--sp-blue-light);color:var(--sp-blue-text)}
-.b-mint{background:var(--sp-mint-light);color:var(--sp-mint-text)}
-.b-black{background:var(--sp-gray2);color:var(--sp-text)}
-.b-red{background:#FCEBEB;color:#A32D2D}.b-amb{background:#FAEEDA;color:#854F0B}
-@media(prefers-color-scheme:dark){.b-red{background:#501313;color:#F7C1C1}.b-amb{background:#412402;color:#FAC775}}
+.bv{background:var(--vl);color:var(--vt)}.bb{background:var(--bl);color:var(--bt)}
+.bm{background:var(--ml);color:var(--mt)}.bg{background:var(--g2);color:var(--t2)}
+.br{background:#fcebeb;color:#a32d2d}.ba{background:#faeeda;color:#854f0b}
+@media(prefers-color-scheme:dark){.br{background:#501313;color:#f7c1c1}.ba{background:#412402;color:#fac775}}
+.bar-w{display:flex;align-items:center;gap:8px;margin-bottom:7px}
+.bar-l{font-size:11px;color:var(--t2);min-width:130px;text-align:right}
+.bar-o{flex:1;background:var(--g2);border-radius:4px;height:12px;overflow:hidden}
+.bar-i{height:100%;border-radius:4px}
+.bar-v{font-size:11px;color:var(--t2);min-width:28px}
+.dest{background:var(--vl);border-left:3px solid var(--v);border-radius:0 8px 8px 0;padding:.7rem 1rem;margin-bottom:7px;font-size:13px;color:var(--vt);line-height:1.5}
+.item{display:flex;gap:8px;align-items:flex-start;margin-bottom:7px;font-size:13px;color:var(--t);line-height:1.5}
 .dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;margin-top:5px}
-.dv{background:var(--sp-violet)}.db{background:var(--sp-blue)}.dm{background:var(--sp-mint)}.dr{background:#E24B4A}
-.item{display:flex;gap:8px;align-items:flex-start;margin-bottom:7px;font-size:13px;color:var(--sp-text);line-height:1.5}
-.item:last-child{margin-bottom:0}
-.divider{border:none;border-top:0.5px solid var(--color-border-tertiary);margin:1rem 0}
-.empty{text-align:center;padding:2rem;color:var(--sp-text2);font-size:14px}
-.bar-wrap{display:flex;align-items:center;gap:8px;margin-bottom:7px}
-.bar-lbl{font-size:11px;color:var(--sp-text2);min-width:130px;text-align:right}
-.bar-out{flex:1;background:var(--sp-gray2);border-radius:4px;height:12px;overflow:hidden}
-.bar-in{height:100%;border-radius:4px;transition:width .5s}
-.bar-val{font-size:11px;color:var(--sp-text2);min-width:28px}
-.destaque-card{background:var(--sp-violet-light);border-left:3px solid var(--sp-violet);border-radius:0 8px 8px 0;padding:.7rem 1rem;margin-bottom:7px}
-.destaque-txt{font-size:13px;color:var(--sp-violet-text);line-height:1.5}
-.erow{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:10px;padding:.75rem 1rem;margin-bottom:8px;display:flex;align-items:center;gap:10px;cursor:pointer;transition:border-color .15s}
-.erow:hover{border-color:var(--sp-violet)}
-.er-l{flex:1;min-width:0}
-.er-name{font-size:14px;font-weight:500;color:var(--sp-text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.er-sub{font-size:12px;color:var(--sp-text2);margin-top:2px}
-.er-r{display:flex;align-items:center;gap:6px;flex-shrink:0;flex-wrap:wrap;justify-content:flex-end}
-.score-pill{display:inline-flex;align-items:center;gap:3px;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500}
-.sp-pre{background:var(--sp-blue-light);color:var(--sp-blue-text)}
-.sp-live{background:var(--sp-violet-light);color:var(--sp-violet-text)}
-.sp-post{background:var(--sp-mint-light);color:var(--sp-mint-text)}
-.sp-prod{background:var(--sp-mint-light);color:var(--sp-mint-text)}
-.sp-cuen{background:var(--sp-violet-light);color:var(--sp-violet-text)}
-.chip-grp{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1rem}
-.chip{padding:4px 12px;border-radius:20px;font-size:12px;border:0.5px solid var(--color-border-secondary);background:transparent;color:var(--sp-text2);cursor:pointer;transition:all .15s;font-family:'DM Sans',sans-serif}
-.chip.on{background:var(--sp-violet);color:#fff;border-color:var(--sp-violet)}
-
-/* ── FORM ── */
-label{font-size:13px;color:var(--sp-text2);display:block;margin-bottom:4px;margin-top:12px}
-label:first-child{margin-top:0}
-input,select,textarea{width:100%;font-family:'DM Sans',sans-serif;font-size:14px;border:0.5px solid var(--color-border-secondary);border-radius:8px;padding:8px 12px;background:var(--color-background-primary);color:var(--sp-text)}
-textarea{resize:vertical;min-height:60px}
-input:focus,select:focus,textarea:focus{outline:none;border-color:var(--sp-violet)}
-.btn-p{background:var(--sp-violet);color:#fff;border:none;border-radius:8px;padding:9px 20px;font-size:14px;font-weight:500;cursor:pointer;width:100%;margin-top:16px;font-family:'DM Sans',sans-serif}
-.btn-p:hover{background:var(--sp-violet-dark)}
-.btn-p:disabled{opacity:.6;cursor:not-allowed}
-.btn-s{padding:5px 12px;font-size:12px;background:transparent;color:var(--sp-text2);border:0.5px solid var(--color-border-secondary);border-radius:8px;cursor:pointer;font-family:'DM Sans',sans-serif}
-.btn-s:hover{background:var(--sp-gray)}
-.btn-d{background:#FCEBEB;color:#A32D2D;border:none;border-radius:8px;padding:5px 12px;font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif}
-@media(prefers-color-scheme:dark){.btn-d{background:#501313;color:#F7C1C1}}
-.stars{display:flex;gap:3px}
-.star{font-size:20px;cursor:pointer;color:var(--sp-gray2);transition:color .1s;user-select:none}
-.star.on{color:var(--sp-violet)}
-.rstar{font-size:18px;cursor:pointer;color:var(--sp-gray2);transition:color .1s;user-select:none;line-height:1}
-.rstar.on{color:var(--sp-violet)}
-.rating-row{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:0.5px solid var(--color-border-tertiary)}
-.rating-row:last-child{border-bottom:none}
-.rating-label{flex:1;font-size:13px;color:var(--sp-text)}
-.rating-stars{display:flex;gap:2px;flex-shrink:0}
-.na-note{font-size:11px;color:var(--sp-text2);font-style:italic;margin-top:2px}
-.etapa-block{border:0.5px solid var(--color-border-tertiary);border-radius:12px;padding:1rem 1.1rem;margin-bottom:1rem}
-.etapa-header{display:flex;align-items:center;gap:10px;margin-bottom:12px}
-.etapa-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.etapa-icon-pre{background:var(--sp-blue-light)}
-.etapa-icon-live{background:var(--sp-violet-light)}
-.etapa-icon-post{background:var(--sp-mint-light)}
-.etapa-title{font-size:14px;font-weight:500;color:var(--sp-text)}
-.etapa-subtitle{font-size:12px;color:var(--sp-text2);margin-top:1px}
-.area-block{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:1rem}
-.area-card{border:0.5px solid var(--color-border-tertiary);border-radius:12px;padding:1rem}
-.area-header{display:flex;align-items:center;gap:8px;margin-bottom:12px}
-.area-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center}
-.area-icon-prod{background:var(--sp-mint-light)}.area-icon-cuen{background:var(--sp-violet-light)}
-.area-title{font-size:13px;font-weight:500;color:var(--sp-text)}
-.form-section-label{font-size:11px;font-weight:500;color:var(--sp-text2);text-transform:uppercase;letter-spacing:.06em;margin:16px 0 10px;display:flex;align-items:center;gap:6px}
-.form-section-label i{color:var(--sp-violet)}
-.partic-chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
-.pc{display:flex;align-items:center;gap:5px;padding:4px 10px;border-radius:20px;font-size:12px;border:0.5px solid var(--color-border-secondary);color:var(--sp-text2);cursor:pointer;background:transparent;transition:all .15s;font-family:'DM Sans',sans-serif}
-.pc.sel{background:var(--sp-violet);color:#fff;border-color:var(--sp-violet)}
-
-/* ── MODAL ── */
-.modal-bg{display:none}
-.modal-bg.open{display:block}
-.modal{background:var(--color-background-primary);padding:1.5rem;width:100%;max-width:680px;margin:0 auto}
-.page-view{display:none}
-.page-view.open{display:block;position:fixed;top:0;left:0;right:0;bottom:0;width:100vw;height:100vh;background:var(--color-background-primary);z-index:99999;overflow-y:auto;overflow-x:hidden}
-.page-header{display:flex;align-items:center;gap:12px;padding:1rem 1.5rem;border-bottom:0.5px solid var(--color-border-tertiary);position:sticky;top:0;background:var(--color-background-primary);z-index:10}
-.page-header-brand{display:flex;align-items:center;gap:8px}
-.page-header-dot{width:24px;height:24px;border-radius:50%;background:var(--sp-violet);display:flex;align-items:center;justify-content:center}
-.page-header-ring{width:10px;height:10px;border-radius:50%;border:2px solid rgba(255,255,255,.9)}
-.page-back{background:var(--sp-gray);border:none;border-radius:8px;padding:6px 14px;font-size:12px;color:var(--sp-text2);cursor:pointer;font-family:"DM Sans",sans-serif;display:flex;align-items:center;gap:5px;margin-left:auto}
-.page-back:hover{background:var(--sp-gray2)}
-.page-body{padding:1.5rem;max-width:680px;margin:0 auto}
-.modal-bg.open{display:flex}
-.modal-topbar{display:flex;align-items:center;justify-content:space-between;padding:12px 1.5rem;border-bottom:0.5px solid var(--color-border-tertiary);background:var(--color-background-primary);position:sticky;top:0;z-index:20;width:100%}
-.modal-topbar-brand{display:flex;align-items:center;gap:8px}
-.modal-topbar-dot{width:24px;height:24px;border-radius:50%;background:var(--sp-violet);display:flex;align-items:center;justify-content:center}
-.modal-topbar-ring{width:10px;height:10px;border-radius:50%;border:2px solid rgba(255,255,255,.9)}
-.modal-topbar-name{font-size:15px;font-weight:500;color:var(--sp-text)}
-.modal{background:var(--color-background-primary);border-radius:0;border:none;padding:1.5rem;width:100%;max-width:680px;min-height:100vh;margin:0 auto}
-.modal-title{font-size:16px;font-weight:500;color:var(--sp-text);margin-bottom:1.5rem;display:flex;justify-content:space-between;align-items:center;padding:1rem 0;border-bottom:0.5px solid var(--color-border-tertiary);position:sticky;top:0;background:var(--color-background-primary);z-index:10}
-.modal-close{background:var(--sp-gray);border:none;font-size:13px;cursor:pointer;color:var(--sp-text2);line-height:1;padding:6px 14px;border-radius:8px;font-family:"DM Sans",sans-serif;display:flex;align-items:center;gap:5px}
-.stabs{display:flex;border:0.5px solid var(--color-border-tertiary);border-radius:8px;overflow:hidden;background:var(--sp-gray);margin-bottom:1.25rem}
-.stab{flex:1;padding:7px 4px;border:none;background:transparent;font-size:12px;color:var(--sp-text2);cursor:pointer;border-right:0.5px solid var(--color-border-tertiary);font-family:'DM Sans',sans-serif}
+.dv{background:var(--v)}.db{background:var(--b)}.dm{background:var(--m)}.dr{background:#e24b4a}
+.empty{text-align:center;padding:2rem;color:var(--t2);font-size:14px}
+.loading{text-align:center;padding:3rem;color:var(--t2)}
+.spinner{width:28px;height:28px;border:3px solid var(--g2);border-top-color:var(--v);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 10px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.divider{border:none;border-top:0.5px solid #e0d8ec;margin:1rem 0}
+@media(prefers-color-scheme:dark){.divider{border-color:#2a1f38}}
+.chip-g{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1rem}
+.chip{padding:4px 12px;border-radius:20px;font-size:12px;border:0.5px solid #e0d8ec;background:transparent;color:var(--t2);cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .15s}
+.chip.on{background:var(--v);color:#fff;border-color:var(--v)}
+.erow{background:#fff;border:0.5px solid #e0d8ec;border-radius:10px;padding:.75rem 1rem;margin-bottom:8px;display:flex;align-items:center;gap:10px;cursor:pointer;transition:border-color .15s}
+.erow:hover{border-color:var(--v)}
+@media(prefers-color-scheme:dark){.erow{background:#1e1628;border-color:#2a1f38}}
+.er-n{font-size:14px;font-weight:500;color:var(--t)}
+.er-s{font-size:12px;color:var(--t2);margin-top:2px}
+.sp{display:inline-flex;align-items:center;gap:2px;padding:2px 7px;border-radius:12px;font-size:11px;font-weight:500}
+.sp-pre{background:var(--bl);color:var(--bt)}.sp-live{background:var(--vl);color:var(--vt)}
+.sp-post{background:var(--ml);color:var(--mt)}.sp-prod{background:var(--ml);color:var(--mt)}
+.stabs{display:flex;border:0.5px solid #e0d8ec;border-radius:8px;overflow:hidden;background:var(--g);margin-bottom:1rem}
+@media(prefers-color-scheme:dark){.stabs{border-color:#2a1f38}}
+.stab{flex:1;padding:7px 4px;border:none;background:transparent;font-size:12px;color:var(--t2);cursor:pointer;border-right:0.5px solid #e0d8ec;font-family:'DM Sans',sans-serif;transition:all .15s}
 .stab:last-child{border-right:none}
-.stab.on{background:var(--color-background-primary);color:var(--sp-violet-dark);font-weight:500}
+.stab.on{background:#fff;color:var(--vd);font-weight:500}
+@media(prefers-color-scheme:dark){.stab.on{background:#1e1628}}
 .sv{display:none}.sv.on{display:block}
 
-/* ── EQUIPO ── */
-.contrib-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
-.contrib-card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:12px;padding:1rem;cursor:pointer;transition:border-color .15s}
-.contrib-card:hover{border-color:var(--sp-violet)}
-.contrib-av{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:500;flex-shrink:0}
-.cstats{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;margin-bottom:8px}
-.cstat{background:var(--sp-gray);border-radius:8px;padding:5px 4px;text-align:center}
-.cstat-v{font-size:12px;font-weight:500;color:var(--sp-text)}
-.cstat-l{font-size:9px;color:var(--sp-text2);margin-top:1px}
-.pill-f{background:var(--sp-violet-light);color:var(--sp-violet-text);font-size:11px;padding:2px 8px;border-radius:12px}
-.pill-o{background:var(--sp-blue-light);color:var(--sp-blue-text);font-size:11px;padding:2px 8px;border-radius:12px}
-.perf-bar{display:flex;align-items:center;gap:8px;margin-bottom:6px}
-.perf-lbl{font-size:12px;color:var(--sp-text2);min-width:120px}
-.perf-out{flex:1;background:var(--sp-gray2);border-radius:4px;height:10px;overflow:hidden}
-.perf-in{height:100%;border-radius:4px}
-.perf-val{font-size:12px;color:var(--sp-text2);min-width:24px;text-align:right}
-.forte-item{display:flex;gap:8px;align-items:flex-start;padding:7px 0;border-bottom:0.5px solid var(--color-border-tertiary)}
-.forte-item:last-child{border-bottom:none}
-.forte-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:4px}
-.forte-txt{font-size:13px;color:var(--sp-text);flex:1;line-height:1.5}
-.forte-source{font-size:11px;color:var(--sp-text2);margin-top:2px}
+/* FORM */
+label{font-size:13px;color:var(--t2);display:block;margin-bottom:4px;margin-top:12px}
+input,select,textarea{width:100%;font-family:'DM Sans',sans-serif;font-size:14px;border:0.5px solid #e0d8ec;border-radius:8px;padding:8px 12px;background:#fff;color:var(--t)}
+@media(prefers-color-scheme:dark){input,select,textarea{background:#1e1628;border-color:#2a1f38}}
+textarea{resize:vertical;min-height:60px}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--v)}
+.fs-ttl{font-size:13px;font-weight:500;color:var(--t);margin:1.25rem 0 10px;padding-bottom:8px;border-bottom:0.5px solid #e0d8ec;display:flex;align-items:center;gap:6px}
+.fs-ttl i{color:var(--v);font-size:15px}
+.btn-p{background:var(--v);color:#fff;border:none;border-radius:8px;padding:9px 20px;font-size:14px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;display:inline-flex;align-items:center;gap:6px}
+.btn-p:hover{background:var(--vd)}.btn-p:disabled{opacity:.6;cursor:not-allowed}
+.btn-s{background:transparent;color:var(--t2);border:0.5px solid #e0d8ec;border-radius:8px;padding:7px 14px;font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif;display:inline-flex;align-items:center;gap:5px}
+.btn-s:hover{background:var(--g)}
+.btn-d{background:#fcebeb;color:#a32d2d;border:none;border-radius:8px;padding:7px 14px;font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif}
+.stars{display:flex;gap:3px}
+.star{font-size:22px;cursor:pointer;color:var(--g2)}.star.on{color:var(--v)}
+.rstar{font-size:18px;cursor:pointer;color:var(--g2)}.rstar.on{color:var(--v)}
+.rrow{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:0.5px solid #e0d8ec}
+.rrow:last-child{border-bottom:none}
+.rrow-l{flex:1;font-size:13px;color:var(--t)}
+.rrow-na{font-size:10px;color:var(--t2);font-style:italic}
+.etapa-block{border:0.5px solid #e0d8ec;border-radius:12px;padding:1rem;margin-bottom:1rem}
+.etapa-hdr{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.etapa-ico{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.eico-pre{background:var(--bl)}.eico-live{background:var(--vl)}.eico-post{background:var(--ml)}
+.etapa-ttl{font-size:14px;font-weight:500;color:var(--t)}
+.etapa-sub{font-size:12px;color:var(--t2);margin-top:1px}
+.partic-c{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0}
+.pc{padding:5px 12px;border-radius:20px;font-size:12px;border:0.5px solid #e0d8ec;color:var(--t2);cursor:pointer;background:transparent;font-family:'DM Sans',sans-serif;transition:all .15s}
+.pc.on{background:var(--v);color:#fff;border-color:var(--v)}
+.team-c{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
+.tc{padding:5px 12px;border-radius:20px;font-size:12px;border:0.5px solid #e0d8ec;color:var(--t2);cursor:pointer;background:transparent;font-family:'DM Sans',sans-serif;transition:all .15s;display:flex;align-items:center;gap:5px}
+.tc.on{background:var(--v);color:#fff;border-color:var(--v)}
+.av{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:500;flex-shrink:0}
 
-/* ── AI ── */
+/* EQUIPO */
+.cg{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px}
+.cc{background:#fff;border:0.5px solid #e0d8ec;border-radius:12px;padding:1rem;cursor:pointer;transition:border-color .15s}
+.cc:hover{border-color:var(--v)}
+@media(prefers-color-scheme:dark){.cc{background:#1e1628;border-color:#2a1f38}}
+.pstat{background:var(--g);border-radius:10px;padding:.7rem;text-align:center}
+.pstat-v{font-size:18px;font-weight:500;color:var(--t)}
+.pstat-l{font-size:11px;color:var(--t2);margin-top:2px}
+
+/* PAGE VIEW (full screen page) */
+.pv{display:none;position:fixed;inset:0;background:#fff;z-index:9999;overflow-y:auto}
+@media(prefers-color-scheme:dark){.pv{background:#130d1e}}
+.pv.on{display:block}
+.pv-hdr{display:flex;align-items:center;justify-content:space-between;padding:12px 1.5rem;border-bottom:0.5px solid #e0d8ec;position:sticky;top:0;background:#fff;z-index:10}
+@media(prefers-color-scheme:dark){.pv-hdr{background:#130d1e;border-color:#2a1f38}}
+.pv-brand{display:flex;align-items:center;gap:8px}
+.pv-back{background:var(--g);border:none;border-radius:8px;padding:6px 14px;font-size:12px;color:var(--t2);cursor:pointer;font-family:'DM Sans',sans-serif;display:flex;align-items:center;gap:5px}
+.pv-back:hover{background:var(--g2)}
+.pv-body{padding:1.5rem;max-width:680px;margin:0 auto}
+.pv-title{font-size:18px;font-weight:500;color:var(--t);margin-bottom:1.5rem;display:flex;align-items:center;gap:8px}
+.pv-title i{color:var(--v)}
+
+/* AI */
 .ai-wrap{display:flex;flex-direction:column;height:65vh;min-height:400px}
-.ai-header{display:flex;align-items:center;gap:10px;margin-bottom:1rem;padding-bottom:1rem;border-bottom:0.5px solid var(--color-border-tertiary)}
-.ai-avatar{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--sp-violet),var(--sp-blue));display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:18px;color:#fff}
-.ai-messages{flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:10px;margin-bottom:12px;padding-right:4px}
+.ai-hdr{display:flex;align-items:center;gap:10px;margin-bottom:1rem;padding-bottom:1rem;border-bottom:0.5px solid #e0d8ec}
+.ai-av{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--v),var(--b));display:flex;align-items:center;justify-content:center;font-size:18px;color:#fff;flex-shrink:0}
+.ai-msgs{flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:10px;margin-bottom:12px;padding-right:4px}
 .ai-msg{display:flex;gap:8px;align-items:flex-start}
 .ai-msg.user{flex-direction:row-reverse}
-.ai-msg-av{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;color:#fff}
-.ai-msg-av.bot{background:linear-gradient(135deg,var(--sp-violet),var(--sp-blue))}
-.ai-msg-av.user{background:var(--sp-gray2);color:var(--sp-text2);font-size:11px;font-weight:600}
-.ai-bubble{max-width:82%;padding:10px 14px;border-radius:12px;font-size:13px;line-height:1.6;color:var(--sp-text)}
-.ai-bubble.bot{background:var(--sp-gray);border-bottom-left-radius:4px}
-.ai-bubble.user{background:var(--sp-violet);color:#fff;border-bottom-right-radius:4px}
-.ai-bubble ul{margin:6px 0 0 16px}
-.ai-bubble li{margin-bottom:3px}
-.ai-bubble strong{font-weight:600}
+.ai-mav{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;color:#fff}
+.ai-mav.bot{background:linear-gradient(135deg,var(--v),var(--b))}
+.ai-mav.user{background:var(--g2);color:var(--t2);font-size:10px;font-weight:600}
+.ai-bub{max-width:82%;padding:10px 14px;border-radius:12px;font-size:13px;line-height:1.6;color:var(--t)}
+.ai-bub.bot{background:var(--g);border-bottom-left-radius:4px}
+.ai-bub.user{background:var(--v);color:#fff;border-bottom-right-radius:4px}
+.ai-bub ul{margin:6px 0 0 16px}.ai-bub li{margin-bottom:3px}
 .ai-sugs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
-.ai-sug{padding:5px 12px;border-radius:20px;border:0.5px solid var(--sp-violet);background:var(--sp-violet-light);color:var(--sp-violet-text);font-size:12px;cursor:pointer;transition:all .15s;font-family:'DM Sans',sans-serif}
-.ai-sug:hover{background:var(--sp-violet);color:#fff}
-.ai-input-row{display:flex;gap:8px;align-items:flex-end}
-.ai-input{flex:1;background:var(--sp-gray);border:0.5px solid var(--color-border-tertiary);border-radius:12px;padding:10px 14px;font-size:13px;color:var(--sp-text);font-family:'DM Sans',sans-serif;resize:none;min-height:44px;max-height:120px;line-height:1.5}
-.ai-input:focus{outline:none;border-color:var(--sp-violet)}
-.ai-send{width:40px;height:40px;border-radius:10px;background:var(--sp-violet);border:none;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.ai-send:hover{background:var(--sp-violet-dark)}
-.ai-send:disabled{opacity:.4;cursor:not-allowed}
-.ai-thinking span{width:6px;height:6px;border-radius:50%;background:var(--sp-violet-dark);animation:blink 1.2s infinite;display:inline-block;margin:0 2px}
-.ai-thinking span:nth-child(2){animation-delay:.2s}
-.ai-thinking span:nth-child(3){animation-delay:.4s}
+.ai-sug{padding:5px 12px;border-radius:20px;border:0.5px solid var(--v);background:var(--vl);color:var(--vt);font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif}
+.ai-sug:hover{background:var(--v);color:#fff}
+.ai-row{display:flex;gap:8px;align-items:flex-end}
+.ai-inp{flex:1;background:var(--g);border:0.5px solid #e0d8ec;border-radius:12px;padding:10px 14px;font-size:13px;color:var(--t);font-family:'DM Sans',sans-serif;resize:none;min-height:44px;max-height:120px}
+.ai-inp:focus{outline:none;border-color:var(--v)}
+.ai-send{width:40px;height:40px;border-radius:10px;background:var(--v);border:none;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.ai-think span{width:6px;height:6px;border-radius:50%;background:var(--vd);animation:blink 1.2s infinite;display:inline-block;margin:0 2px}
+.ai-think span:nth-child(2){animation-delay:.2s}.ai-think span:nth-child(3){animation-delay:.4s}
 @keyframes blink{0%,80%,100%{opacity:.25}40%{opacity:1}}
+.user-chip{display:flex;align-items:center;gap:8px;padding:4px 10px;background:var(--g);border-radius:20px;font-size:12px;color:var(--t2)}
+.user-avatar{width:24px;height:24px;border-radius:50%;object-fit:cover}
+.log-badge{font-size:10px;color:var(--t2);margin-top:2px}
 
-/* ── CIERRE ── */
-.cierre-banner{background:var(--sp-violet-light);border:0.5px solid var(--sp-violet);border-radius:10px;padding:.75rem 1rem;margin-bottom:1rem;display:flex;align-items:center;gap:8px}
-.cierre-banner i{color:var(--sp-violet);font-size:16px;flex-shrink:0}
-.cierre-banner-txt{font-size:13px;color:var(--sp-violet-text);font-weight:500}
-.voice-row{display:flex;gap:10px;margin-bottom:10px;align-items:flex-start}
-.av{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;flex-shrink:0}
-.av-a{background:var(--sp-violet-light);color:var(--sp-violet-text)}
-.av-b{background:var(--sp-blue-light);color:var(--sp-blue-text)}
-.av-c{background:var(--sp-mint-light);color:var(--sp-mint-text)}
-.av-d{background:var(--sp-gray2);color:var(--sp-text2)}
-.quote-text{font-size:13px;color:var(--sp-text2);border-left:2px solid var(--sp-violet);padding-left:8px;margin:4px 0 8px;line-height:1.6}
-.action-r{display:flex;gap:10px;align-items:flex-start;padding:9px 0;border-bottom:0.5px solid var(--color-border-tertiary)}
-.action-r:last-child{border-bottom:none}
-.a-num{font-size:11px;font-weight:500;color:var(--sp-text2);min-width:20px;margin-top:1px}
-.a-body{flex:1}
-.a-title{font-size:13px;color:var(--sp-text);line-height:1.5}
-.pmi{width:6px;height:6px;border-radius:50%;background:var(--sp-violet);margin-top:5px;flex-shrink:0}
-.comp-table{width:100%;border-collapse:collapse;font-size:13px}
-.comp-table td{padding:7px 8px;border-bottom:0.5px solid var(--color-border-tertiary);color:var(--sp-text)}
-.comp-table tr:last-child td{border-bottom:none}
-.comp-table td:first-child{color:var(--sp-text2);font-size:12px}
-.sm{font-size:13px;color:var(--sp-gray3)}.sm.on{color:var(--sp-violet)}
-.mejora-timeline{position:relative;padding-left:20px}
-.mejora-timeline::before{content:'';position:absolute;left:6px;top:8px;bottom:8px;width:1px;background:var(--sp-gray3)}
-.mejora-item{position:relative;margin-bottom:14px}
-.mejora-dot{position:absolute;left:-17px;top:4px;width:10px;height:10px;border-radius:50%;border:2px solid var(--color-background-primary)}
-.md-v{background:var(--sp-violet)}.md-b{background:var(--sp-blue)}
-.pstat{background:var(--sp-gray);border-radius:10px;padding:.7rem .9rem;text-align:center}
-.pstat-v{font-size:18px;font-weight:500;color:var(--sp-text)}
-.pstat-l{font-size:11px;color:var(--sp-text2);margin-top:2px}
-.te{display:flex;gap:10px;padding:8px 0;border-bottom:0.5px solid var(--color-border-tertiary)}
-.te:last-child{border-bottom:none}
-.te-date{font-size:11px;color:var(--sp-text2);min-width:80px;flex-shrink:0;padding-top:2px}
-.trend-up{color:var(--sp-mint-dark);font-size:13px}
-.trend-dn{color:#E24B4A;font-size:13px}
+/* DETAIL */
+.dl{font-size:11px;font-weight:500;color:var(--t2);text-transform:uppercase;letter-spacing:.05em;margin-bottom:5px}
+.dv-hl{background:var(--vl);border-left:3px solid var(--v);border-radius:0 8px 8px 0;padding:10px 14px;font-size:13px;color:var(--vt);line-height:1.6}
+.dv-warn{background:#fcebeb;border-left:3px solid #e24b4a;border-radius:0 8px 8px 0;padding:10px 14px;font-size:13px;color:#a32d2d;line-height:1.6}
+.voice-r{display:flex;gap:10px;margin-bottom:10px;align-items:flex-start}
+.qt{font-size:13px;color:var(--t2);border-left:2px solid var(--v);padding-left:8px;margin:4px 0;line-height:1.6}
+.cierre-banner{background:var(--vl);border:0.5px solid var(--v);border-radius:10px;padding:.75rem 1rem;margin-bottom:1rem;display:flex;align-items:center;gap:8px;font-size:13px;color:var(--vt)}
 </style>
 </head>
 <body>
@@ -299,361 +216,298 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--sp-viole
 <div id="login-screen">
   <div class="login-wrap">
     <div class="login-card">
-      <div class="login-brand">
-        <div class="login-dot"><div class="login-dot-inner"></div></div>
-        <div style="font-family:'DM Serif Display',serif;font-size:20px;color:var(--sp-text)">SAPPIA</div>
-      </div>
-      <div class="login-title">Event Manager</div>
-      <div class="login-sub">Ingresá tu nombre y tu contraseña para continuar</div>
-      <input type="text" id="login-name" placeholder="Tu nombre" style="margin-bottom:14px">
+      <div class="ldot"><div class="lring"></div></div>
+      <div class="login-title">SAPPIA Event Manager</div>
+      <div class="login-sub">Ingresá con tu cuenta @sappia.la</div>
       <div id="login-err" class="login-err"></div>
-      <div class="pass-wrap">
-        <input type="password" id="login-pass" placeholder="Contraseña" onkeydown="if(event.key==='Enter')doLogin()">
-        <button class="pass-eye" onclick="togglePwd()"><i class="ti ti-eye" id="eye-icon"></i></button>
-      </div>
-      <button class="btn-login" id="login-btn" onclick="doLogin()">Ingresar</button>
+      <div id="google-btn" style="display:flex;justify-content:center;margin-top:1rem"></div>
+      <div id="login-loading" style="display:none;text-align:center;padding:1rem;font-size:13px;color:var(--t2)">Verificando...</div>
     </div>
   </div>
 </div>
 
 <!-- APP -->
-<div class="app" id="app-screen">
+<div class="app" id="app">
   <div class="topbar">
-    <div class="brand">
-      <div class="brand-dot"><div class="brand-ring"></div></div>
-      <div><div class="brand-name">SAPPIA</div><div class="brand-sub">Event Manager</div></div>
-    </div>
-    <div class="topbar-right">
-      <div class="role-pill"><div class="role-pill-dot" id="role-dot"></div><span id="role-label-top"></span></div>
-      <button class="btn-logout" onclick="doLogout()"><i class="ti ti-logout"></i> Salir</button>
+    <div class="brand"><div class="bdot"><div class="bring"></div></div><div><div class="bname">SAPPIA</div><div class="bsub">Event Manager</div></div></div>
+    <div style="display:flex;align-items:center;gap:8px">
+      <div class="rpill"><div class="rdot" id="rdot"></div><span id="rlbl"></span></div>
+      <button class="btn-out" onclick="doLogout()"><i class="ti ti-logout"></i> Salir</button>
     </div>
   </div>
-
-  <nav class="nav" id="main-nav">
-    <button class="nb on" onclick="goSec('dashboard',this)"><i class="ti ti-chart-bar" style="font-size:13px"></i> Dashboard</button>
-    <button class="nb" onclick="goSec('historial',this)"><i class="ti ti-calendar" style="font-size:13px"></i> Historial</button>
-    <button class="nb" onclick="goSec('cierres',this)"><i class="ti ti-clipboard-check" style="font-size:13px"></i> Cierres</button>
-    <button class="nb" onclick="goSec('mejoras',this)"><i class="ti ti-trending-up" style="font-size:13px"></i> Mejoras</button>
-    <button class="nb" onclick="goSec('contributors',this)"><i class="ti ti-user-star" style="font-size:13px"></i> Equipo</button>
-    <button class="nb" onclick="goSec('ai',this)"><i class="ti ti-sparkles" style="font-size:13px"></i> IA</button>
-  </nav>
-
-  <div id="admin-actions" style="display:none;margin-bottom:1rem;text-align:right">
-    <button class="btn-s" onclick="openContribForm()" style="margin-right:8px"><i class="ti ti-user-plus"></i> Agregar persona</button>
-    <button class="btn-s" onclick="openNew()" style="background:var(--sp-violet);color:#fff;border-color:var(--sp-violet)"><i class="ti ti-plus"></i> Nuevo evento</button>
+  <div class="nav">
+    <button class="nb on" onclick="goSec('dash',this)"><i class="ti ti-chart-bar" style="font-size:12px"></i> Dashboard</button>
+    <button class="nb" onclick="goSec('hist',this)"><i class="ti ti-calendar" style="font-size:12px"></i> Historial</button>
+    <button class="nb" onclick="goSec('cierres',this)"><i class="ti ti-clipboard-check" style="font-size:12px"></i> Cierres</button>
+    <button class="nb" onclick="goSec('mejoras',this)"><i class="ti ti-trending-up" style="font-size:12px"></i> Mejoras</button>
+    <button class="nb" onclick="goSec('equipo',this)"><i class="ti ti-user-star" style="font-size:12px"></i> Equipo</button>
+    <button class="nb" onclick="goSec('ai',this)"><i class="ti ti-sparkles" style="font-size:12px"></i> IA</button>
   </div>
-
-  <!-- SECCIONES -->
-  <div id="s-dashboard" class="sec on"><div id="dash-content"><div class="loading"><div class="spinner"></div>Cargando datos...</div></div></div>
-  <div id="s-historial" class="sec">
-    <div class="chip-grp">
-      <button class="chip on" onclick="filterH('todos',this)">Todos</button>
-      <button class="chip" onclick="filterH('excelente',this)">Excelente</button>
-      <button class="chip" onclick="filterH('bueno',this)">Bueno</button>
-      <button class="chip" onclick="filterH('mejorar',this)">A mejorar</button>
-      <button class="chip" onclick="filterH('con-cierre',this)">Con cierre</button>
+  <div class="main">
+    <div id="admin-bar" style="display:none;text-align:right;margin-bottom:1rem">
+      <button class="btn-p" onclick="openNewEvento()"><i class="ti ti-plus"></i> Nuevo evento</button>
     </div>
-    <div id="hist-list"></div>
-  </div>
-  <div id="s-cierres" class="sec"><div id="cierre-list"></div></div>
-  <div id="s-mejoras" class="sec">
-    <div class="chip-grp">
-      <button class="chip on" onclick="filterMej('todas',this)">Todo</button>
-      <button class="chip" onclick="filterMej('destacados',this)">Destacados</button>
-      <button class="chip" onclick="filterMej('mejoras',this)">Mejoras</button>
-    </div>
-    <div id="mej-content"></div>
-  </div>
-  <div id="s-contributors" class="sec">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem">
-      <div style="font-size:13px;color:var(--sp-text2)" id="contrib-count"></div>
-      <button class="btn-s" id="add-person-btn" onclick="openContribForm()" style="display:none"><i class="ti ti-user-plus"></i> Agregar persona</button>
-    </div>
-    <div class="contrib-grid" id="contrib-grid"></div>
-  </div>
-  <div id="s-ai" class="sec">
-    <div class="ai-wrap">
-      <div class="ai-header">
-        <div class="ai-avatar">✦</div>
-        <div><div style="font-size:15px;font-weight:500;color:var(--sp-text)">Asistente SAPPIA</div><div style="font-size:12px;color:var(--sp-text2);margin-top:1px">Analizá eventos, pedí insights y generá reportes</div></div>
-        <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--sp-mint-dark);margin-left:auto"><div style="width:7px;height:7px;border-radius:50%;background:var(--sp-mint)"></div>Activo</div>
+    <div id="s-dash" class="sec on"><div id="dash-content"><div class="loading"><div class="spinner"></div>Cargando...</div></div></div>
+    <div id="s-hist" class="sec">
+      <div class="chip-g">
+        <button class="chip on" onclick="filtH('todos',this)">Todos</button>
+        <button class="chip" onclick="filtH('excelente',this)">Excelente</button>
+        <button class="chip" onclick="filtH('bueno',this)">Bueno</button>
+        <button class="chip" onclick="filtH('mejorar',this)">A mejorar</button>
+        <button class="chip" onclick="filtH('cierre',this)">Con cierre</button>
       </div>
-      <div class="ai-messages" id="ai-messages"></div>
-      <div class="ai-sugs" id="ai-suggestions"></div>
-      <div class="ai-input-row">
-        <textarea class="ai-input" id="ai-input" placeholder="Preguntá sobre tus eventos..." rows="1" onkeydown="handleAIKey(event)" oninput="autoResize(this)"></textarea>
-        <button class="ai-send" id="ai-send-btn" onclick="sendAI()"><i class="ti ti-send" style="font-size:16px"></i></button>
+      <div id="hist-list"></div>
+    </div>
+    <div id="s-cierres" class="sec"><div id="cierre-list"></div></div>
+    <div id="s-mejoras" class="sec">
+      <div class="chip-g">
+        <button class="chip on" onclick="filtM('todo',this)">Todo</button>
+        <button class="chip" onclick="filtM('destacados',this)">Destacados</button>
+        <button class="chip" onclick="filtM('mejoras',this)">Mejoras</button>
+      </div>
+      <div id="mej-content"></div>
+    </div>
+    <div id="s-equipo" class="sec">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem">
+        <div style="font-size:13px;color:var(--t2)" id="eq-count"></div>
+        <button class="btn-s" id="btn-add-persona" style="display:none" onclick="openPersonaForm()"><i class="ti ti-user-plus"></i> Agregar persona</button>
+      </div>
+      <div class="cg" id="contrib-grid"></div>
+    </div>
+    <div id="s-ai" class="sec">
+      <div class="ai-wrap">
+        <div class="ai-hdr"><div class="ai-av">✦</div><div><div style="font-size:15px;font-weight:500;color:var(--t)">Asistente SAPPIA</div><div style="font-size:12px;color:var(--t2);margin-top:1px">Análisis de eventos en tiempo real</div></div><div style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--mt);margin-left:auto"><div style="width:7px;height:7px;border-radius:50%;background:var(--m)"></div>Activo</div></div>
+        <div class="ai-msgs" id="ai-msgs"></div>
+        <div class="ai-sugs" id="ai-sugs"></div>
+        <div class="ai-row">
+          <textarea class="ai-inp" id="ai-inp" placeholder="Preguntá sobre tus eventos..." rows="1" onkeydown="handleAIKey(event)" oninput="autoR(this)"></textarea>
+          <button class="ai-send" id="ai-btn" onclick="sendAI()"><i class="ti ti-send" style="font-size:16px"></i></button>
+        </div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- MODAL NUEVO EVENTO -->
-<div class="page-view" id="modal-new"><div class="page-header"><div class="page-header-brand"><div class="page-header-dot"><div class="page-header-ring"></div></div><span style="font-size:15px;font-weight:500;color:var(--sp-text)">SAPPIA</span></div><button class="page-back" onclick="closeM('modal-new')"><i class="ti ti-arrow-left"></i> Volver</button></div><div class="page-body">
-<div class="modal">
-  <div class="modal-title">Registrar evento </div>
-  <div class="g2"><div><label>Nombre *</label><input type="text" id="en-nombre" placeholder="Ej: Gala Fin de Año"></div><div><label>Fecha *</label><input type="date" id="en-fecha"></div></div>
-  <div class="g3"><div><label>Tipo</label><select id="en-tipo"><option>Corporativo</option><option>Lanzamiento</option><option>Congreso</option><option>Gala</option><option>Capacitación</option><option>Social</option><option>Otro</option></select></div><div><label>Cliente</label><input type="text" id="en-cliente"></div><div><label>Asistentes</label><input type="number" id="en-asist" min="0"></div></div>
-  <hr class="divider">
-  <div class="form-section-label"><i class="ti ti-users"></i> Calidad por área</div>
-  <div class="area-block">
-    <div class="area-card"><div class="area-header"><div class="area-icon area-icon-prod"><i class="ti ti-tool" style="font-size:16px;color:var(--sp-mint-dark)"></i></div><div class="area-title">Producción</div></div><div class="stars" id="r-prod" data-v="0"><span class="star" onclick="setR('r-prod',1)">★</span><span class="star" onclick="setR('r-prod',2)">★</span><span class="star" onclick="setR('r-prod',3)">★</span><span class="star" onclick="setR('r-prod',4)">★</span><span class="star" onclick="setR('r-prod',5)">★</span></div></div>
-    <div class="area-card"><div class="area-header"><div class="area-icon area-icon-cuen"><i class="ti ti-currency-dollar" style="font-size:16px;color:var(--sp-violet-dark)"></i></div><div class="area-title">Cuentas</div></div><div class="stars" id="r-cuen" data-v="0"><span class="star" onclick="setR('r-cuen',1)">★</span><span class="star" onclick="setR('r-cuen',2)">★</span><span class="star" onclick="setR('r-cuen',3)">★</span><span class="star" onclick="setR('r-cuen',4)">★</span><span class="star" onclick="setR('r-cuen',5)">★</span></div></div>
+<!-- PAGE: NUEVO EVENTO -->
+<div class="pv" id="pv-evento">
+  <div class="pv-hdr">
+    <div class="pv-brand"><div class="bdot"><div class="bring"></div></div><span style="font-size:14px;font-weight:500;color:var(--t)">SAPPIA</span></div>
+    <button class="pv-back" onclick="closePV('pv-evento')"><i class="ti ti-arrow-left"></i> Volver</button>
   </div>
-  <!-- PREVIA -->
-  <div class="etapa-block">
-    <div class="etapa-header"><div class="etapa-icon etapa-icon-pre"><i class="ti ti-settings" style="font-size:18px;color:var(--sp-blue-dark)"></i></div><div><div class="etapa-title">Previa: Planificación</div><div class="etapa-subtitle">Evaluación de la etapa de preparación</div></div></div>
-    <div style="font-size:11px;font-weight:500;color:var(--sp-text2);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px">Participantes</div>
-    <div id="pre-partic-chips" class="partic-chips"></div>
-    <div style="margin-top:12px">
-      <div class="rating-row"><div class="rating-label">Armado de CC y entrega en tiempo y forma</div><div class="rating-stars" id="pre-cc" data-v="0"><span class="rstar" onclick="setRS('pre-cc',1)">★</span><span class="rstar" onclick="setRS('pre-cc',2)">★</span><span class="rstar" onclick="setRS('pre-cc',3)">★</span><span class="rstar" onclick="setRS('pre-cc',4)">★</span><span class="rstar" onclick="setRS('pre-cc',5)">★</span></div></div>
-      <div class="rating-row"><div class="rating-label">Administración carpeta producción</div><div class="rating-stars" id="pre-carpeta" data-v="0"><span class="rstar" onclick="setRS('pre-carpeta',1)">★</span><span class="rstar" onclick="setRS('pre-carpeta',2)">★</span><span class="rstar" onclick="setRS('pre-carpeta',3)">★</span><span class="rstar" onclick="setRS('pre-carpeta',4)">★</span><span class="rstar" onclick="setRS('pre-carpeta',5)">★</span></div></div>
-      <div class="rating-row"><div class="rating-label">Armado de cashflow y validación</div><div class="rating-stars" id="pre-cashflow" data-v="0"><span class="rstar" onclick="setRS('pre-cashflow',1)">★</span><span class="rstar" onclick="setRS('pre-cashflow',2)">★</span><span class="rstar" onclick="setRS('pre-cashflow',3)">★</span><span class="rstar" onclick="setRS('pre-cashflow',4)">★</span><span class="rstar" onclick="setRS('pre-cashflow',5)">★</span></div></div>
-      <div class="rating-row"><div class="rating-label">Selección de proveedores y negociación</div><div class="rating-stars" id="pre-provee" data-v="0"><span class="rstar" onclick="setRS('pre-provee',1)">★</span><span class="rstar" onclick="setRS('pre-provee',2)">★</span><span class="rstar" onclick="setRS('pre-provee',3)">★</span><span class="rstar" onclick="setRS('pre-provee',4)">★</span><span class="rstar" onclick="setRS('pre-provee',5)">★</span></div></div>
-      <div class="rating-row"><div class="rating-label">Comunicación con el equipo de cuentas</div><div class="rating-stars" id="pre-comun" data-v="0"><span class="rstar" onclick="setRS('pre-comun',1)">★</span><span class="rstar" onclick="setRS('pre-comun',2)">★</span><span class="rstar" onclick="setRS('pre-comun',3)">★</span><span class="rstar" onclick="setRS('pre-comun',4)">★</span><span class="rstar" onclick="setRS('pre-comun',5)">★</span></div></div>
-      <div class="rating-row"><div class="rating-label">Seguimiento con Sr. Producer Manager</div><div class="rating-stars" id="pre-producer" data-v="0"><span class="rstar" onclick="setRS('pre-producer',1)">★</span><span class="rstar" onclick="setRS('pre-producer',2)">★</span><span class="rstar" onclick="setRS('pre-producer',3)">★</span><span class="rstar" onclick="setRS('pre-producer',4)">★</span><span class="rstar" onclick="setRS('pre-producer',5)">★</span></div></div>
+  <div class="pv-body">
+    <div class="pv-title"><i class="ti ti-calendar-plus"></i> Registrar evento</div>
+    <div class="g2"><div><label>Nombre *</label><input type="text" id="en-nombre" placeholder="Ej: Gala Fin de Año"></div><div><label>Fecha *</label><input type="date" id="en-fecha"></div></div>
+    <div class="g3"><div><label>Tipo</label><select id="en-tipo"><option>Corporativo</option><option>Lanzamiento</option><option>Congreso</option><option>Gala</option><option>Capacitación</option><option>Social</option><option>Otro</option></select></div><div><label>Cliente</label><input type="text" id="en-cliente"></div><div><label>Asistentes</label><input type="number" id="en-asist" min="0"></div></div>
+    <div class="divider"></div>
+    <div class="fs-ttl"><i class="ti ti-tool"></i> Calidad por área</div>
+    <div class="g2" style="margin-bottom:1rem">
+      <div style="background:var(--ml);border-radius:12px;padding:1rem"><div style="font-size:12px;color:var(--mt);font-weight:500;margin-bottom:8px">🔧 Producción</div><div class="stars" id="r-prod" data-v="0"><span class="star" onclick="setR('r-prod',1)">★</span><span class="star" onclick="setR('r-prod',2)">★</span><span class="star" onclick="setR('r-prod',3)">★</span><span class="star" onclick="setR('r-prod',4)">★</span><span class="star" onclick="setR('r-prod',5)">★</span></div></div>
+      <div style="background:var(--vl);border-radius:12px;padding:1rem"><div style="font-size:12px;color:var(--vt);font-weight:500;margin-bottom:8px">💰 Cuentas</div><div class="stars" id="r-cuen" data-v="0"><span class="star" onclick="setR('r-cuen',1)">★</span><span class="star" onclick="setR('r-cuen',2)">★</span><span class="star" onclick="setR('r-cuen',3)">★</span><span class="star" onclick="setR('r-cuen',4)">★</span><span class="star" onclick="setR('r-cuen',5)">★</span></div></div>
     </div>
-    <label style="margin-top:12px">Observaciones</label>
-    <textarea id="pre-obs" placeholder="¿Qué funcionó bien? ¿Qué mejorar?"></textarea>
-  </div>
-  <!-- EJECUCIÓN -->
-  <div class="etapa-block">
-    <div class="etapa-header"><div class="etapa-icon etapa-icon-live"><i class="ti ti-player-play" style="font-size:18px;color:var(--sp-violet-dark)"></i></div><div><div class="etapa-title">Evento: Ejecución</div><div class="etapa-subtitle">Operación el día del evento</div></div></div>
-    <div style="font-size:11px;font-weight:500;color:var(--sp-text2);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px">Participantes</div>
-    <div id="live-partic-chips" class="partic-chips"></div>
-    <div style="margin-top:12px">
-      <div class="rating-row"><div class="rating-label">Cronograma de armado y desarme</div><div class="rating-stars" id="live-crono" data-v="0"><span class="rstar" onclick="setRS('live-crono',1)">★</span><span class="rstar" onclick="setRS('live-crono',2)">★</span><span class="rstar" onclick="setRS('live-crono',3)">★</span><span class="rstar" onclick="setRS('live-crono',4)">★</span><span class="rstar" onclick="setRS('live-crono',5)">★</span></div></div>
-      <div class="rating-row"><div class="rating-label"><div>Armado de planos</div><div class="na-note">En caso de ser necesario</div></div><div class="rating-stars" id="live-planos" data-v="0"><span class="rstar" onclick="setRS('live-planos',1)">★</span><span class="rstar" onclick="setRS('live-planos',2)">★</span><span class="rstar" onclick="setRS('live-planos',3)">★</span><span class="rstar" onclick="setRS('live-planos',4)">★</span><span class="rstar" onclick="setRS('live-planos',5)">★</span></div></div>
-      <div class="rating-row"><div class="rating-label"><div>Armado de planilla de diseño</div><div class="na-note">En caso de ser necesario</div></div><div class="rating-stars" id="live-diseno" data-v="0"><span class="rstar" onclick="setRS('live-diseno',1)">★</span><span class="rstar" onclick="setRS('live-diseno',2)">★</span><span class="rstar" onclick="setRS('live-diseno',3)">★</span><span class="rstar" onclick="setRS('live-diseno',4)">★</span><span class="rstar" onclick="setRS('live-diseno',5)">★</span></div></div>
-      <div class="rating-row"><div class="rating-label">Armado de pañol</div><div class="rating-stars" id="live-panol" data-v="0"><span class="rstar" onclick="setRS('live-panol',1)">★</span><span class="rstar" onclick="setRS('live-panol',2)">★</span><span class="rstar" onclick="setRS('live-panol',3)">★</span><span class="rstar" onclick="setRS('live-panol',4)">★</span><span class="rstar" onclick="setRS('live-panol',5)">★</span></div></div>
-      <div class="rating-row"><div class="rating-label">Cumplimiento de roles y desempeño</div><div class="rating-stars" id="live-roles" data-v="0"><span class="rstar" onclick="setRS('live-roles',1)">★</span><span class="rstar" onclick="setRS('live-roles',2)">★</span><span class="rstar" onclick="setRS('live-roles',3)">★</span><span class="rstar" onclick="setRS('live-roles',4)">★</span><span class="rstar" onclick="setRS('live-roles',5)">★</span></div></div>
-      <div class="rating-row"><div class="rating-label">Gestión de proveedores en armado y evento</div><div class="rating-stars" id="live-provee" data-v="0"><span class="rstar" onclick="setRS('live-provee',1)">★</span><span class="rstar" onclick="setRS('live-provee',2)">★</span><span class="rstar" onclick="setRS('live-provee',3)">★</span><span class="rstar" onclick="setRS('live-provee',4)">★</span><span class="rstar" onclick="setRS('live-provee',5)">★</span></div></div>
-      <div class="rating-row"><div class="rating-label">Comunicación con el equipo de cuentas</div><div class="rating-stars" id="live-comun" data-v="0"><span class="rstar" onclick="setRS('live-comun',1)">★</span><span class="rstar" onclick="setRS('live-comun',2)">★</span><span class="rstar" onclick="setRS('live-comun',3)">★</span><span class="rstar" onclick="setRS('live-comun',4)">★</span><span class="rstar" onclick="setRS('live-comun',5)">★</span></div></div>
+    <!-- PREVIA -->
+    <div class="etapa-block">
+      <div class="etapa-hdr"><div class="etapa-ico eico-pre"><i class="ti ti-settings" style="font-size:18px;color:var(--bd)"></i></div><div><div class="etapa-ttl">Previa: Planificación</div><div class="etapa-sub">Participantes en esta etapa</div></div></div>
+      <div class="partic-c" id="pre-partic"></div>
+      <div id="pre-ratings">
+        <div class="rrow"><div class="rrow-l">Armado de CC y entrega en tiempo y forma</div><div style="display:flex;gap:2px" id="rs-pre-cc" data-v="0"><span class="rstar" onclick="setRS('rs-pre-cc',1)">★</span><span class="rstar" onclick="setRS('rs-pre-cc',2)">★</span><span class="rstar" onclick="setRS('rs-pre-cc',3)">★</span><span class="rstar" onclick="setRS('rs-pre-cc',4)">★</span><span class="rstar" onclick="setRS('rs-pre-cc',5)">★</span></div></div>
+        <div class="rrow"><div class="rrow-l">Administración carpeta producción</div><div style="display:flex;gap:2px" id="rs-pre-carp" data-v="0"><span class="rstar" onclick="setRS('rs-pre-carp',1)">★</span><span class="rstar" onclick="setRS('rs-pre-carp',2)">★</span><span class="rstar" onclick="setRS('rs-pre-carp',3)">★</span><span class="rstar" onclick="setRS('rs-pre-carp',4)">★</span><span class="rstar" onclick="setRS('rs-pre-carp',5)">★</span></div></div>
+        <div class="rrow"><div class="rrow-l">Armado de cashflow y validación</div><div style="display:flex;gap:2px" id="rs-pre-cash" data-v="0"><span class="rstar" onclick="setRS('rs-pre-cash',1)">★</span><span class="rstar" onclick="setRS('rs-pre-cash',2)">★</span><span class="rstar" onclick="setRS('rs-pre-cash',3)">★</span><span class="rstar" onclick="setRS('rs-pre-cash',4)">★</span><span class="rstar" onclick="setRS('rs-pre-cash',5)">★</span></div></div>
+        <div class="rrow"><div class="rrow-l">Selección de proveedores y negociación</div><div style="display:flex;gap:2px" id="rs-pre-prov" data-v="0"><span class="rstar" onclick="setRS('rs-pre-prov',1)">★</span><span class="rstar" onclick="setRS('rs-pre-prov',2)">★</span><span class="rstar" onclick="setRS('rs-pre-prov',3)">★</span><span class="rstar" onclick="setRS('rs-pre-prov',4)">★</span><span class="rstar" onclick="setRS('rs-pre-prov',5)">★</span></div></div>
+        <div class="rrow"><div class="rrow-l">Comunicación con el equipo de cuentas</div><div style="display:flex;gap:2px" id="rs-pre-com" data-v="0"><span class="rstar" onclick="setRS('rs-pre-com',1)">★</span><span class="rstar" onclick="setRS('rs-pre-com',2)">★</span><span class="rstar" onclick="setRS('rs-pre-com',3)">★</span><span class="rstar" onclick="setRS('rs-pre-com',4)">★</span><span class="rstar" onclick="setRS('rs-pre-com',5)">★</span></div></div>
+        <div class="rrow"><div class="rrow-l">Seguimiento con Sr. Producer Manager</div><div style="display:flex;gap:2px" id="rs-pre-prod" data-v="0"><span class="rstar" onclick="setRS('rs-pre-prod',1)">★</span><span class="rstar" onclick="setRS('rs-pre-prod',2)">★</span><span class="rstar" onclick="setRS('rs-pre-prod',3)">★</span><span class="rstar" onclick="setRS('rs-pre-prod',4)">★</span><span class="rstar" onclick="setRS('rs-pre-prod',5)">★</span></div></div>
+      </div>
+      <label>Observaciones</label><textarea id="obs-pre" placeholder="¿Qué funcionó bien? ¿Qué mejorar?"></textarea>
     </div>
-    <label style="margin-top:12px">Observaciones</label>
-    <textarea id="live-obs" placeholder="¿Qué funcionó bien? ¿Qué mejorar?"></textarea>
-  </div>
-  <!-- POST -->
-  <div class="etapa-block">
-    <div class="etapa-header"><div class="etapa-icon etapa-icon-post"><i class="ti ti-file-invoice" style="font-size:18px;color:var(--sp-mint-dark)"></i></div><div><div class="etapa-title">Post: Cierre de evento</div><div class="etapa-subtitle">Cierre administrativo y operativo</div></div></div>
-    <div style="margin-top:4px">
-      <div class="rating-row"><div class="rating-label">Cierre de la CC — actualización de valores</div><div class="rating-stars" id="post-cc" data-v="0"><span class="rstar" onclick="setRS('post-cc',1)">★</span><span class="rstar" onclick="setRS('post-cc',2)">★</span><span class="rstar" onclick="setRS('post-cc',3)">★</span><span class="rstar" onclick="setRS('post-cc',4)">★</span><span class="rstar" onclick="setRS('post-cc',5)">★</span></div></div>
-      <div class="rating-row"><div class="rating-label">Seguimiento de facturas pendientes</div><div class="rating-stars" id="post-facturas" data-v="0"><span class="rstar" onclick="setRS('post-facturas',1)">★</span><span class="rstar" onclick="setRS('post-facturas',2)">★</span><span class="rstar" onclick="setRS('post-facturas',3)">★</span><span class="rstar" onclick="setRS('post-facturas',4)">★</span><span class="rstar" onclick="setRS('post-facturas',5)">★</span></div></div>
-      <div class="rating-row"><div class="rating-label">Envío de cierre a administración</div><div class="rating-stars" id="post-envio" data-v="0"><span class="rstar" onclick="setRS('post-envio',1)">★</span><span class="rstar" onclick="setRS('post-envio',2)">★</span><span class="rstar" onclick="setRS('post-envio',3)">★</span><span class="rstar" onclick="setRS('post-envio',4)">★</span><span class="rstar" onclick="setRS('post-envio',5)">★</span></div></div>
-      <div class="rating-row"><div class="rating-label">Cargado de facturas en planilla y carpeta</div><div class="rating-stars" id="post-cargado" data-v="0"><span class="rstar" onclick="setRS('post-cargado',1)">★</span><span class="rstar" onclick="setRS('post-cargado',2)">★</span><span class="rstar" onclick="setRS('post-cargado',3)">★</span><span class="rstar" onclick="setRS('post-cargado',4)">★</span><span class="rstar" onclick="setRS('post-cargado',5)">★</span></div></div>
-      <div class="rating-row"><div class="rating-label">Comunicación con cuentas por extras</div><div class="rating-stars" id="post-extras" data-v="0"><span class="rstar" onclick="setRS('post-extras',1)">★</span><span class="rstar" onclick="setRS('post-extras',2)">★</span><span class="rstar" onclick="setRS('post-extras',3)">★</span><span class="rstar" onclick="setRS('post-extras',4)">★</span><span class="rstar" onclick="setRS('post-extras',5)">★</span></div></div>
+    <!-- EJECUCIÓN -->
+    <div class="etapa-block">
+      <div class="etapa-hdr"><div class="etapa-ico eico-live"><i class="ti ti-player-play" style="font-size:18px;color:var(--vd)"></i></div><div><div class="etapa-ttl">Evento: Ejecución</div><div class="etapa-sub">Participantes en esta etapa</div></div></div>
+      <div class="partic-c" id="live-partic"></div>
+      <div id="live-ratings">
+        <div class="rrow"><div class="rrow-l">Cronograma de armado y desarme</div><div style="display:flex;gap:2px" id="rs-live-crono" data-v="0"><span class="rstar" onclick="setRS('rs-live-crono',1)">★</span><span class="rstar" onclick="setRS('rs-live-crono',2)">★</span><span class="rstar" onclick="setRS('rs-live-crono',3)">★</span><span class="rstar" onclick="setRS('rs-live-crono',4)">★</span><span class="rstar" onclick="setRS('rs-live-crono',5)">★</span></div></div>
+        <div class="rrow"><div class="rrow-l"><div>Armado de planos</div><div class="rrow-na">Si aplica</div></div><div style="display:flex;gap:2px" id="rs-live-planos" data-v="0"><span class="rstar" onclick="setRS('rs-live-planos',1)">★</span><span class="rstar" onclick="setRS('rs-live-planos',2)">★</span><span class="rstar" onclick="setRS('rs-live-planos',3)">★</span><span class="rstar" onclick="setRS('rs-live-planos',4)">★</span><span class="rstar" onclick="setRS('rs-live-planos',5)">★</span></div></div>
+        <div class="rrow"><div class="rrow-l"><div>Armado de planilla de diseño</div><div class="rrow-na">Si aplica</div></div><div style="display:flex;gap:2px" id="rs-live-diseno" data-v="0"><span class="rstar" onclick="setRS('rs-live-diseno',1)">★</span><span class="rstar" onclick="setRS('rs-live-diseno',2)">★</span><span class="rstar" onclick="setRS('rs-live-diseno',3)">★</span><span class="rstar" onclick="setRS('rs-live-diseno',4)">★</span><span class="rstar" onclick="setRS('rs-live-diseno',5)">★</span></div></div>
+        <div class="rrow"><div class="rrow-l">Armado de pañol</div><div style="display:flex;gap:2px" id="rs-live-panol" data-v="0"><span class="rstar" onclick="setRS('rs-live-panol',1)">★</span><span class="rstar" onclick="setRS('rs-live-panol',2)">★</span><span class="rstar" onclick="setRS('rs-live-panol',3)">★</span><span class="rstar" onclick="setRS('rs-live-panol',4)">★</span><span class="rstar" onclick="setRS('rs-live-panol',5)">★</span></div></div>
+        <div class="rrow"><div class="rrow-l">Cumplimiento de roles y desempeño</div><div style="display:flex;gap:2px" id="rs-live-roles" data-v="0"><span class="rstar" onclick="setRS('rs-live-roles',1)">★</span><span class="rstar" onclick="setRS('rs-live-roles',2)">★</span><span class="rstar" onclick="setRS('rs-live-roles',3)">★</span><span class="rstar" onclick="setRS('rs-live-roles',4)">★</span><span class="rstar" onclick="setRS('rs-live-roles',5)">★</span></div></div>
+        <div class="rrow"><div class="rrow-l">Gestión de proveedores en armado y evento</div><div style="display:flex;gap:2px" id="rs-live-prov" data-v="0"><span class="rstar" onclick="setRS('rs-live-prov',1)">★</span><span class="rstar" onclick="setRS('rs-live-prov',2)">★</span><span class="rstar" onclick="setRS('rs-live-prov',3)">★</span><span class="rstar" onclick="setRS('rs-live-prov',4)">★</span><span class="rstar" onclick="setRS('rs-live-prov',5)">★</span></div></div>
+        <div class="rrow"><div class="rrow-l">Comunicación con el equipo de cuentas</div><div style="display:flex;gap:2px" id="rs-live-com" data-v="0"><span class="rstar" onclick="setRS('rs-live-com',1)">★</span><span class="rstar" onclick="setRS('rs-live-com',2)">★</span><span class="rstar" onclick="setRS('rs-live-com',3)">★</span><span class="rstar" onclick="setRS('rs-live-com',4)">★</span><span class="rstar" onclick="setRS('rs-live-com',5)">★</span></div></div>
+      </div>
+      <label>Observaciones</label><textarea id="obs-live" placeholder="¿Qué funcionó bien? ¿Qué mejorar?"></textarea>
     </div>
-    <label style="margin-top:12px">Observaciones</label>
-    <textarea id="post-obs" placeholder="¿Qué quedó pendiente? ¿Qué mejorar?"></textarea>
+    <!-- POST -->
+    <div class="etapa-block">
+      <div class="etapa-hdr"><div class="etapa-ico eico-post"><i class="ti ti-file-invoice" style="font-size:18px;color:var(--md)"></i></div><div><div class="etapa-ttl">Post: Cierre de evento</div><div class="etapa-sub">Cierre administrativo y operativo</div></div></div>
+      <div class="rrow"><div class="rrow-l">Cierre de la CC — actualización de valores</div><div style="display:flex;gap:2px" id="rs-post-cc" data-v="0"><span class="rstar" onclick="setRS('rs-post-cc',1)">★</span><span class="rstar" onclick="setRS('rs-post-cc',2)">★</span><span class="rstar" onclick="setRS('rs-post-cc',3)">★</span><span class="rstar" onclick="setRS('rs-post-cc',4)">★</span><span class="rstar" onclick="setRS('rs-post-cc',5)">★</span></div></div>
+      <div class="rrow"><div class="rrow-l">Seguimiento de facturas pendientes</div><div style="display:flex;gap:2px" id="rs-post-fact" data-v="0"><span class="rstar" onclick="setRS('rs-post-fact',1)">★</span><span class="rstar" onclick="setRS('rs-post-fact',2)">★</span><span class="rstar" onclick="setRS('rs-post-fact',3)">★</span><span class="rstar" onclick="setRS('rs-post-fact',4)">★</span><span class="rstar" onclick="setRS('rs-post-fact',5)">★</span></div></div>
+      <div class="rrow"><div class="rrow-l">Envío de cierre a administración</div><div style="display:flex;gap:2px" id="rs-post-envio" data-v="0"><span class="rstar" onclick="setRS('rs-post-envio',1)">★</span><span class="rstar" onclick="setRS('rs-post-envio',2)">★</span><span class="rstar" onclick="setRS('rs-post-envio',3)">★</span><span class="rstar" onclick="setRS('rs-post-envio',4)">★</span><span class="rstar" onclick="setRS('rs-post-envio',5)">★</span></div></div>
+      <div class="rrow"><div class="rrow-l">Cargado de facturas en planilla y carpeta</div><div style="display:flex;gap:2px" id="rs-post-carg" data-v="0"><span class="rstar" onclick="setRS('rs-post-carg',1)">★</span><span class="rstar" onclick="setRS('rs-post-carg',2)">★</span><span class="rstar" onclick="setRS('rs-post-carg',3)">★</span><span class="rstar" onclick="setRS('rs-post-carg',4)">★</span><span class="rstar" onclick="setRS('rs-post-carg',5)">★</span></div></div>
+      <div class="rrow"><div class="rrow-l">Comunicación con cuentas por extras</div><div style="display:flex;gap:2px" id="rs-post-ext" data-v="0"><span class="rstar" onclick="setRS('rs-post-ext',1)">★</span><span class="rstar" onclick="setRS('rs-post-ext',2)">★</span><span class="rstar" onclick="setRS('rs-post-ext',3)">★</span><span class="rstar" onclick="setRS('rs-post-ext',4)">★</span><span class="rstar" onclick="setRS('rs-post-ext',5)">★</span></div></div>
+      <label>Observaciones</label><textarea id="obs-post" placeholder="¿Qué quedó pendiente?"></textarea>
+    </div>
+    <div class="divider"></div>
+    <div class="fs-ttl"><i class="ti ti-star"></i> ⭐ Qué salió bien</div>
+    <label>Destacados del evento <span style="font-size:11px;color:var(--t2)">(uno por línea)</span></label>
+    <textarea id="en-dest" placeholder="Ej:&#10;El diseño fue muy valorado por el cliente&#10;La logística funcionó perfectamente"></textarea>
+    <label>Observaciones para producción</label><textarea id="en-oprod" placeholder="Aspectos positivos para producción..."></textarea>
+    <label>Observaciones para cuentas</label><textarea id="en-ocuen" placeholder="Aspectos positivos para cuentas..."></textarea>
+    <div class="divider"></div>
+    <div class="fs-ttl"><i class="ti ti-trending-up"></i> 📈 Qué mejorar</div>
+    <label>¿Qué se mejoró respecto al evento anterior? <span style="font-size:11px;color:var(--t2)">(uno por línea)</span></label>
+    <textarea id="en-mej" placeholder="Ej:&#10;Se armó el cashflow con más anticipación"></textarea>
+    <label>¿Qué haríamos diferente la próxima vez? <span style="font-size:11px;color:var(--t2)">(uno por línea)</span></label>
+    <textarea id="en-mal" placeholder="Ej:&#10;Confirmar pañol con más anticipación"></textarea>
+    <div class="divider"></div>
+    <div class="fs-ttl"><i class="ti ti-users"></i> Equipo del evento</div>
+    <div class="team-c" id="team-sel"></div>
+    <div class="divider"></div>
+    <div style="display:flex;gap:8px;align-items:center;margin-bottom:10px"><input type="checkbox" id="en-tiempos" style="width:auto"><label for="en-tiempos" style="margin:0;font-size:14px;color:var(--t)">Tiempos generales cumplidos</label></div>
+    <div class="divider"></div>
+    <div style="display:flex;gap:8px;align-items:center;margin-bottom:10px"><input type="checkbox" id="en-addcierre" style="width:auto" onchange="toggleCierre(this)"><label for="en-addcierre" style="margin:0;font-size:14px;color:var(--t)">Agregar reunión de cierre</label></div>
+    <div id="cierre-section" style="display:none">
+      <div class="cierre-banner"><i class="ti ti-clipboard-check"></i> Reunión de cierre — aprendizajes colectivos</div>
+      <label>Participantes del cierre</label><input type="text" id="ci-partic" placeholder="Ej: Sofi, Maca, Diego">
+      <label>Aprendizajes <span style="font-size:11px;color:var(--t2)">(uno por línea)</span></label><textarea id="ci-apr"></textarea>
+      <label>Voces del equipo <span style="font-size:11px;color:var(--t2)">(nombre: observación)</span></label><textarea id="ci-voces" placeholder="Ej:&#10;Sofi: La comunicación con el cliente mejoró&#10;Diego: Faltó tiempo para armar el pañol"></textarea>
+      <label>Acciones para el próximo evento <span style="font-size:11px;color:var(--t2)">(una por línea)</span></label><textarea id="ci-acc"></textarea>
+    </div>
+    <div style="display:flex;gap:10px;margin-top:1.5rem;padding-top:1.5rem;border-top:0.5px solid #e0d8ec">
+      <button class="btn-p" id="btn-save-ev" onclick="saveEvento()"><i class="ti ti-device-floppy"></i> Guardar evento</button>
+      <button class="btn-s" onclick="closePV('pv-evento')">Cancelar</button>
+    </div>
   </div>
-  <hr class="divider">
-  <div class="form-section-label" style="font-size:12px;font-weight:500;color:var(--sp-text);text-transform:uppercase;letter-spacing:.06em;margin-bottom:12px;display:flex;align-items:center;gap:6px"><span style="font-size:16px">⭐</span> Qué salió bien</div>
-  <label>Destacados del evento <span style="font-size:11px;color:var(--sp-text2)">(uno por línea)</span></label>
-  <textarea id="en-destacados" placeholder="Ej:&#10;El diseño fue muy valorado por el cliente&#10;La logística funcionó perfectamente"></textarea>
-  <label>Observaciones para producción</label>
-  <textarea id="en-oprod" placeholder="Aspectos positivos o a destacar para el área de producción..."></textarea>
-  <label>Observaciones para cuentas</label>
-  <textarea id="en-ocuen" placeholder="Aspectos positivos o a destacar para el área de cuentas..."></textarea>
+</div>
 
-  <hr class="divider">
-  <div class="form-section-label" style="font-size:12px;font-weight:500;color:var(--sp-text);text-transform:uppercase;letter-spacing:.06em;margin-bottom:12px;display:flex;align-items:center;gap:6px"><span style="font-size:16px">📈</span> Qué mejorar</div>
-  <label>¿Qué se mejoró respecto al evento anterior? <span style="font-size:11px;color:var(--sp-text2)">(uno por línea)</span></label>
-  <textarea id="en-mejoras" placeholder="Ej:&#10;Se armó el cashflow con más anticipación&#10;Mejor comunicación con el cliente"></textarea>
-  <label>¿Qué haríamos diferente la próxima vez? <span style="font-size:11px;color:var(--sp-text2)">(uno por línea)</span></label>
-  <textarea id="en-mal" placeholder="Ej:&#10;Confirmar pañol con más anticipación&#10;Evitar comunicación por WhatsApp con el cliente"></textarea>
-  <hr class="divider">
-  <div class="form-section-label"><i class="ti ti-users"></i> Equipo del evento</div>
-  <div id="ev-team-sel" style="margin-bottom:12px"></div>
-  <div id="ev-eval-personas" style="margin-bottom:12px"></div>
-  <hr class="divider">
-  <div style="display:flex;gap:8px;align-items:center;margin-bottom:8px"><input type="checkbox" id="en-tiempos" style="width:auto"><label for="en-tiempos" style="margin:0;font-size:14px;color:var(--sp-text)">Tiempos generales cumplidos</label></div>
-  <hr class="divider">
-  <div style="display:flex;gap:8px;align-items:center;margin-bottom:10px"><input type="checkbox" id="en-addcierre" style="width:auto"><label for="en-addcierre" style="margin:0;font-size:14px;color:var(--sp-text)">Agregar reunión de cierre del evento</label></div>
-  <div id="cierre-inline" style="display:none">
-    <div class="cierre-banner"><i class="ti ti-clipboard-check"></i><div class="cierre-banner-txt">Reunión de cierre — aprendizajes colectivos</div></div>
-    <label>Participantes</label><input type="text" id="en-cpartic" placeholder="Ej: Sofi, Maca, Diego">
-    <label>Aprendizajes <span style="font-size:11px;color:var(--sp-text2)">(uno por línea)</span></label>
-    <textarea id="en-caprendizajes"></textarea>
-    <label>Voces del equipo <span style="font-size:11px;color:var(--sp-text2)">(nombre: observación)</span></label>
-    <textarea id="en-cvoces" placeholder="Ej:&#10;Sofi: La comunicación con el cliente mejoró&#10;Diego: Faltó tiempo para armar el pañol"></textarea>
-    <label>Acciones para el próximo evento <span style="font-size:11px;color:var(--sp-text2)">(una por línea)</span></label>
-    <textarea id="en-cacciones"></textarea>
+<!-- PAGE: DETALLE EVENTO -->
+<div class="pv" id="pv-det">
+  <div class="pv-hdr">
+    <div class="pv-brand"><div class="bdot"><div class="bring"></div></div><span style="font-size:14px;font-weight:500;color:var(--t)">SAPPIA</span></div>
+    <button class="pv-back" onclick="closePV('pv-det')"><i class="ti ti-arrow-left"></i> Volver</button>
   </div>
-  <button class="btn-p" id="btn-save-event" onclick="saveEvent()">Guardar evento</button>
+  <div class="pv-body" id="det-body"></div>
 </div>
-</div><div class="modal-topbar-name">SAPPIA</div></div>
 
-<!-- MODAL PERFIL -->
-<div class="page-view" id="modal-profile"><div class="page-header"><div class="page-header-brand"><div class="page-header-dot"><div class="page-header-ring"></div></div><span style="font-size:15px;font-weight:500;color:var(--sp-text)">SAPPIA</span></div><button class="page-back" onclick="closeM('modal-profile')"><i class="ti ti-arrow-left"></i> Volver</button></div><div class="page-body">
-<div class="modal">
-  <div class="modal-title">Perfil </div>
-  <div id="profile-content"></div>
+<!-- PAGE: PERSONA FORM -->
+<div class="pv" id="pv-persona">
+  <div class="pv-hdr">
+    <div class="pv-brand"><div class="bdot"><div class="bring"></div></div><span style="font-size:14px;font-weight:500;color:var(--t)">SAPPIA</span></div>
+    <button class="pv-back" onclick="closePV('pv-persona')"><i class="ti ti-arrow-left"></i> Volver</button>
+  </div>
+  <div class="pv-body">
+    <div class="pv-title"><i class="ti ti-user-plus"></i> <span id="pf-title">Agregar persona</span></div>
+    <div class="g2"><div><label>Nombre *</label><input type="text" id="pf-nombre"></div><div><label>Apellido</label><input type="text" id="pf-apellido"></div></div>
+    <div class="g3">
+      <div><label>Rol</label><select id="pf-rol"><option>Producción</option><option>Cuentas</option><option>Dirección de Arte</option><option>Coordinación</option><option>Logística</option><option>Sr. Producer Manager</option><option>Otro</option></select></div>
+      <div><label>Color</label><select id="pf-color"><option value="v">Violeta</option><option value="b">Celeste</option><option value="m">Menta</option><option value="g">Gris</option></select></div>
+      <div><label>Ingreso a SAPPIA</label><input type="month" id="pf-ingreso"></div>
+    </div>
+    <label>Fortalezas <span style="font-size:11px;color:var(--t2)">(una por línea)</span></label><textarea id="pf-fort"></textarea>
+    <label>Oportunidades de mejora <span style="font-size:11px;color:var(--t2)">(una por línea)</span></label><textarea id="pf-oport"></textarea>
+    <div style="display:flex;gap:10px;margin-top:1.5rem;padding-top:1.5rem;border-top:0.5px solid #e0d8ec">
+      <button class="btn-p" onclick="savePersona()"><i class="ti ti-device-floppy"></i> Guardar</button>
+      <button class="btn-s" onclick="closePV('pv-persona')">Cancelar</button>
+    </div>
+  </div>
 </div>
-</div><div class="modal-topbar-name">SAPPIA</div></div>
 
-<!-- MODAL CONTRIB FORM -->
-<div class="page-view" id="modal-contrib"><div class="page-header"><div class="page-header-brand"><div class="page-header-dot"><div class="page-header-ring"></div></div><span style="font-size:15px;font-weight:500;color:var(--sp-text)">SAPPIA</span></div><button class="page-back" onclick="closeM('modal-contrib')"><i class="ti ti-arrow-left"></i> Volver</button></div><div class="page-body">
-<div class="modal">
-  <div class="modal-title"><span id="contrib-modal-title">Agregar persona</span></div>
-  <div class="g2"><div><label>Nombre *</label><input type="text" id="cf-nombre"></div><div><label>Apellido</label><input type="text" id="cf-apellido"></div></div>
-  <div class="g3"><div><label>Rol</label><select id="cf-rol"><option>Producción</option><option>Cuentas</option><option>Dirección de Arte</option><option>Coordinación</option><option>Logística</option><option>Sr. Producer Manager</option><option>Otro</option></select></div><div><label>Color</label><select id="cf-color"><option value="a">Violeta</option><option value="b">Celeste</option><option value="c">Menta</option><option value="d">Gris</option></select></div><div><label>Ingreso a SAPPIA</label><input type="month" id="cf-ingreso"></div></div>
-  <hr class="divider">
-  <div style="font-size:11px;font-weight:500;color:var(--sp-text2);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">Fortalezas <span style="font-weight:400">(una por línea)</span></div>
-  <textarea id="cf-fortalezas"></textarea>
-  <div style="font-size:11px;font-weight:500;color:var(--sp-text2);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;margin-top:12px">Oportunidades de mejora <span style="font-weight:400">(una por línea)</span></div>
-  <textarea id="cf-oportunidades"></textarea>
-  <button class="btn-p" onclick="saveContrib()">Guardar</button>
+<!-- PAGE: PERFIL PERSONA -->
+<div class="pv" id="pv-perfil">
+  <div class="pv-hdr">
+    <div class="pv-brand"><div class="bdot"><div class="bring"></div></div><span style="font-size:14px;font-weight:500;color:var(--t)">SAPPIA</span></div>
+    <button class="pv-back" onclick="closePV('pv-perfil')"><i class="ti ti-arrow-left"></i> Volver</button>
+  </div>
+  <div class="pv-body" id="perfil-body"></div>
 </div>
-</div><div class="modal-topbar-name">SAPPIA</div></div>
-
-<!-- MODAL DETALLE EVENTO -->
-<div class="page-view" id="modal-det"><div class="page-header"><div class="page-header-brand"><div class="page-header-dot"><div class="page-header-ring"></div></div><span style="font-size:15px;font-weight:500;color:var(--sp-text)">SAPPIA</span></div><button class="page-back" onclick="closeM('modal-det')"><i class="ti ti-arrow-left"></i> Volver</button></div><div class="page-body">
-<div class="modal">
-  <div class="modal-title"><span id="det-title">Detalle</span></div>
-  <div id="det-content"></div>
-</div>
-</div><div class="modal-topbar-name">SAPPIA</div></div>
 
 <script>
-// ── CONFIG ──
-const API = 'https://script.google.com/a/macros/sappia.la/s/AKfycbzr6BuKUgmsZBPeUMQSAd4P-b4Mp0Z1yXsS89MnItpwXFzt6YdfSUzXjUX5yxAEV3Qi/exec';
+const API='https://script.google.com/a/macros/sappia.la/s/AKfycbzr6BuKUgmsZBPeUMQSAd4P-b4Mp0Z1yXsS89MnItpwXFzt6YdfSUzXjUX5yxAEV3Qi/exec';
+const GOOGLE_CLIENT_ID='157124493447-b1f8uot3n52cs6gvkis4q106rj6lnjrt.apps.googleusercontent.com';
+let role=null, token=null, currentUser=null;
+let db={events:[],team:[],cierres:[],evals:[]};
+let hFilt='todos', mFilt='todo';
+let editPersonaId=null;
+let aiHistory=[];
 
-// ── STATE ──
-let currentRole = null, token = null, currentUserName = '';
-document.addEventListener('DOMContentLoaded',()=>{
-  const saved=localStorage.getItem('sappia_user_name');
-  if(saved){const el=document.getElementById('login-name');if(el)el.value=saved;}
-});
-let db = { events: [], contributors: [], cierres: [], evaluaciones: [], evalPersonas: [] };
-let hFilt = 'todos', mejFilt = 'todas', editingContribId = null;
-let aiHistory = [];
-
-const AV_COLORS = {
-  a:{bg:'var(--sp-violet-light)',fg:'var(--sp-violet-text)'},
-  b:{bg:'var(--sp-blue-light)',fg:'var(--sp-blue-text)'},
-  c:{bg:'var(--sp-mint-light)',fg:'var(--sp-mint-text)'},
-  d:{bg:'var(--sp-gray2)',fg:'var(--sp-text2)'}
-};
-
-const PRE_FIELDS=[['cc','Armado CC'],['carpeta','Carpeta producción'],['cashflow','Cashflow'],['provee','Proveedores'],['comun','Comunicación cuentas'],['producer','Producer Manager']];
-const LIVE_FIELDS=[['crono','Cronograma'],['planos','Planos'],['diseno','Planilla diseño'],['panol','Pañol'],['roles','Roles y desempeño'],['provee','Proveedores vivo'],['comun','Comunicación cuentas']];
-const POST_FIELDS=[['cc','Cierre CC'],['facturas','Facturas'],['envio','Envío admin'],['cargado','Carga facturas'],['extras','Extras cuentas']];
-
-function avgF(obj,fields){if(!obj)return 0;const vals=fields.map(([k])=>parseFloat(obj[k])||0).filter(v=>v>0);return vals.length?vals.reduce((a,b)=>a+b,0)/vals.length:0}
-function parseJ(v){try{return typeof v==='string'?JSON.parse(v):v}catch(e){return v||[]}}
-
-// ── API CALLS ──
-async function apiGet(action){
-  const r=await fetch(`${API}?action=${action}&token=${token}`);
-  return r.json();
-}
-async function apiPost(body){
-  const r=await fetch(API,{method:'POST',body:JSON.stringify({...body,token})});
-  return r.json();
-}
+const AVC={v:{bg:'var(--vl)',fg:'var(--vt)'},b:{bg:'var(--bl)',fg:'var(--bt)'},m:{bg:'var(--ml)',fg:'var(--mt)'},g:{bg:'var(--g2)',fg:'var(--t2)'}};
+function avStyle(c){const x=AVC[c]||AVC.v;return`background:${x.bg};color:${x.fg}`}
+function initials(p){return((p.nombre||'').slice(0,1)+(p.apellido||'').slice(0,1)).toUpperCase()||'?'}
+function pJ(v){try{return typeof v==='string'?JSON.parse(v):v||[]}catch(e){return v||[]}}
+function pLines(v){return(v||'').split('\n').map(l=>l.trim()).filter(Boolean)}
+function pKV(v){return(v||'').split('\n').map(l=>{const i=l.indexOf(':');return i>=0?{k:l.slice(0,i).trim(),v:l.slice(i+1).trim()}:null}).filter(Boolean)}
 
 // ── AUTH ──
-let selectedRole='admin';
-function togglePwd(){
-  const inp=document.getElementById('login-pass');
-  const ico=document.getElementById('eye-icon');
-  inp.type=inp.type==='password'?'text':'password';
-  ico.className=inp.type==='password'?'ti ti-eye':'ti ti-eye-off';
+function initGoogleLogin(){
+  google.accounts.id.initialize({
+    client_id: GOOGLE_CLIENT_ID,
+    callback: handleGoogleLogin,
+    hd: 'sappia.la'
+  });
+  google.accounts.id.renderButton(
+    document.getElementById('google-btn'),
+    {theme:'outline', size:'large', text:'signin_with', locale:'es', width:280}
+  );
 }
-async function doLogin(){
-  const pass=document.getElementById('login-pass').value;
-  const nombre=document.getElementById('login-name').value.trim();
-  const err=document.getElementById('login-err');
-  const btn=document.getElementById('login-btn');
-  if(!nombre){err.textContent='Ingresá tu nombre';return}
-  if(!pass){err.textContent='Ingresá la contraseña';return}
-  btn.disabled=true;btn.textContent='Verificando...';
+
+async function handleGoogleLogin(response){
+  document.getElementById('login-loading').style.display='block';
+  document.getElementById('google-btn').style.display='none';
+  document.getElementById('login-err').textContent='';
   try{
-    const res=await fetch(API,{method:'POST',body:JSON.stringify({action:'login',rol:selectedRole,password:pass})});
-    const data=await res.json();
-    if(data.ok){
-      currentRole=data.rol;token=data.token;currentUserName=nombre;
-      localStorage.setItem('sappia_user_name',nombre);
-      enterApp();
-    }else{
-      err.textContent='Contraseña incorrecta. Intentá de nuevo.';
-      setTimeout(()=>{err.textContent=''},3000);
+    // Decode JWT to get user info
+    const payload = JSON.parse(atob(response.credential.split('.')[1]));
+    const email = payload.email;
+    const name = payload.name;
+    const picture = payload.picture;
+    // Only allow sappia.la accounts
+    if(!email.endsWith('@sappia.la')){
+      document.getElementById('login-err').textContent='Solo cuentas @sappia.la pueden acceder.';
+      document.getElementById('login-loading').style.display='none';
+      document.getElementById('google-btn').style.display='flex';
+      return;
     }
+    currentUser = {email, name, picture};
+    token = response.credential;
+    role = 'admin';
+    enterApp();
   }catch(e){
-    err.textContent='Error de conexión. Verificá internet.';
+    document.getElementById('login-err').textContent='Error al verificar. Intentá de nuevo.';
+    document.getElementById('login-loading').style.display='none';
+    document.getElementById('google-btn').style.display='flex';
   }
-  btn.disabled=false;btn.textContent='Ingresar';
 }
+
+window.addEventListener('load', ()=>{
+  if(typeof google !== 'undefined') initGoogleLogin();
+  else setTimeout(initGoogleLogin, 1000);
+});
 
 function enterApp(){
   document.getElementById('login-screen').style.display='none';
-  document.getElementById('app-screen').classList.add('visible');
-  const dot=document.getElementById('role-dot');
-  const lbl=document.getElementById('role-label-top');
-  dot.className='role-pill-dot dot-admin';
-  lbl.innerHTML='Admin <span style="background:var(--sp-violet-light);color:var(--sp-violet-text);padding:2px 8px;border-radius:10px;font-size:10px;font-weight:500">Admin</span>';
-  document.getElementById('admin-actions').style.display='block';
-  document.getElementById('add-person-btn').style.display='inline-flex';
+  document.getElementById('app').classList.add('on');
+  const dot=document.getElementById('rdot'),lbl=document.getElementById('rlbl');
+  dot.className='rdot ra';
+  if(currentUser){
+    document.getElementById('rlbl').innerHTML=`<img src="${currentUser.picture}" class="user-avatar" onerror="this.style.display='none'"> ${currentUser.name.split(' ')[0]}`;
+  } else {
+    document.getElementById('rlbl').textContent='SAPPIA';
+  }
+  document.getElementById('admin-bar').style.display='block';
+  document.getElementById('btn-add-persona').style.display='inline-flex';
   loadData();
 }
 
 function doLogout(){
-  currentRole=null;token=null;db={events:[],contributors:[],cierres:[],evaluaciones:[],evalPersonas:[]};
-  document.getElementById('login-screen').style.display='block';
-  document.getElementById('app-screen').classList.remove('visible');
-  document.getElementById('login-pass').value='';
-  document.getElementById('login-err').textContent='';
-  selectedRole='admin';
-}
-
-function isAdmin(){return currentRole==='admin'}
-
-// ── LOAD DATA ──
-async function loadData(){
-  document.getElementById('dash-content').innerHTML='<div class="loading"><div class="spinner"></div>Cargando datos desde Google Sheets...</div>';
-  try{
-    const data=await apiGet('getAll');
-    db.events=Array.isArray(data.eventos)?data.eventos:[];
-    db.contributors=Array.isArray(data.equipo)?data.equipo:[];
-    db.cierres=Array.isArray(data.cierres)?data.cierres:[];
-    db.evaluaciones=Array.isArray(data.evaluaciones)?data.evaluaciones:[];
-    db.evalPersonas=Array.isArray(data.evaluaciones_persona)?data.evaluaciones_persona:[];
-    renderAll();
-  }catch(e){
-    document.getElementById('dash-content').innerHTML='<div class="empty">Error al cargar datos. Verificá la conexión.</div>';
+  if(currentUser){
+    google.accounts.id.revoke(currentUser.email, ()=>{});
+    google.accounts.id.disableAutoSelect();
   }
+  role=null;token=null;currentUser=null;
+  db={events:[],team:[],cierres:[],evals:[]};
+  document.getElementById('login-screen').style.display='block';
+  document.getElementById('app').classList.remove('on');
+  document.getElementById('login-err').textContent='';
+  document.getElementById('login-loading').style.display='none';
+  document.getElementById('google-btn').style.display='flex';
+  setTimeout(initGoogleLogin, 300);
 }
-
-// ── HELPERS ──
-function initials(c){return((c.nombre||'').slice(0,1)+(c.apellido||'').slice(0,1)).toUpperCase()||(c.nombre||'').slice(0,2).toUpperCase()}
-function avStyle(color){const col=AV_COLORS[color]||AV_COLORS.a;return`background:${col.bg};color:${col.fg}`}
-function smini(v){let s='';for(let i=1;i<=5;i++)s+=`<span class="sm${i<=Math.round(v)?' on':''}">★</span>`;return`<div style="display:flex;gap:2px">${s}</div>`}
-function setR(id,v){const el=document.getElementById(id);if(!el)return;el.dataset.v=v;el.querySelectorAll('.star').forEach((s,i)=>s.classList.toggle('on',i<v))}
-function getR(id){const el=document.getElementById(id);return el?parseInt(el.dataset.v)||0:0}
-function setRS(id,v){const el=document.getElementById(id);if(!el)return;el.dataset.v=v;el.querySelectorAll('.rstar').forEach((s,i)=>s.classList.toggle('on',i<v))}
-function getRS(id){const el=document.getElementById(id);return el?parseInt(el.dataset.v)||0:0}
-function parseLines(v){return(v||'').trim().split('\n').map(l=>l.trim()).filter(Boolean)}
-function parseKV(v){return(v||'').trim().split('\n').map(l=>{const i=l.indexOf(':');if(i<0)return null;return{k:l.slice(0,i).trim(),v:l.slice(i+1).trim()}}).filter(Boolean)}
-
-function getEvOverall(e){
-  const parts=[];
-  if(parseFloat(e.prod_rating)>0)parts.push(parseFloat(e.prod_rating));
-  if(parseFloat(e.cuen_rating)>0)parts.push(parseFloat(e.cuen_rating));
-  // get evals for this event
-  const evEvals=db.evaluaciones.filter(ev=>ev.evento_id==e.id);
-  const preE=evEvals.filter(ev=>ev.etapa==='pre');
-  const liveE=evEvals.filter(ev=>ev.etapa==='live');
-  const postE=evEvals.filter(ev=>ev.etapa==='post');
-  [preE,liveE,postE].forEach(arr=>{if(arr.length){const avg=arr.reduce((a,b)=>a+parseFloat(b.valor||0),0)/arr.length;if(avg>0)parts.push(avg);}});
-  return parts.length?parts.reduce((a,b)=>a+b,0)/parts.length:0;
-}
-function getEtapaAvg(eventoId,etapa){
-  const evals=db.evaluaciones.filter(e=>e.evento_id==eventoId&&e.etapa===etapa);
-  if(!evals.length)return 0;
-  const vals=evals.map(e=>parseFloat(e.valor)||0).filter(v=>v>0);
-  return vals.length?vals.reduce((a,b)=>a+b,0)/vals.length:0;
-}
-function scoreLabel(a){if(a>=4.5)return['Excelente','b-mint'];if(a>=3.5)return['Bueno','b-blue'];if(a>=2.5)return['Regular','b-amb'];return['A mejorar','b-red']}
 
 // ── NAV ──
 function goSec(id,btn){
@@ -663,615 +517,325 @@ function goSec(id,btn){
   btn.classList.add('on');
   if(id==='ai')initAI();
 }
-function closeM(id){
-  document.getElementById(id).classList.remove('open');
-  // Only show app-screen if no other page-view is open
-  const anyOpen = ['modal-new','modal-det','modal-contrib','modal-profile'].some(m=>m!==id && document.getElementById(m).classList.contains('open'));
-  if(!anyOpen) document.getElementById('app-screen').style.display='block';
-}
-function filterH(f,btn){hFilt=f;document.querySelectorAll('.chip').forEach(b=>b.classList.remove('on'));btn.classList.add('on');renderHistorial()}
-function filterMej(f,btn){mejFilt=f;document.querySelectorAll('.chip').forEach(b=>b.classList.remove('on'));btn.classList.add('on');renderMejoras()}
 
-// ── RENDER DASHBOARD ──
-function renderDashboard(){
-  const evs=db.events,n=evs.length;
-  const allAvg=n?(evs.reduce((a,e)=>a+getEvOverall(e),0)/n).toFixed(1):'—';
-  const tiempos=evs.filter(e=>e.tiempos==='TRUE'||e.tiempos===true||e.tiempos==='true').length;
-  const totalDest=evs.reduce((a,e)=>a+(parseJ(e.destacados)||[]).length,0);
-  const accents=['var(--sp-violet)','var(--sp-blue)','var(--sp-mint)','var(--sp-gray3)'];
-  let h=`<div class="g4">${[['Total eventos',n],['Calidad promedio',`${allAvg}<span style="font-size:13px;color:var(--sp-text2)">/5</span>`],['Tiempos cumplidos',`${n?Math.round(tiempos/n*100):0}<span style="font-size:13px;color:var(--sp-text2)">%</span>`],['Destacados',totalDest]].map(([l,v],i)=>`<div class="met"><div class="met-l">${l}</div><div class="met-v"><div class="met-acc" style="background:${accents[i]}"></div>${v}</div></div>`).join('')}</div>`;
-  // Áreas
+// ── PAGE VIEWS ──
+function openPV(id){
+  document.getElementById(id).classList.add('on');
+  document.getElementById(id).scrollTop=0;
+  document.getElementById('app').style.display='none';
+}
+function closePV(id){
+  document.getElementById(id).classList.remove('on');
+  document.getElementById('app').style.display='block';
+}
+
+// ── DATA ──
+async function loadData(){
+  document.getElementById('dash-content').innerHTML='<div class="loading"><div class="spinner"></div>Cargando datos...</div>';
+  try{
+    const r=await fetch(`${API}?action=getAll&token=${token}`);
+    const data=await r.json();
+    db.events=Array.isArray(data.eventos)?data.eventos:[];
+    db.team=Array.isArray(data.equipo)?data.equipo:[];
+    db.cierres=Array.isArray(data.cierres)?data.cierres:[];
+    db.evals=Array.isArray(data.evaluaciones)?data.evaluaciones:[];
+    renderAll();
+  }catch(e){
+    document.getElementById('dash-content').innerHTML='<div class="empty">Error al cargar. Verificá la conexión.</div>';
+  }
+}
+
+async function apiPost(body){
+  const r=await fetch(API,{method:'POST',body:JSON.stringify({...body,token})});
+  return r.json();
+}
+
+// ── HELPERS ──
+function getEtapaAvg(eid,etapa){const ev=db.evals.filter(e=>e.evento_id==eid&&e.etapa===etapa);if(!ev.length)return 0;const vals=ev.map(e=>parseFloat(e.valor)||0).filter(v=>v>0);return vals.length?vals.reduce((a,b)=>a+b)/vals.length:0}
+function getOverall(e){const parts=[];if(parseFloat(e.prod_rating)>0)parts.push(parseFloat(e.prod_rating));if(parseFloat(e.cuen_rating)>0)parts.push(parseFloat(e.cuen_rating));['pre','live','post'].forEach(et=>{const a=getEtapaAvg(e.id,et);if(a>0)parts.push(a)});return parts.length?parts.reduce((a,b)=>a+b)/parts.length:0}
+function scoreLabel(a){if(a>=4.5)return['Excelente','bm'];if(a>=3.5)return['Bueno','bb'];if(a>=2.5)return['Regular','ba'];if(a>0)return['A mejorar','br'];return['','bg']}
+function setR(id,v){const el=document.getElementById(id);if(!el)return;el.dataset.v=v;el.querySelectorAll('.star').forEach((s,i)=>s.classList.toggle('on',i<v))}
+function getR(id){const el=document.getElementById(id);return el?parseInt(el.dataset.v)||0:0}
+function setRS(id,v){const el=document.getElementById(id);if(!el)return;el.dataset.v=v;el.querySelectorAll('.rstar').forEach((s,i)=>s.classList.toggle('on',i<v))}
+function getRS(id){const el=document.getElementById(id);return el?parseInt(el.dataset.v)||0:0}
+function miniStars(v){return[1,2,3,4,5].map(i=>`<span style="color:${i<=Math.round(v)?'var(--v)':'var(--g2)'}">★</span>`).join('')}
+
+// ── DASHBOARD ──
+function renderDash(){
+  const n=db.events.length;
+  const avg=n?(db.events.reduce((a,e)=>a+getOverall(e),0)/n).toFixed(1):'—';
+  const tiempos=db.events.filter(e=>e.tiempos==='TRUE'||e.tiempos===true).length;
+  const dests=db.events.reduce((a,e)=>a+(pJ(e.destacados)||[]).length,0);
+  const accs=['var(--v)','var(--b)','var(--m)','var(--g3)'];
+  let h=`<div class="g4">${[['Total eventos',n],['Calidad promedio',avg+'/5'],['Tiempos cumplidos',(n?Math.round(tiempos/n*100):0)+'%'],['Destacados',dests]].map(([l,v],i)=>`<div class="met"><div class="met-l">${l}</div><div class="met-v"><div class="acc" style="background:${accs[i]}"></div>${v}</div></div>`).join('')}</div>`;
+  // Calidad por área
+  const pA=db.events.filter(e=>parseFloat(e.prod_rating)>0);const cA=db.events.filter(e=>parseFloat(e.cuen_rating)>0);
+  const aP=pA.length?(pA.reduce((a,e)=>a+parseFloat(e.prod_rating),0)/pA.length).toFixed(1):null;
+  const aC=cA.length?(cA.reduce((a,e)=>a+parseFloat(e.cuen_rating),0)/cA.length).toFixed(1):null;
   let aH='';
-  const pEvs=evs.filter(e=>parseFloat(e.prod_rating)>0);const cEvs=evs.filter(e=>parseFloat(e.cuen_rating)>0);
-  const aP=pEvs.length?(pEvs.reduce((a,e)=>a+parseFloat(e.prod_rating),0)/pEvs.length).toFixed(1):null;
-  const aC=cEvs.length?(cEvs.reduce((a,e)=>a+parseFloat(e.cuen_rating),0)/cEvs.length).toFixed(1):null;
-  if(aP)aH+=`<div class="bar-wrap"><div class="bar-lbl">🔧 Producción</div><div class="bar-out"><div class="bar-in" style="width:${Math.round(aP/5*100)}%;background:var(--sp-mint)"></div></div><div class="bar-val">${aP}</div></div>`;
-  if(aC)aH+=`<div class="bar-wrap"><div class="bar-lbl">💰 Cuentas</div><div class="bar-out"><div class="bar-in" style="width:${Math.round(aC/5*100)}%;background:var(--sp-violet)"></div></div><div class="bar-val">${aC}</div></div>`;
-  // Etapas
-  let eH='';
-  ['pre','live','post'].forEach((etapa,ei)=>{
-    const labels=[['⚙️ Previa','var(--sp-blue)'],['▶️ Ejecución','var(--sp-violet)'],['📋 Post cierre','var(--sp-mint)']];
-    const etaEvals=db.evaluaciones.filter(e=>e.etapa===etapa);
-    if(!etaEvals.length)return;
-    const camposMap={};etaEvals.forEach(e=>{if(!camposMap[e.campo])camposMap[e.campo]=[];camposMap[e.campo].push(parseFloat(e.valor)||0);});
-    eH+=`<div style="font-size:10px;font-weight:500;color:var(--sp-text2);text-transform:uppercase;letter-spacing:.05em;margin:${ei>0?'10px':0} 0 6px">${labels[ei][0]}</div>`;
-    Object.entries(camposMap).slice(0,4).forEach(([campo,vals])=>{
-      const avg=vals.filter(v=>v>0).reduce((a,b)=>a+b,0)/(vals.filter(v=>v>0).length||1);
-      if(!avg)return;
-      eH+=`<div class="bar-wrap"><div class="bar-lbl">${campo.length>18?campo.slice(0,17)+'…':campo}</div><div class="bar-out"><div class="bar-in" style="width:${Math.round(avg/5*100)}%;background:${labels[ei][1]}"></div></div><div class="bar-val">${avg.toFixed(1)}</div></div>`;
-    });
+  if(aP)aH+=`<div class="bar-w"><div class="bar-l">🔧 Producción</div><div class="bar-o"><div class="bar-i" style="width:${aP/5*100}%;background:var(--m)"></div></div><div class="bar-v">${aP}</div></div>`;
+  if(aC)aH+=`<div class="bar-w"><div class="bar-l">💰 Cuentas</div><div class="bar-o"><div class="bar-i" style="width:${aC/5*100}%;background:var(--v)"></div></div><div class="bar-v">${aC}</div></div>`;
+  ['pre','live','post'].forEach((et,ei)=>{
+    const labels=[['⚙️ Previa','var(--b)'],['▶️ Ejecución','var(--v)'],['📋 Post','var(--m)']];
+    const evEvals=db.evals.filter(e=>e.etapa===et);
+    if(!evEvals.length)return;
+    const cm={};evEvals.forEach(e=>{if(!cm[e.campo])cm[e.campo]=[];cm[e.campo].push(parseFloat(e.valor)||0)});
+    aH+=`<div style="font-size:10px;font-weight:500;color:var(--t2);text-transform:uppercase;letter-spacing:.05em;margin:10px 0 6px">${labels[ei][0]}</div>`;
+    Object.entries(cm).slice(0,4).forEach(([c,vals])=>{const a=vals.filter(v=>v>0).reduce((x,y)=>x+y,0)/(vals.filter(v=>v>0).length||1);if(!a)return;aH+=`<div class="bar-w"><div class="bar-l">${c.length>18?c.slice(0,16)+'…':c}</div><div class="bar-o"><div class="bar-i" style="width:${a/5*100}%;background:${labels[ei][1]}"></div></div><div class="bar-v">${a.toFixed(1)}</div></div>`;});
   });
   // Destacados
-  const destEvs=[...evs].sort((a,b)=>b.fecha?.localeCompare(a.fecha||'')).filter(e=>parseJ(e.destacados)?.length);
-  let dH='';if(destEvs.length){destEvs.slice(0,2).forEach(e=>{(parseJ(e.destacados)||[]).slice(0,1).forEach(d=>{dH+=`<div class="destaque-card"><div class="destaque-txt">${d}</div><div style="font-size:11px;color:var(--sp-text2);margin-top:3px">${e.nombre} · ${e.fecha}</div></div>`;});});}else dH='<div class="empty">Sin destacados aún</div>';
-  // Aprendizajes recurrentes
-  const allApr={};db.cierres.forEach(ci=>{(parseJ(ci.aprendizajes)||[]).forEach(a=>{const k=a.toLowerCase().slice(0,40);if(!allApr[k])allApr[k]={txt:a,evs:[]};const ev=evs.find(e=>e.id==ci.evento_id);if(ev)allApr[k].evs.push(ev.nombre);});});
-  const recur=Object.values(allApr).filter(x=>x.evs.length>0).slice(0,4);
-  let iH='';if(recur.length)recur.forEach(p=>{iH+=`<div class="item"><span class="dot dv"></span><div><div style="font-size:13px;color:var(--sp-text)">${p.txt}</div><div style="font-size:11px;color:var(--sp-text2);margin-top:1px">En: ${p.evs.join(', ')}</div></div></div>`});else iH='<div class="empty">Sin cierres registrados aún</div>';
-
-  document.getElementById('dash-content').innerHTML=h+`
-    <div class="g2">
-      <div class="card"><div class="card-ttl"><i class="ti ti-chart-bar"></i> Calidad por área</div>${aH||'<div class="empty">Sin datos</div>'}</div>
-      <div class="card"><div class="card-ttl"><i class="ti ti-layers"></i> Calidad por etapa</div>${eH||'<div class="empty">Sin datos</div>'}</div>
-    </div>
-    <div class="g2">
-      <div class="card"><div class="card-ttl"><i class="ti ti-star"></i> Destacados recientes</div>${dH}</div>
-      <div class="card"><div class="card-ttl"><i class="ti ti-alert-triangle"></i> Aprendizajes recurrentes</div>${iH}</div>
-    </div>`;
+  const sorted=[...db.events].sort((a,b)=>(b.fecha||'').localeCompare(a.fecha||''));
+  let dH='';sorted.filter(e=>(pJ(e.destacados)||[]).length).slice(0,2).forEach(e=>{(pJ(e.destacados)||[]).slice(0,1).forEach(d=>{dH+=`<div class="dest">${d}<div style="font-size:11px;color:var(--vt);margin-top:3px">${e.nombre} · ${e.fecha}</div></div>`;})});
+  if(!dH)dH='<div class="empty">Sin destacados aún</div>';
+  // Aprendizajes
+  const aprMap={};db.cierres.forEach(ci=>{(pJ(ci.aprendizajes)||[]).forEach(a=>{const k=a.toLowerCase().slice(0,35);if(!aprMap[k])aprMap[k]={txt:a,evs:[]};const ev=db.events.find(e=>e.id==ci.evento_id);if(ev)aprMap[k].evs.push(ev.nombre)})});
+  let iH='';Object.values(aprMap).slice(0,4).forEach(p=>{iH+=`<div class="item"><span class="dot dv"></span><div><div>${p.txt}</div><div style="font-size:11px;color:var(--t2)">En: ${p.evs.join(', ')}</div></div></div>`});
+  if(!iH)iH='<div class="empty">Sin cierres registrados</div>';
+  document.getElementById('dash-content').innerHTML=h+`<div class="g2"><div class="card"><div class="cttl"><i class="ti ti-chart-bar"></i> Calidad por área y etapa</div>${aH||'<div class="empty">Sin datos</div>'}</div><div><div class="card" style="margin-bottom:10px"><div class="cttl"><i class="ti ti-star"></i> Destacados recientes</div>${dH}</div><div class="card"><div class="cttl"><i class="ti ti-alert-triangle"></i> Aprendizajes recurrentes</div>${iH}</div></div></div>`;
 }
 
-// ── RENDER HISTORIAL ──
-function renderHistorial(){
+// ── HISTORIAL ──
+function filtH(f,btn){hFilt=f;document.querySelectorAll('#s-hist .chip').forEach(b=>b.classList.remove('on'));btn.classList.add('on');renderHist()}
+function renderHist(){
   let evs=[...db.events].sort((a,b)=>(b.fecha||'').localeCompare(a.fecha||''));
-  evs=evs.filter(e=>{
-    if(hFilt==='todos')return true;
-    const a=getEvOverall(e);
-    if(hFilt==='excelente')return a>=4.5;
-    if(hFilt==='bueno')return a>=3.5&&a<4.5;
-    if(hFilt==='mejorar')return a<3.5&&a>0;
-    if(hFilt==='con-cierre')return db.cierres.some(c=>c.evento_id==e.id);
-    return true;
-  });
-  if(!evs.length){document.getElementById('hist-list').innerHTML='<div class="empty">Sin eventos registrados</div>';return}
+  if(hFilt==='excelente')evs=evs.filter(e=>getOverall(e)>=4.5);
+  else if(hFilt==='bueno')evs=evs.filter(e=>{const a=getOverall(e);return a>=3.5&&a<4.5});
+  else if(hFilt==='mejorar')evs=evs.filter(e=>getOverall(e)>0&&getOverall(e)<3.5);
+  else if(hFilt==='cierre')evs=evs.filter(e=>db.cierres.some(c=>c.evento_id==e.id));
+  if(!evs.length){document.getElementById('hist-list').innerHTML='<div class="empty">Sin eventos</div>';return}
   let h='';
   evs.forEach(e=>{
-    const ov=getEvOverall(e);const[l,c]=scoreLabel(ov);
+    const ov=getOverall(e);const[l,c]=scoreLabel(ov);
     const preA=getEtapaAvg(e.id,'pre');const liveA=getEtapaAvg(e.id,'live');const postA=getEtapaAvg(e.id,'post');
     const hasCierre=db.cierres.some(ci=>ci.evento_id==e.id);
-    const teamIds=(parseJ(e.team)||[]);
-    const teamAv=teamIds.map(id=>{const ct=db.contributors.find(x=>x.id==id);if(!ct)return'';return`<div style="width:20px;height:20px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:8px;font-weight:500;${avStyle(ct.color)}">${initials(ct)}</div>`;}).join('');
-    h+=`<div class="erow" onclick="openDet('${e.id}')">
-      <div class="er-l"><div class="er-name">${e.nombre}</div>
-      <div class="er-sub" style="display:flex;align-items:center;gap:5px;flex-wrap:wrap">${e.fecha||'—'} · ${e.tipo||'—'} · ${e.cliente||'—'}${teamAv?`<div style="display:flex;gap:2px">${teamAv}</div>`:''}</div></div>
-      <div class="er-r">
-        ${parseFloat(e.prod_rating)>0?`<span class="score-pill sp-prod">🔧${e.prod_rating}</span>`:''}
-        ${parseFloat(e.cuen_rating)>0?`<span class="score-pill sp-cuen">💰${e.cuen_rating}</span>`:''}
-        ${preA>0?`<span class="score-pill sp-pre">⚙️${preA.toFixed(1)}</span>`:''}
-        ${liveA>0?`<span class="score-pill sp-live">▶️${liveA.toFixed(1)}</span>`:''}
-        ${postA>0?`<span class="score-pill sp-post">📋${postA.toFixed(1)}</span>`:''}
-        <span class="badge ${c}">${l}</span>
-        ${(parseJ(e.destacados)||[]).length?`<span class="badge b-violet"><i class="ti ti-star" style="font-size:11px"></i>${(parseJ(e.destacados)||[]).length}</span>`:''}
-        ${hasCierre?`<span class="badge b-black"><i class="ti ti-clipboard-check" style="font-size:11px"></i></span>`:''}
-      </div>
-    </div>`;
+    h+=`<div class="erow" onclick="openDet('${e.id}')"><div style="flex:1;min-width:0"><div class="er-n">${e.nombre}</div><div class="er-s">${e.fecha||'—'} · ${e.tipo||'—'} · ${e.cliente||'—'}${e.cargado_nombre?` · <i class="ti ti-user" style="font-size:10px"></i> ${e.cargado_nombre}`:''}${e.created_at?` · <i class="ti ti-clock" style="font-size:10px"></i> ${new Date(e.created_at).toLocaleDateString('es-AR',{day:'2-digit',month:'2-digit',year:'numeric'})}`:''}
+</div></div><div style="display:flex;gap:5px;flex-wrap:wrap;justify-content:flex-end;flex-shrink:0">${parseFloat(e.prod_rating)>0?`<span class="sp sp-prod">🔧${e.prod_rating}</span>`:''} ${parseFloat(e.cuen_rating)>0?`<span class="sp sp-live">💰${e.cuen_rating}</span>`:''} ${preA>0?`<span class="sp sp-pre">⚙️${preA.toFixed(1)}</span>`:''} ${liveA>0?`<span class="sp sp-live">▶️${liveA.toFixed(1)}</span>`:''} ${postA>0?`<span class="sp sp-post">📋${postA.toFixed(1)}</span>`:''} ${l?`<span class="badge ${c}">${l}</span>`:''} ${hasCierre?`<span class="badge bg"><i class="ti ti-clipboard-check" style="font-size:10px"></i></span>`:''}</div></div>`;
   });
   document.getElementById('hist-list').innerHTML=h;
 }
 
-// ── RENDER CIERRES ──
+// ── CIERRES ──
 function renderCierres(){
   const cierres=[...db.cierres].sort((a,b)=>(b.created_at||'').localeCompare(a.created_at||''));
   if(!cierres.length){document.getElementById('cierre-list').innerHTML='<div class="empty">Sin cierres registrados</div>';return}
   let h='';
   cierres.forEach(ci=>{
     const ev=db.events.find(e=>e.id==ci.evento_id)||{nombre:'Evento',fecha:'—'};
-    const aprs=parseJ(ci.aprendizajes)||[];
-    h+=`<div class="card" style="cursor:pointer" onclick="openDet('${ev.id}')">
-      <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px">
-        <div><div style="font-size:15px;font-weight:500;color:var(--sp-text)">${ev.nombre}</div><div style="font-size:12px;color:var(--sp-text2);margin-top:2px">${ev.fecha} · ${ci.participantes||'—'}</div></div>
-        <span class="badge b-violet"><i class="ti ti-clipboard-check"></i> Cerrado</span>
-      </div>
-      ${aprs.length?aprs.slice(0,2).map(a=>`<div class="item"><span class="dot dv"></span>${a}</div>`).join('')+''.concat(aprs.length>2?`<div style="font-size:12px;color:var(--sp-text2)">+${aprs.length-2} más</div>`:''):''}
-    </div>`;
+    const aprs=pJ(ci.aprendizajes)||[];
+    h+=`<div class="card" style="cursor:pointer" onclick="openDet('${ev.id}')"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px"><div><div style="font-size:15px;font-weight:500;color:var(--t)">${ev.nombre}</div><div style="font-size:12px;color:var(--t2);margin-top:2px">${ev.fecha} · ${ci.participantes||'—'}</div></div><span class="badge bv"><i class="ti ti-clipboard-check"></i> Cerrado</span></div>${aprs.slice(0,2).map(a=>`<div class="item"><span class="dot dv"></span>${a}</div>`).join('')}${aprs.length>2?`<div style="font-size:12px;color:var(--t2)">+${aprs.length-2} más</div>`:''}</div>`;
   });
   document.getElementById('cierre-list').innerHTML=h;
 }
 
-// ── RENDER MEJORAS ──
+// ── MEJORAS ──
+function filtM(f,btn){mFilt=f;document.querySelectorAll('#s-mejoras .chip').forEach(b=>b.classList.remove('on'));btn.classList.add('on');renderMejoras()}
 function renderMejoras(){
-  const evsSorted=[...db.events].sort((a,b)=>(a.fecha||'').localeCompare(b.fecha||''));
+  const evs=[...db.events].sort((a,b)=>(a.fecha||'').localeCompare(b.fecha||''));
   let h='';
-  if(mejFilt==='todas'||mejFilt==='destacados'){
-    const de=evsSorted.filter(e=>(parseJ(e.destacados)||[]).length).reverse();
-    if(de.length){h+=`<div style="font-size:14px;font-weight:500;color:var(--sp-text);margin-bottom:12px;display:flex;align-items:center;gap:6px"><i class="ti ti-star" style="color:var(--sp-violet)"></i> Destacados del equipo</div>`;de.forEach(e=>{h+=`<div class="card"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><div style="font-size:14px;font-weight:500;color:var(--sp-text)">${e.nombre}</div><div style="font-size:12px;color:var(--sp-text2)">${e.fecha}</div></div>`;(parseJ(e.destacados)||[]).forEach(d=>{h+=`<div class="destaque-card"><div class="destaque-txt">${d}</div></div>`;});h+=`</div>`;});}
-    else if(mejFilt==='destacados')h='<div class="empty">Sin destacados</div>';
+  if(mFilt==='todo'||mFilt==='destacados'){
+    const de=evs.filter(e=>(pJ(e.destacados)||[]).length).reverse();
+    if(de.length){h+=`<div style="font-size:14px;font-weight:500;color:var(--t);margin-bottom:12px;display:flex;align-items:center;gap:6px"><i class="ti ti-star" style="color:var(--v)"></i> Destacados</div>`;de.forEach(e=>{h+=`<div class="card"><div style="font-size:14px;font-weight:500;margin-bottom:8px">${e.nombre} <span style="font-size:12px;color:var(--t2);font-weight:400">${e.fecha}</span></div>`;(pJ(e.destacados)||[]).forEach(d=>{h+=`<div class="dest">${d}</div>`});h+=`</div>`});}
   }
-  if(mejFilt==='todas'||mejFilt==='mejoras'){
-    const me=evsSorted.filter(e=>(parseJ(e.mejoras)||[]).length);
-    if(me.length){if(mejFilt==='todas')h+=`<div style="height:16px"></div>`;h+=`<div style="font-size:14px;font-weight:500;color:var(--sp-text);margin-bottom:16px;display:flex;align-items:center;gap:6px"><i class="ti ti-trending-up" style="color:var(--sp-mint-dark)"></i> Mejoras progresivas</div><div class="mejora-timeline">`;me.forEach((e,idx)=>{const isLast=idx===me.length-1;(parseJ(e.mejoras)||[]).forEach(m=>{h+=`<div class="mejora-item"><div class="mejora-dot ${isLast?'md-v':'md-b'}"></div><div style="font-size:11px;color:var(--sp-text2);margin-bottom:2px">${e.fecha} · ${e.nombre}</div><div style="font-size:13px;color:var(--sp-text);line-height:1.5">${m}</div></div>`;});});h+=`</div>`;}
-    else if(mejFilt==='mejoras')h='<div class="empty">Sin mejoras registradas</div>';
+  if(mFilt==='todo'||mFilt==='mejoras'){
+    const me=evs.filter(e=>(pJ(e.mejoras)||[]).length);
+    if(me.length){if(mFilt==='todo')h+=`<div style="height:16px"></div>`;h+=`<div style="font-size:14px;font-weight:500;color:var(--t);margin-bottom:12px;display:flex;align-items:center;gap:6px"><i class="ti ti-trending-up" style="color:var(--md)"></i> Mejoras progresivas</div>`;me.forEach(e=>{h+=`<div class="card"><div style="font-size:14px;font-weight:500;margin-bottom:8px">${e.nombre} <span style="font-size:12px;color:var(--t2);font-weight:400">${e.fecha}</span></div>`;(pJ(e.mejoras)||[]).forEach(m=>{h+=`<div class="item"><span class="dot dm"></span>${m}</div>`});h+=`</div>`});}
   }
   if(!h)h='<div class="empty">Sin datos</div>';
   document.getElementById('mej-content').innerHTML=h;
 }
 
-// ── RENDER EQUIPO ──
-function renderContributors(){
-  const contribs=db.contributors;
-  document.getElementById('contrib-count').textContent=`${contribs.length} persona${contribs.length!==1?'s':''} en el equipo`;
+// ── EQUIPO ──
+function renderEquipo(){
+  document.getElementById('eq-count').textContent=`${db.team.length} persona${db.team.length!==1?'s':''} en el equipo`;
+  if(!db.team.length){document.getElementById('contrib-grid').innerHTML='<div class="empty">Sin personas en el equipo</div>';return}
   let h='';
-  contribs.forEach(c=>{
-    const col=AV_COLORS[c.color]||AV_COLORS.a;
-    const evs=db.events.filter(e=>(parseJ(e.team)||[]).includes(c.id?.toString())||( parseJ(e.team)||[]).includes(c.id));
-    // ingreso
-    let antiguedad='';
-    if(c.ingreso){const d=new Date(c.ingreso+'-01');const now=new Date();const m=Math.floor((now-d)/1000/60/60/24/30);antiguedad=m>=12?`${Math.floor(m/12)}a`:`${m}m`;}
-    h+=`<div class="contrib-card" onclick="openProfile('${c.id}')">
-      <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">
-        <div class="contrib-av" style="background:${col.bg};color:${col.fg}">${initials(c)}</div>
-        <div style="flex:1"><div style="font-size:14px;font-weight:500;color:var(--sp-text)">${c.nombre} ${c.apellido||''}</div><div style="font-size:12px;color:var(--sp-text2);margin-top:1px">${c.rol||'—'}${antiguedad?` · 📅 ${antiguedad} en SAPPIA`:''}</div></div>
+  db.team.forEach(p=>{
+    const evs=db.events.filter(e=>(pJ(e.team)||[]).map(String).includes(String(p.id)));
+    let ant='';
+    if(p.ingreso){const d=new Date(p.ingreso+'-01');const m=Math.floor((new Date()-d)/1000/60/60/24/30);ant=m>=12?`${Math.floor(m/12)}a`:`${m}m`;}
+    h+=`<div class="cc" onclick="openPerfil('${p.id}')">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+        <div class="av" style="${avStyle(p.color||'v')};width:38px;height:38px;font-size:13px">${initials(p)}</div>
+        <div><div style="font-size:14px;font-weight:500;color:var(--t)">${p.nombre} ${p.apellido||''}</div><div style="font-size:12px;color:var(--t2)">${p.rol||'—'}${ant?` · 📅 ${ant}`:''}</div></div>
       </div>
-      <div class="cstats">
-        <div class="cstat"><div class="cstat-v">${evs.length}</div><div class="cstat-l">Eventos</div></div>
-        <div class="cstat"><div class="cstat-v">—</div><div class="cstat-l">🔧</div></div>
-        <div class="cstat"><div class="cstat-v">—</div><div class="cstat-l">💰</div></div>
-        <div class="cstat"><div class="cstat-v">—</div><div class="cstat-l">⚙️</div></div>
-        <div class="cstat"><div class="cstat-v">—</div><div class="cstat-l">▶️</div></div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:8px">
+        <div class="pstat"><div class="pstat-v">${evs.length}</div><div class="pstat-l">Eventos</div></div>
+        <div class="pstat"><div class="pstat-v">${(pJ(p.fortalezas)||[]).length}</div><div class="pstat-l">Fortalezas</div></div>
+        <div class="pstat"><div class="pstat-v">${ant||'—'}</div><div class="pstat-l">Antigüedad</div></div>
       </div>
-      ${(parseJ(c.fortalezas)||[]).slice(0,2).length?`<div style="font-size:10px;font-weight:500;color:var(--sp-text2);text-transform:uppercase;letter-spacing:.05em;margin-bottom:5px">Fortalezas</div><div style="display:flex;gap:5px;flex-wrap:wrap">${(parseJ(c.fortalezas)||[]).slice(0,2).map(f=>`<span class="pill-f">${f.length>28?f.slice(0,26)+'…':f}</span>`).join('')}</div>`:''}
+      ${(pJ(p.fortalezas)||[]).slice(0,2).length?`<div style="display:flex;gap:4px;flex-wrap:wrap">${(pJ(p.fortalezas)||[]).slice(0,2).map(f=>`<span style="background:var(--vl);color:var(--vt);font-size:10px;padding:2px 8px;border-radius:12px">${f.length>25?f.slice(0,23)+'…':f}</span>`).join('')}</div>`:''}
+      ${p.ingreso?`<div style="font-size:10px;color:var(--t2);margin-top:8px">📅 En SAPPIA desde ${p.ingreso}</div>`:''}
     </div>`;
   });
-  document.getElementById('contrib-grid').innerHTML=h||'<div class="empty">Sin personas en el equipo</div>';
-}
-
-// ── OPEN PROFILE ──
-function openProfile(id){
-  const c=db.contributors.find(x=>x.id==id);if(!c)return;
-  const col=AV_COLORS[c.color]||AV_COLORS.a;
-  const evs=db.events.filter(e=>(parseJ(e.team)||[]).map(String).includes(String(id)));
-  let antiguedad='';
-  if(c.ingreso){const d=new Date(c.ingreso+'-01');const now=new Date();const m=Math.floor((now-d)/1000/60/60/24/30);const a=Math.floor(m/12);const rm=m%12;antiguedad=a>0?`${a} año${a>1?'s':''}${rm>0?` y ${rm} mes${rm>1?'es':''}`:''}`:` ${m} mes${m>1?'es':''}`;}
-  let h=`<div style="display:flex;align-items:center;gap:16px;margin-bottom:1.25rem;padding-bottom:1rem;border-bottom:0.5px solid var(--color-border-tertiary)">
-    <div style="width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:500;background:${col.bg};color:${col.fg}">${initials(c)}</div>
-    <div><div style="font-size:17px;font-weight:500;color:var(--sp-text)">${c.nombre} ${c.apellido||''}</div><div style="font-size:13px;color:var(--sp-text2);margin-top:2px">${c.rol||'—'}</div></div>
-    ${isAdmin()?`<button class="btn-s" style="margin-left:auto" onclick="closeM('modal-profile');openContribForm('${c.id}')"><i class="ti ti-edit"></i> Editar</button>`:''}
-  </div>
-  ${antiguedad?`<div style="display:inline-flex;align-items:center;gap:6px;padding:4px 12px;background:var(--sp-violet-light);border-radius:20px;font-size:11px;color:var(--sp-violet-text);margin-bottom:14px">📅 En SAPPIA desde <strong>${c.ingreso}</strong> · ${antiguedad}</div>`:''}
-  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:1rem">
-    <div class="pstat"><div class="pstat-v">${evs.length}</div><div class="pstat-l">Eventos</div></div>
-    <div class="pstat"><div class="pstat-v">${(parseJ(c.fortalezas)||[]).length}</div><div class="pstat-l">Fortalezas</div></div>
-    <div class="pstat"><div class="pstat-v">${(parseJ(c.notas||'[]')||[]).length}</div><div class="pstat-l">Notas</div></div>
-  </div>
-  <div class="stabs"><button class="stab on" onclick="switchPT('pt-f',this)">Fortalezas</button><button class="stab" onclick="switchPT('pt-o',this)">Oportunidades</button><button class="stab" onclick="switchPT('pt-e',this)">Eventos</button><button class="stab" onclick="switchPT('pt-n',this)">Notas manager</button></div>
-  <div id="pt-f" class="sv on">`;
-  const fortalezas=parseJ(c.fortalezas)||[];
-  if(fortalezas.length)fortalezas.forEach(f=>{h+=`<div class="forte-item"><div class="forte-dot" style="background:var(--sp-violet)"></div><div class="forte-txt">${f}</div></div>`;});
-  else h+='<div class="empty">Sin fortalezas</div>';
-  h+=`</div><div id="pt-o" class="sv">`;
-  const opors=parseJ(c.oportunidades)||[];
-  if(opors.length)opors.forEach(o=>{h+=`<div class="forte-item"><div class="forte-dot" style="background:var(--sp-blue)"></div><div class="forte-txt">${o}</div></div>`;});
-  else h+='<div class="empty">Sin oportunidades</div>';
-  h+=`</div><div id="pt-e" class="sv">`;
-  if(evs.length)evs.forEach(e=>{
-    const ov=getEvOverall(e);const[l,cl]=scoreLabel(ov);
-    const evalP=db.evalPersonas.find(ep=>ep.evento_id==e.id&&ep.persona_id==id);
-    h+=`<div class="te" style="flex-direction:column;align-items:stretch;gap:6px">
-      <div style="display:flex;gap:10px;align-items:flex-start">
-        <div class="te-date">${e.fecha}</div>
-        <div style="flex:1"><div style="font-size:13px;font-weight:500;color:var(--sp-text)">${e.nombre} <span class="badge ${cl}" style="font-size:10px">${l}</span></div></div>
-      </div>
-      ${evalP?`<div style="margin-left:0;padding:8px 10px;background:var(--sp-gray);border-radius:8px">
-        ${evalP.calificacion?`<div style="display:flex;gap:2px;margin-bottom:4px">${[1,2,3,4,5].map(n=>`<span style="font-size:13px;color:${n<=evalP.calificacion?'var(--sp-violet)':'var(--sp-gray3)'}">★</span>`).join('')}</div>`:''}
-        ${evalP.feedback?`<div style="font-size:12px;color:var(--sp-text);margin-bottom:4px">${evalP.feedback}</div>`:''}
-        <div style="font-size:10px;color:var(--sp-text2)">${evalP.created_by?`Cargado por ${evalP.created_by}`:''}${evalP.created_at?` · ${new Date(evalP.created_at).toLocaleDateString('es-AR')}`:''}</div>
-      </div>`:''}
-    </div>`;
-  });
-  else h+='<div class="empty">Sin eventos registrados</div>';
-  h+=`</div><div id="pt-n" class="sv">`;
-  if(isAdmin())h+=`<div style="margin-bottom:10px"><textarea id="nota-nueva" placeholder="Agregar nota..." style="margin-bottom:8px"></textarea><button class="btn-s" onclick="addNota('${c.id}')"><i class="ti ti-plus"></i> Agregar</button></div>`;
-  const notas=parseJ(c.notas||'[]')||[];
-  if(notas.length)notas.slice().reverse().forEach((nt,i)=>{h+=`<div class="forte-item"><div class="forte-dot" style="background:var(--sp-mint)"></div><div class="forte-txt">${nt.texto||nt}<div class="forte-source">${nt.fecha||''}</div></div></div>`;});
-  else h+='<div class="empty">Sin notas</div>';
-  h+=`</div>`;
-  if(isAdmin())h+=`<hr class="divider"><button class="btn-d" onclick="delContrib('${c.id}')"><i class="ti ti-trash"></i> Eliminar perfil</button>`;
-  document.getElementById('profile-content').innerHTML=h;
-  const pv_modal_profile=document.getElementById('modal-profile');
-  pv_modal_profile.classList.add('open');
-  pv_modal_profile.scrollTop=0;
-  document.getElementById('app-screen').style.display='none';
-  
-}
-
-async function addNota(cid){
-  const txt=document.getElementById('nota-nueva').value.trim();if(!txt)return;
-  const c=db.contributors.find(x=>x.id==cid);if(!c)return;
-  const notas=parseJ(c.notas||'[]')||[];
-  notas.push({texto:txt,fecha:new Date().toLocaleDateString('es-AR',{day:'2-digit',month:'2-digit',year:'numeric'})});
-  await apiPost({action:'updateRow',sheet:'equipo',id:cid,data:{notas:JSON.stringify(notas)}});
-  c.notas=JSON.stringify(notas);
-  openProfile(cid);
-}
-
-async function delContrib(id){
-  if(!confirm('¿Eliminar?'))return;
-  await apiPost({action:'deleteRow',sheet:'equipo',id});
-  db.contributors=db.contributors.filter(c=>c.id!=id);
-  closeM('modal-profile');renderContributors();
-}
-
-function switchPT(id,btn){document.querySelectorAll('.sv').forEach(v=>v.classList.remove('on'));document.getElementById(id).classList.add('on');document.querySelectorAll('.stab').forEach(b=>b.classList.remove('on'));btn.classList.add('on');}
-
-// ── OPEN DET EVENTO ──
-function openDet(id){
-  const e=db.events.find(x=>x.id==id);if(!e)return;
-  const ov=getEvOverall(e);const[l,c]=scoreLabel(ov);
-  const preA=getEtapaAvg(id,'pre');const liveA=getEtapaAvg(id,'live');const postA=getEtapaAvg(id,'post');
-  const cierre=db.cierres.find(ci=>ci.evento_id==id);
-  const teamCards=(parseJ(e.team)||[]).map(tid=>{const ct=db.contributors.find(x=>x.id==tid||x.id==String(tid));if(!ct)return'';return`<div style="display:inline-flex;align-items:center;gap:5px;padding:3px 8px;background:${AV_COLORS[ct.color]?.bg||'var(--sp-gray2)'};border-radius:12px;margin-right:5px;margin-bottom:4px"><span style="font-size:12px;color:${AV_COLORS[ct.color]?.fg||'var(--sp-text2)'};font-weight:500">${ct.nombre}</span></div>`;}).join('');
-  let h=`<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:.75rem">
-    <span class="badge ${c}">${l}</span><span class="badge b-black">${e.tipo||'—'}</span>
-    ${parseFloat(e.prod_rating)>0?`<span class="score-pill sp-prod">🔧 ${e.prod_rating}</span>`:''}
-    ${parseFloat(e.cuen_rating)>0?`<span class="score-pill sp-cuen">💰 ${e.cuen_rating}</span>`:''}
-    ${preA>0?`<span class="score-pill sp-pre">⚙️ ${preA.toFixed(1)}</span>`:''}
-    ${liveA>0?`<span class="score-pill sp-live">▶️ ${liveA.toFixed(1)}</span>`:''}
-    ${postA>0?`<span class="score-pill sp-post">📋 ${postA.toFixed(1)}</span>`:''}
-    ${cierre?`<span class="badge b-violet"><i class="ti ti-clipboard-check"></i> Cierre</span>`:''}
-  </div>
-  <div style="font-size:13px;color:var(--sp-text2);margin-bottom:8px">Cliente: ${e.cliente||'—'} · ${e.fecha||'—'} · ${e.asistentes||'—'} asistentes</div>
-  ${teamCards?`<div style="margin-bottom:12px">${teamCards}</div>`:''}
-  <div class="stabs">
-    <button class="stab on" onclick="switchDT('dt-areas',this)">🔧💰 Áreas</button>
-    <button class="stab" onclick="switchDT('dt-pre',this)">⚙️ Previa</button>
-    <button class="stab" onclick="switchDT('dt-live',this)">▶️ Ejecución</button>
-    <button class="stab" onclick="switchDT('dt-post',this)">📋 Post</button>
-    <button class="stab" onclick="switchDT('dt-general',this)">General</button>
-    ${cierre?`<button class="stab" onclick="switchDT('dt-cierre',this)">Cierre</button>`:''}
-  </div>`;
-
-  h+=`<div id="dt-areas" class="sv on">
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
-      <div style="background:var(--sp-mint-light);border-radius:12px;padding:1rem;text-align:center"><div style="font-size:11px;color:var(--sp-mint-text);font-weight:500;margin-bottom:8px;text-transform:uppercase">🔧 Producción</div>${parseFloat(e.prod_rating)>0?`<div style="font-size:28px;font-weight:500;color:var(--sp-mint-dark)">${e.prod_rating}<span style="font-size:14px">/5</span></div><div style="margin-top:6px">${smini(parseFloat(e.prod_rating))}</div>`:'<div style="font-size:13px;color:var(--sp-mint-text)">Sin evaluar</div>'}</div>
-      <div style="background:var(--sp-violet-light);border-radius:12px;padding:1rem;text-align:center"><div style="font-size:11px;color:var(--sp-violet-text);font-weight:500;margin-bottom:8px;text-transform:uppercase">💰 Cuentas</div>${parseFloat(e.cuen_rating)>0?`<div style="font-size:28px;font-weight:500;color:var(--sp-violet-dark)">${e.cuen_rating}<span style="font-size:14px">/5</span></div><div style="margin-top:6px">${smini(parseFloat(e.cuen_rating))}</div>`:'<div style="font-size:13px;color:var(--sp-violet-text)">Sin evaluar</div>'}</div>
-    </div>
-    ${e.oprod?`<div style="margin-bottom:10px"><div style="font-size:11px;font-weight:500;color:var(--sp-text2);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px">Para producción</div><div style="font-size:13px;color:var(--sp-text);line-height:1.6">${e.oprod}</div></div>`:''}
-    ${e.ocuen?`<div><div style="font-size:11px;font-weight:500;color:var(--sp-text2);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px">Para cuentas</div><div style="font-size:13px;color:var(--sp-text);line-height:1.6">${e.ocuen}</div></div>`:''}
-    ${isAdmin()?`<hr class="divider"><button class="btn-d" onclick="delEvent('${e.id}')"><i class="ti ti-trash"></i> Eliminar evento</button>`:''}
-  </div>`;
-
-  // Etapas
-  ['pre','live','post'].forEach(etapa=>{
-    const labels={pre:'dt-pre',live:'dt-live',post:'dt-post'};
-    const evals=db.evaluaciones.filter(ev=>ev.evento_id==id&&ev.etapa===etapa);
-    const avg=evals.length?evals.reduce((a,b)=>a+parseFloat(b.valor||0),0)/evals.length:0;
-    const obs=etapa==='pre'?e.pre_obs:etapa==='live'?e.live_obs:e.post_obs;
-    const colors={pre:'var(--sp-blue-light)',live:'var(--sp-violet-light)',post:'var(--sp-mint-light)'};
-    h+=`<div id="${labels[etapa]}" class="sv">`;
-    if(evals.length){
-      h+=`<table class="comp-table">`;
-      evals.forEach(ev=>{h+=`<tr><td>${ev.campo}</td><td>${smini(parseFloat(ev.valor||0))}</td><td style="color:var(--sp-text2)">${ev.valor}/5</td></tr>`;});
-      h+=`</table>`;
-      if(avg>0){const sp={pre:'sp-pre',live:'sp-live',post:'sp-post'};h+=`<div style="margin-top:10px;display:flex;align-items:center;gap:8px"><span style="font-size:12px;color:var(--sp-text2)">Promedio etapa</span><span class="score-pill ${sp[etapa]}">${avg.toFixed(1)} / 5</span></div>`;}
-      if(obs)h+=`<div style="margin-top:12px;font-size:13px;color:var(--sp-text);line-height:1.6;padding:10px;background:${colors[etapa]};border-radius:8px">${obs}</div>`;
-    }else h+='<div class="empty">Sin evaluación registrada</div>';
-    h+=`</div>`;
-  });
-
-  // General
-  const dests=parseJ(e.destacados)||[];const mejoras=parseJ(e.mejoras)||[];
-  h+=`<div id="dt-general" class="sv">
-    ${dests.length?`<div style="margin-bottom:12px"><div style="font-size:11px;font-weight:500;color:var(--sp-text2);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px">⭐ Destacados</div>${dests.map(d=>`<div class="destaque-card"><div class="destaque-txt">${d}</div></div>`).join('')}</div>`:''}
-    ${mejoras.length?`<div><div style="font-size:11px;font-weight:500;color:var(--sp-text2);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px">📈 Mejoras vs anterior</div>${mejoras.map(m=>`<div class="item"><span class="dot dm"></span>${m}</div>`).join('')}</div>`:''}
-    ${!dests.length&&!mejoras.length?'<div class="empty">Sin datos generales</div>':''}
-  </div>`;
-
-  // Cierre
-  if(cierre){
-    const aprs=parseJ(cierre.aprendizajes)||[];
-    const acciones=parseJ(cierre.acciones)||[];
-    const voces=parseJ(cierre.voces)||[];
-    h+=`<div id="dt-cierre" class="sv">
-      <div class="cierre-banner"><i class="ti ti-clipboard-check"></i><div class="cierre-banner-txt">Participantes: ${cierre.participantes||'—'}</div></div>
-      <div class="stabs" style="margin-bottom:1rem"><button class="stab on" onclick="switchCT('ci-apr',this)">Aprendizajes</button><button class="stab" onclick="switchCT('ci-voces',this)">Voces</button><button class="stab" onclick="switchCT('ci-acc',this)">Acciones</button></div>
-      <div id="ci-apr" class="sv on">${aprs.length?aprs.map(a=>`<div class="item"><span class="dot dv"></span>${a}</div>`).join(''):'<div class="empty">Sin aprendizajes</div>'}</div>
-      <div id="ci-voces" class="sv">${voces.length?voces.map(v=>`<div class="voice-row"><div class="av av-a">${(v.nombre||'?').slice(0,2).toUpperCase()}</div><div style="flex:1"><div style="font-size:12px;font-weight:500;color:var(--sp-text)">${v.nombre||''}</div>${v.quote?`<div class="quote-text">"${v.quote}"</div>`:''}<div style="font-size:13px;color:var(--sp-text);margin-top:4px">${v.obs||''}</div></div></div>`).join(''):'<div class="empty">Sin voces</div>'}</div>
-      <div id="ci-acc" class="sv">${acciones.length?acciones.map((ac,i)=>`<div class="action-r"><div class="pmi"></div><div class="a-num">0${i+1}</div><div class="a-body"><div class="a-title">${typeof ac==='string'?ac:ac.titulo||ac}</div></div></div>`).join(''):'<div class="empty">Sin acciones</div>'}</div>
-    </div>`;
-  }
-
-  document.getElementById('det-title').textContent=e.nombre;
-  document.getElementById('det-content').innerHTML=h;
-  const pv_modal_det=document.getElementById('modal-det');
-  pv_modal_det.classList.add('open');
-  pv_modal_det.scrollTop=0;
-  document.getElementById('app-screen').style.display='none';
-  
-}
-
-function switchDT(id,btn){const mc=document.getElementById('det-content');mc.querySelectorAll(':scope > .sv').forEach(v=>v.classList.remove('on'));document.getElementById(id).classList.add('on');mc.querySelectorAll(':scope > .stabs > .stab').forEach(b=>b.classList.remove('on'));btn.classList.add('on');}
-function switchCT(id,btn){['ci-apr','ci-voces','ci-acc'].forEach(k=>{const el=document.getElementById(k);if(el)el.classList.remove('on')});document.getElementById(id).classList.add('on');btn.parentElement.querySelectorAll('.stab').forEach(b=>b.classList.remove('on'));btn.classList.add('on');}
-
-async function delEvent(id){
-  if(!confirm('¿Eliminar este evento?'))return;
-  await apiPost({action:'deleteRow',sheet:'eventos',id});
-  db.events=db.events.filter(e=>e.id!=id);
-  closeM('modal-det');renderAll();
+  document.getElementById('contrib-grid').innerHTML=h;
 }
 
 // ── NUEVO EVENTO ──
-function renderParticChips(cid,sel){
+function renderTeamChips(){
+  const el=document.getElementById('team-sel');if(!el)return;
+  if(!db.team.length){el.innerHTML='<div style="font-size:13px;color:var(--t2);padding:8px 12px;background:var(--g);border-radius:8px">Primero agregá personas desde la sección <strong>Equipo</strong>.</div>';return}
+  el.innerHTML=db.team.map(p=>`<div class="tc" onclick="this.classList.toggle(\'on\')" data-id="${p.id}"><div style="width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:600;${avStyle(p.color||'v')}">${initials(p)}</div>${p.nombre}</div>`).join('');
+}
+function renderParticChips(cid){
   const el=document.getElementById(cid);if(!el)return;
-  if(!db.contributors.length){el.innerHTML='';return;}
-  el.innerHTML=db.contributors.map(c=>{const s=(sel||[]).map(String).includes(String(c.id));return`<button class="pc${s?' sel':''}" onclick="togglePartic(this)" data-id="${c.id}">${initials(c)} ${c.nombre}</button>`;}).join('');
+  if(!db.team.length){el.innerHTML='';return}
+  el.innerHTML=db.team.map(p=>`<div class="pc" onclick="this.classList.toggle(\'on\')" data-id="${p.id}">${initials(p)} ${p.nombre}</div>`).join('');
 }
-function togglePartic(btn){btn.classList.toggle('sel')}
-function getSelectedPartic(cid){const el=document.getElementById(cid);if(!el)return[];return[...el.querySelectorAll('.pc.sel')].map(b=>b.dataset.id)}
-function renderTeamSelector(){
-  const el=document.getElementById('ev-team-sel');if(!el)return;
-  if(!db.contributors.length){
-    el.innerHTML='<div style="font-size:13px;color:var(--sp-text2);padding:8px 12px;background:var(--sp-gray);border-radius:8px;display:flex;align-items:center;gap:8px"><i class="ti ti-info-circle" style="color:var(--sp-violet)"></i> No hay personas en el equipo todavía. Agregalas desde la sección <strong style="color:var(--sp-text)">Equipo</strong> antes de cargar el evento.</div>';
-    return;
-  }
-  el.innerHTML=db.contributors.map(c=>`<label style="display:inline-flex;align-items:center;gap:6px;margin-right:10px;margin-bottom:6px;cursor:pointer;font-size:13px;color:var(--sp-text)"><input type="checkbox" class="ev-team-cb" value="${c.id}" onchange="renderEvalPersonas()" style="width:auto"><div style="width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:500;${avStyle(c.color)}">${initials(c)}</div>${c.nombre}</label>`).join('');
-}
-function getSelectedTeam(){return[...document.querySelectorAll('.ev-team-cb:checked')].map(cb=>cb.value)}
+function getTeam(){return[...document.querySelectorAll('#team-sel .tc.on')].map(b=>b.dataset.id)}
+function getPartic(cid){return[...document.querySelectorAll(`#${cid} .pc.on`)].map(b=>b.dataset.id)}
+function toggleCierre(cb){document.getElementById('cierre-section').style.display=cb.checked?'block':'none'}
 
-function renderEvalPersonas(){
-  const el=document.getElementById('ev-eval-personas');if(!el)return;
-  const selectedIds=getSelectedTeam();
-  const target=db.contributors.filter(c=>selectedIds.includes(String(c.id))&&(c.rol==='Producción'||c.rol==='Cuentas'));
-  if(!target.length){el.innerHTML='';return;}
-  el.innerHTML=`<div style="font-size:11px;font-weight:500;color:var(--sp-text2);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px">Evaluación individual — Producción y Cuentas</div>`+
-    target.map(c=>`<div style="align-items:flex-start;flex-direction:column;gap:8px;padding:10px 12px;background:var(--sp-gray);border-radius:10px;margin-bottom:8px;display:flex">
-      <div style="display:flex;align-items:center;justify-content:space-between;width:100%;flex-wrap:wrap;gap:6px">
-        <div style="font-size:13px;font-weight:500;color:var(--sp-text)">${c.nombre} ${c.apellido||''} <span style="font-weight:400;color:var(--sp-text2)">· ${c.rol}</span></div>
-        <div class="rating-stars" id="evalp-${c.id}" data-v="0">${[1,2,3,4,5].map(n=>`<span class="rstar" onclick="setRS('evalp-${c.id}',${n})">★</span>`).join('')}</div>
-      </div>
-      <textarea id="evalp-${c.id}-fb" placeholder="Devolución para ${c.nombre}..." style="width:100%"></textarea>
-    </div>`).join('');
-}
-
-function openNew(){
-  if(!isAdmin()){alert('Solo los admins pueden registrar eventos.');return}
-  ['en-nombre','en-cliente','en-destacados','en-mejoras','en-mal','en-oprod','en-ocuen','pre-obs','live-obs','post-obs','en-cpartic','en-caprendizajes','en-cvoces','en-cacciones'].forEach(id=>{const el=document.getElementById(id);if(el)el.value=''});
-  ['r-prod','r-cuen'].forEach(id=>{const el=document.getElementById(id);if(el){el.dataset.v=0;el.querySelectorAll('.star').forEach(s=>s.classList.remove('on'))}});
-  ['pre-cc','pre-carpeta','pre-cashflow','pre-provee','pre-comun','pre-producer','live-crono','live-planos','live-diseno','live-panol','live-roles','live-provee','live-comun','post-cc','post-facturas','post-envio','post-cargado','post-extras'].forEach(id=>{const el=document.getElementById(id);if(el){el.dataset.v=0;el.querySelectorAll('.rstar').forEach(s=>s.classList.remove('on'))}});
-  ['en-tiempos','en-addcierre'].forEach(id=>{const el=document.getElementById(id);if(el)el.checked=false});
-  document.getElementById('cierre-inline').style.display='none';
-  document.getElementById('en-fecha').value=new Date().toISOString().split('T')[0];
-  renderTeamSelector();renderEvalPersonas();renderParticChips('pre-partic-chips',[]);renderParticChips('live-partic-chips',[]);
-  const mv=document.getElementById('modal-new');
-  mv.classList.add('open');
-  mv.scrollTop=0;
-  document.getElementById('app-screen').style.display='none';
+function openNewEvento(){
   
+  ['en-nombre','en-cliente','en-dest','en-mej','en-mal','en-oprod','en-ocuen','obs-pre','obs-live','obs-post','ci-partic','ci-apr','ci-voces','ci-acc'].forEach(id=>{const el=document.getElementById(id);if(el)el.value=''});
+  ['r-prod','r-cuen'].forEach(id=>setR(id,0));
+  ['rs-pre-cc','rs-pre-carp','rs-pre-cash','rs-pre-prov','rs-pre-com','rs-pre-prod','rs-live-crono','rs-live-planos','rs-live-diseno','rs-live-panol','rs-live-roles','rs-live-prov','rs-live-com','rs-post-cc','rs-post-fact','rs-post-envio','rs-post-carg','rs-post-ext'].forEach(id=>setRS(id,0));
+  document.getElementById('en-tiempos').checked=false;
+  document.getElementById('en-addcierre').checked=false;
+  document.getElementById('cierre-section').style.display='none';
+  document.getElementById('en-fecha').value=new Date().toISOString().split('T')[0];
+  document.getElementById('en-asist').value='';
+  renderTeamChips();
+  renderParticChips('pre-partic');
+  renderParticChips('live-partic');
+  openPV('pv-evento');
 }
-document.getElementById('en-addcierre').addEventListener('change',function(){document.getElementById('cierre-inline').style.display=this.checked?'block':'none'});
 
-async function saveEvent(){
-  if(!isAdmin())return;
+async function saveEvento(){
+  
   const nombre=document.getElementById('en-nombre').value.trim();
   const fecha=document.getElementById('en-fecha').value;
   if(!nombre||!fecha){alert('Nombre y fecha son obligatorios');return}
-  const btn=document.getElementById('btn-save-event');
-  btn.disabled=true;btn.textContent='Guardando...';
-
-  const eventoId=Date.now().toString();
+  const btn=document.getElementById('btn-save-ev');
+  btn.disabled=true;btn.innerHTML='<i class="ti ti-loader"></i> Guardando...';
+  const eid=Date.now().toString();
+  const cargado_por=currentUser?currentUser.email:'desconocido';
+  const cargado_nombre=currentUser?currentUser.name:'—';
   const evento={
-    id:eventoId,nombre,fecha,
-    tipo:document.getElementById('en-tipo').value,
+    id:eid,nombre,fecha,tipo:document.getElementById('en-tipo').value,
     cliente:document.getElementById('en-cliente').value,
     asistentes:document.getElementById('en-asist').value||'0',
-    prod_rating:getR('r-prod')||'',
-    cuen_rating:getR('r-cuen')||'',
+    prod_rating:getR('r-prod')||'',cuen_rating:getR('r-cuen')||'',
     tiempos:document.getElementById('en-tiempos').checked?'TRUE':'FALSE',
     oprod:document.getElementById('en-oprod').value,
     ocuen:document.getElementById('en-ocuen').value,
-    destacados:JSON.stringify(parseLines(document.getElementById('en-destacados').value)),
-    mejoras:JSON.stringify(parseLines(document.getElementById('en-mejoras').value)),
-    mal:JSON.stringify(parseLines(document.getElementById('en-mal')?document.getElementById('en-mal').value:'')),
-
-    team:JSON.stringify(getSelectedTeam()),
+    destacados:JSON.stringify(pLines(document.getElementById('en-dest').value)),
+    mejoras:JSON.stringify(pLines(document.getElementById('en-mej').value)),
+    mal:JSON.stringify(pLines(document.getElementById('en-mal').value)),
+    cargado_por:cargado_por,
+    cargado_nombre:cargado_nombre,
+    created_at:new Date().toISOString(),
+    team:JSON.stringify(getTeam()),
   };
-
-  // Guardar evaluaciones
-  const prePartic=getSelectedPartic('pre-partic-chips');
-  const livePartic=getSelectedPartic('live-partic-chips');
-  const preObs=document.getElementById('pre-obs').value;
-  const liveObs=document.getElementById('live-obs').value;
-  const postObs=document.getElementById('post-obs').value;
-
-  const evalData=[
-    {id:'pre-cc',campo:'Armado CC',etapa:'pre'},
-    {id:'pre-carpeta',campo:'Carpeta producción',etapa:'pre'},
-    {id:'pre-cashflow',campo:'Cashflow',etapa:'pre'},
-    {id:'pre-provee',campo:'Selección proveedores',etapa:'pre'},
-    {id:'pre-comun',campo:'Comunicación cuentas',etapa:'pre'},
-    {id:'pre-producer',campo:'Producer Manager',etapa:'pre'},
-    {id:'live-crono',campo:'Cronograma armado',etapa:'live'},
-    {id:'live-planos',campo:'Armado planos',etapa:'live'},
-    {id:'live-diseno',campo:'Planilla diseño',etapa:'live'},
-    {id:'live-panol',campo:'Armado pañol',etapa:'live'},
-    {id:'live-roles',campo:'Cumplimiento roles',etapa:'live'},
-    {id:'live-provee',campo:'Gestión proveedores',etapa:'live'},
-    {id:'live-comun',campo:'Comunicación cuentas',etapa:'live'},
-    {id:'post-cc',campo:'Cierre CC',etapa:'post'},
-    {id:'post-facturas',campo:'Facturas pendientes',etapa:'post'},
-    {id:'post-envio',campo:'Envío administración',etapa:'post'},
-    {id:'post-cargado',campo:'Carga facturas',etapa:'post'},
-    {id:'post-extras',campo:'Extras cuentas',etapa:'post'},
+  const evals=[
+    {id:'rs-pre-cc',campo:'Armado CC',etapa:'pre'},{id:'rs-pre-carp',campo:'Carpeta producción',etapa:'pre'},
+    {id:'rs-pre-cash',campo:'Cashflow',etapa:'pre'},{id:'rs-pre-prov',campo:'Selección proveedores',etapa:'pre'},
+    {id:'rs-pre-com',campo:'Comunicación cuentas',etapa:'pre'},{id:'rs-pre-prod',campo:'Producer Manager',etapa:'pre'},
+    {id:'rs-live-crono',campo:'Cronograma armado',etapa:'live'},{id:'rs-live-planos',campo:'Armado planos',etapa:'live'},
+    {id:'rs-live-diseno',campo:'Planilla diseño',etapa:'live'},{id:'rs-live-panol',campo:'Armado pañol',etapa:'live'},
+    {id:'rs-live-roles',campo:'Cumplimiento roles',etapa:'live'},{id:'rs-live-prov',campo:'Gestión proveedores',etapa:'live'},
+    {id:'rs-live-com',campo:'Comunicación cuentas',etapa:'live'},{id:'rs-post-cc',campo:'Cierre CC',etapa:'post'},
+    {id:'rs-post-fact',campo:'Facturas pendientes',etapa:'post'},{id:'rs-post-envio',campo:'Envío administración',etapa:'post'},
+    {id:'rs-post-carg',campo:'Carga facturas',etapa:'post'},{id:'rs-post-ext',campo:'Extras cuentas',etapa:'post'},
   ];
-
   try{
     await apiPost({action:'saveEvento',data:evento});
-
-    for(const e of evalData){
-      const val=getRS(e.id);if(!val)continue;
-      const ptcs=e.etapa==='pre'?prePartic:e.etapa==='live'?livePartic:[];
-      const obs=e.etapa==='pre'?preObs:e.etapa==='live'?liveObs:postObs;
-      await apiPost({action:'saveEvaluacion',data:{evento_id:eventoId,etapa:e.etapa,campo:e.campo,valor:val,obs,participantes:JSON.stringify(ptcs)}});
-    }
-
-    // Evaluaciones individuales (Producción y Cuentas)
-    const evalTargets=db.contributors.filter(c=>getSelectedTeam().includes(String(c.id))&&(c.rol==='Producción'||c.rol==='Cuentas'));
-    for(const c of evalTargets){
-      const val=getRS(`evalp-${c.id}`);
-      const fbEl=document.getElementById(`evalp-${c.id}-fb`);
-      const fb=fbEl?fbEl.value.trim():'';
-      if(!val&&!fb)continue;
-      await apiPost({action:'saveEvalPersona',data:{
-        evento_id:eventoId,
-        evento_nombre:nombre,
-        persona_id:c.id,
-        persona_nombre:`${c.nombre} ${c.apellido||''}`.trim(),
-        rol:c.rol,
-        calificacion:val||'',
-        feedback:fb,
-        created_by:currentUserName||'',
-      }});
-    }
-
-    if(document.getElementById('en-addcierre').checked){
-      const vr=parseKV(document.getElementById('en-cvoces').value);
-      await apiPost({action:'saveCierre',data:{
-        evento_id:eventoId,
-        participantes:document.getElementById('en-cpartic').value,
-        aprendizajes:JSON.stringify(parseLines(document.getElementById('en-caprendizajes').value)),
-        voces:JSON.stringify(vr.map(v=>({nombre:v.k,obs:v.v}))),
-        acciones:JSON.stringify(parseLines(document.getElementById('en-cacciones').value)),
-      }});
-    }
-
-    closeM('modal-new');
+    for(const ev of evals){const val=getRS(ev.id);if(!val)continue;const obs=ev.etapa==='pre'?document.getElementById('obs-pre').value:ev.etapa==='live'?document.getElementById('obs-live').value:document.getElementById('obs-post').value;const ptcs=ev.etapa==='pre'?getPartic('pre-partic'):ev.etapa==='live'?getPartic('live-partic'):[];await apiPost({action:'saveEvaluacion',data:{evento_id:eid,etapa:ev.etapa,campo:ev.campo,valor:val,obs,participantes:JSON.stringify(ptcs)}})}
+    if(document.getElementById('en-addcierre').checked){const vr=pKV(document.getElementById('ci-voces').value);await apiPost({action:'saveCierre',data:{evento_id:eid,participantes:document.getElementById('ci-partic').value,aprendizajes:JSON.stringify(pLines(document.getElementById('ci-apr').value)),voces:JSON.stringify(vr.map(v=>({nombre:v.k,obs:v.v}))),acciones:JSON.stringify(pLines(document.getElementById('ci-acc').value))}})}
+    closePV('pv-evento');
     await loadData();
-  }catch(err){
-    alert('Error al guardar. Verificá la conexión.');
-  }
-  btn.disabled=false;btn.textContent='Guardar evento';
+  }catch(err){alert('Error al guardar. Verificá la conexión.');}
+  btn.disabled=false;btn.innerHTML='<i class="ti ti-device-floppy"></i> Guardar evento';
 }
 
-// ── CONTRIB FORM ──
-function openContribForm(id){
-  if(!isAdmin()){alert('Solo los admins pueden editar perfiles.');return}
-  editingContribId=id||null;
-  const c=id?db.contributors.find(x=>x.id==id):null;
-  document.getElementById('contrib-modal-title').textContent=c?'Editar perfil':'Agregar persona';
-  document.getElementById('cf-nombre').value=c?c.nombre:'';
-  document.getElementById('cf-apellido').value=c?c.apellido||'':'';
-  document.getElementById('cf-rol').value=c?c.rol||'Producción':'Producción';
-  document.getElementById('cf-color').value=c?c.color||'a':'a';
-  document.getElementById('cf-ingreso').value=c?c.ingreso||'':'';
-  document.getElementById('cf-fortalezas').value=c?(parseJ(c.fortalezas)||[]).join('\n'):'';
-  document.getElementById('cf-oportunidades').value=c?(parseJ(c.oportunidades)||[]).join('\n'):'';
-  const pv_modal_contrib=document.getElementById('modal-contrib');
-  pv_modal_contrib.classList.add('open');
-  pv_modal_contrib.scrollTop=0;
-  document.getElementById('app-screen').style.display='none';
+// ── DETALLE EVENTO ──
+function openDet(id){
+  const e=db.events.find(x=>x.id==id);if(!e)return;
+  const ov=getOverall(e);const[l,c]=scoreLabel(ov);
+  const preA=getEtapaAvg(id,'pre');const liveA=getEtapaAvg(id,'live');const postA=getEtapaAvg(id,'post');
+  const cierre=db.cierres.find(ci=>ci.evento_id==id);
+  const teamCards=(pJ(e.team)||[]).map(tid=>{const p=db.team.find(x=>x.id==tid||x.id==String(tid));if(!p)return'';return`<span style="display:inline-flex;align-items:center;gap:4px;padding:3px 8px;background:${(AVC[p.color||'v']||AVC.v).bg};border-radius:12px;font-size:12px;color:${(AVC[p.color||'v']||AVC.v).fg};margin-right:4px;margin-bottom:4px">${p.nombre}</span>`}).join('');
+  let h=`<div style="margin-bottom:1rem"><div style="font-size:20px;font-weight:500;color:var(--t);font-family:'DM Serif Display',serif;margin-bottom:4px">${e.nombre}</div><div style="font-size:13px;color:var(--t2);margin-bottom:8px">${e.cliente||'—'} · ${e.fecha||'—'} · ${e.tipo||'—'} · ${e.asistentes||'—'} asistentes</div>
+  ${e.cargado_nombre?'<div style="font-size:12px;color:var(--t2);margin-bottom:8px;display:flex;align-items:center;gap:5px"><i class="ti ti-user" style="font-size:11px;color:var(--v)"></i> Cargado por <strong>'+e.cargado_nombre+'</strong>'+(e.created_at?' el '+new Date(e.created_at).toLocaleDateString('es-AR',{day:'2-digit',month:'2-digit',year:'numeric'}):'')+'</div>':''}<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:${teamCards?'8':'0'}px">${l?`<span class="badge ${c}">${l}</span>`:''} ${parseFloat(e.prod_rating)>0?`<span class="sp sp-prod">🔧 ${e.prod_rating}</span>`:''} ${parseFloat(e.cuen_rating)>0?`<span class="sp sp-live">💰 ${e.cuen_rating}</span>`:''} ${preA>0?`<span class="sp sp-pre">⚙️ ${preA.toFixed(1)}</span>`:''} ${liveA>0?`<span class="sp sp-live">▶️ ${liveA.toFixed(1)}</span>`:''} ${postA>0?`<span class="sp sp-post">📋 ${postA.toFixed(1)}</span>`:''}</div>${teamCards?`<div>${teamCards}</div>`:''}</div>
+  <div class="stabs"><button class="stab on" onclick="swDT('dt-ar',this)">🔧💰 Áreas</button><button class="stab" onclick="swDT('dt-pre',this)">⚙️ Previa</button><button class="stab" onclick="swDT('dt-live',this)">▶️ Ejecución</button><button class="stab" onclick="swDT('dt-post',this)">📋 Post</button><button class="stab" onclick="swDT('dt-gen',this)">General</button>${cierre?`<button class="stab" onclick="swDT('dt-ci',this)">Cierre</button>`:''}</div>`;
+  h+=`<div id="dt-ar" class="sv on"><div class="g2" style="margin-bottom:12px"><div style="background:var(--ml);border-radius:12px;padding:1rem;text-align:center"><div style="font-size:11px;color:var(--mt);font-weight:500;margin-bottom:8px;text-transform:uppercase">🔧 Producción</div>${parseFloat(e.prod_rating)>0?`<div style="font-size:26px;font-weight:500;color:var(--md)">${e.prod_rating}/5</div><div style="margin-top:6px;display:flex;justify-content:center">${miniStars(e.prod_rating)}</div>`:'<div style="font-size:13px;color:var(--mt)">Sin evaluar</div>'}</div><div style="background:var(--vl);border-radius:12px;padding:1rem;text-align:center"><div style="font-size:11px;color:var(--vt);font-weight:500;margin-bottom:8px;text-transform:uppercase">💰 Cuentas</div>${parseFloat(e.cuen_rating)>0?`<div style="font-size:26px;font-weight:500;color:var(--vd)">${e.cuen_rating}/5</div><div style="margin-top:6px;display:flex;justify-content:center">${miniStars(e.cuen_rating)}</div>`:'<div style="font-size:13px;color:var(--vt)">Sin evaluar</div>'}</div></div>${e.oprod?`<div style="margin-bottom:10px"><div class="dl">Para producción</div><div style="font-size:13px;color:var(--t);line-height:1.6">${e.oprod}</div></div>`:''} ${e.ocuen?`<div><div class="dl">Para cuentas</div><div style="font-size:13px;color:var(--t);line-height:1.6">${e.ocuen}</div></div>`:''} ${role==='admin'?`<hr class="divider"><button class="btn-d" onclick="delEvento('${e.id}')"><i class="ti ti-trash"></i> Eliminar evento</button>`:''}</div>`;
+  ['pre','live','post'].forEach(et=>{const ids={pre:'dt-pre',live:'dt-live',post:'dt-post'};const evs=db.evals.filter(ev=>ev.evento_id==id&&ev.etapa===et);const obs=et==='pre'?e.pre_obs:et==='live'?e.live_obs:e.post_obs;const bg={pre:'var(--bl)',live:'var(--vl)',post:'var(--ml)'};h+=`<div id="${ids[et]}" class="sv">${evs.length?`<table style="width:100%;border-collapse:collapse;font-size:13px">${evs.map(ev=>`<tr><td style="padding:7px 8px;border-bottom:0.5px solid #e0d8ec;color:var(--t2)">${ev.campo}</td><td style="padding:7px 8px;border-bottom:0.5px solid #e0d8ec"><div style="display:flex;gap:2px">${miniStars(parseFloat(ev.valor||0))}</div></td><td style="padding:7px 8px;border-bottom:0.5px solid #e0d8ec;color:var(--t2)">${ev.valor}/5</td></tr>`).join('')}</table>${obs?`<div style="margin-top:10px;font-size:13px;color:var(--t);line-height:1.6;padding:10px;background:${bg[et]};border-radius:8px">${obs}</div>`:''}`:'<div class="empty">Sin evaluación</div>'}</div>`;});
+  const dests=pJ(e.destacados)||[];const mejoras=pJ(e.mejoras)||[];const mal=pJ(e.mal)||[];
+  h+=`<div id="dt-gen" class="sv">${dests.length?`<div style="margin-bottom:12px"><div class="dl">⭐ Destacados</div>${dests.map(d=>`<div class="dest">${d}</div>`).join('')}</div>`:''} ${mejoras.length?`<div style="margin-bottom:10px"><div class="dl">📈 Mejoras vs anterior</div>${mejoras.map(m=>`<div class="item"><span class="dot dm"></span>${m}</div>`).join('')}</div>`:''} ${mal.length?`<div><div class="dl">🔄 Próxima vez</div>${mal.map(m=>`<div class="item"><span class="dot db"></span>${m}</div>`).join('')}</div>`:''} ${!dests.length&&!mejoras.length&&!mal.length?'<div class="empty">Sin datos generales</div>':''}</div>`;
+  if(cierre){const aprs=pJ(cierre.aprendizajes)||[];const acc=pJ(cierre.acciones)||[];const voces=pJ(cierre.voces)||[];h+=`<div id="dt-ci" class="sv"><div class="cierre-banner"><i class="ti ti-clipboard-check"></i> Participantes: ${cierre.participantes||'—'}</div><div class="stabs"><button class="stab on" onclick="swCI('ci-a',this)">Aprendizajes</button><button class="stab" onclick="swCI('ci-v',this)">Voces</button><button class="stab" onclick="swCI('ci-ac',this)">Acciones</button></div><div id="ci-a" class="sv on">${aprs.length?aprs.map(a=>`<div class="item"><span class="dot dv"></span>${a}</div>`).join(''):'<div class="empty">Sin aprendizajes</div>'}</div><div id="ci-v" class="sv">${voces.length?voces.map(v=>`<div class="voice-r"><div class="av" style="${avStyle('v')};width:30px;height:30px;font-size:10px">${(v.nombre||'?').slice(0,2).toUpperCase()}</div><div><div style="font-size:12px;font-weight:500;color:var(--t)">${v.nombre||''}</div><div class="qt">${v.obs||''}</div></div></div>`).join(''):'<div class="empty">Sin voces</div>'}</div><div id="ci-ac" class="sv">${acc.length?acc.map((a,i)=>`<div style="display:flex;gap:10px;padding:8px 0;border-bottom:0.5px solid #e0d8ec"><div style="font-size:11px;color:var(--t2);min-width:20px">${String(i+1).padStart(2,'0')}</div><div style="font-size:13px;color:var(--t)">${typeof a==='string'?a:a.titulo||a}</div></div>`).join(''):'<div class="empty">Sin acciones</div>'}</div></div>`}
+  document.getElementById('det-body').innerHTML=h;
+  openPV('pv-det');
+}
+function swDT(id,btn){document.getElementById('det-body').querySelectorAll(':scope > .sv').forEach(v=>v.classList.remove('on'));document.getElementById(id).classList.add('on');document.getElementById('det-body').querySelectorAll(':scope > .stabs > .stab').forEach(b=>b.classList.remove('on'));btn.classList.add('on')}
+function swCI(id,btn){['ci-a','ci-v','ci-ac'].forEach(k=>{const el=document.getElementById(k);if(el)el.classList.remove('on')});document.getElementById(id).classList.add('on');btn.parentElement.querySelectorAll('.stab').forEach(b=>b.classList.remove('on'));btn.classList.add('on')}
+async function delEvento(id){if(!confirm('¿Eliminar este evento?'))return;await apiPost({action:'deleteRow',sheet:'eventos',id});db.events=db.events.filter(e=>e.id!=id);closePV('pv-det');renderAll()}
+
+// ── PERSONA FORM ──
+function openPersonaForm(id){
   
+  editPersonaId=id||null;
+  const p=id?db.team.find(x=>x.id==id):null;
+  document.getElementById('pf-title').textContent=p?'Editar perfil':'Agregar persona';
+  document.getElementById('pf-nombre').value=p?p.nombre:'';
+  document.getElementById('pf-apellido').value=p?p.apellido||'':'';
+  document.getElementById('pf-rol').value=p?p.rol||'Producción':'Producción';
+  document.getElementById('pf-color').value=p?p.color||'v':'v';
+  document.getElementById('pf-ingreso').value=p?p.ingreso||'':'';
+  document.getElementById('pf-fort').value=p?(pJ(p.fortalezas)||[]).join('\n'):'';
+  document.getElementById('pf-oport').value=p?(pJ(p.oportunidades)||[]).join('\n'):'';
+  openPV('pv-persona');
 }
-
-async function saveContrib(){
-  if(!isAdmin())return;
-  const nombre=document.getElementById('cf-nombre').value.trim();
+async function savePersona(){
+  
+  const nombre=document.getElementById('pf-nombre').value.trim();
   if(!nombre){alert('Nombre requerido');return}
-  const data={
-    nombre,apellido:document.getElementById('cf-apellido').value.trim(),
-    rol:document.getElementById('cf-rol').value,color:document.getElementById('cf-color').value,
-    ingreso:document.getElementById('cf-ingreso').value,
-    fortalezas:JSON.stringify(parseLines(document.getElementById('cf-fortalezas').value)),
-    oportunidades:JSON.stringify(parseLines(document.getElementById('cf-oportunidades').value)),
-    notas:'[]'
-  };
+  const data={nombre,apellido:document.getElementById('pf-apellido').value.trim(),rol:document.getElementById('pf-rol').value,color:document.getElementById('pf-color').value,ingreso:document.getElementById('pf-ingreso').value,fortalezas:JSON.stringify(pLines(document.getElementById('pf-fort').value)),oportunidades:JSON.stringify(pLines(document.getElementById('pf-oport').value)),notas:'[]'};
   try{
-    if(editingContribId){
-      await apiPost({action:'updateRow',sheet:'equipo',id:editingContribId,data});
-      const idx=db.contributors.findIndex(c=>c.id==editingContribId);
-      if(idx>=0)db.contributors[idx]={...db.contributors[idx],...data};
-    }else{
-      data.id=Date.now().toString();
-      await apiPost({action:'saveEquipo',data});
-      db.contributors.push(data);
-    }
-    closeM('modal-contrib');
-    renderContributors();
-    if(_returnToNewEvent){
-      // reopen new event form and refresh team selector
-      const mv=document.getElementById('modal-new');
-      mv.classList.add('open');
-      mv.scrollTop=0;
-      document.getElementById('app-screen').style.display='none';
-      renderTeamSelector();
-      renderParticChips('pre-partic-chips',[]);
-      renderParticChips('live-partic-chips',[]);
-      _returnToNewEvent=false;
-    }
+    if(editPersonaId){await apiPost({action:'updateRow',sheet:'equipo',id:editPersonaId,data});const idx=db.team.findIndex(p=>p.id==editPersonaId);if(idx>=0)db.team[idx]={...db.team[idx],...data};}
+    else{data.id=Date.now().toString();await apiPost({action:'saveEquipo',data});db.team.push(data);}
+    closePV('pv-persona');renderEquipo();
   }catch(err){alert('Error al guardar.');}
 }
 
+// ── PERFIL ──
+function openPerfil(id){
+  const p=db.team.find(x=>x.id==id);if(!p)return;
+  const evs=db.events.filter(e=>(pJ(e.team)||[]).map(String).includes(String(id)));
+  let ant='';
+  if(p.ingreso){const d=new Date(p.ingreso+'-01');const now=new Date();const m=Math.floor((now-d)/1000/60/60/24/30);const a=Math.floor(m/12);const rm=m%12;ant=a>0?`${a} año${a>1?'s':''}${rm>0?` y ${rm} mes${rm>1?'es':''}`:''}`:`${m} mes${m>1?'es':''}`;}
+  let h=`<div style="display:flex;align-items:center;gap:14px;margin-bottom:1.25rem;padding-bottom:1rem;border-bottom:0.5px solid #e0d8ec"><div class="av" style="${avStyle(p.color||'v')};width:50px;height:50px;font-size:16px">${initials(p)}</div><div><div style="font-size:18px;font-weight:500;color:var(--t)">${p.nombre} ${p.apellido||''}</div><div style="font-size:13px;color:var(--t2);margin-top:2px">${p.rol||'—'}</div></div>${role==='admin'?`<button class="btn-s" style="margin-left:auto" onclick="closePV('pv-perfil');openPersonaForm('${p.id}')"><i class="ti ti-edit"></i> Editar</button>`:''}</div>
+  ${ant?`<div style="display:inline-flex;align-items:center;gap:6px;padding:4px 12px;background:var(--vl);border-radius:20px;font-size:11px;color:var(--vt);margin-bottom:14px">📅 En SAPPIA desde <strong>${p.ingreso}</strong> · ${ant}</div>`:''}
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:1rem">
+    <div class="pstat"><div class="pstat-v">${evs.length}</div><div class="pstat-l">Eventos</div></div>
+    <div class="pstat"><div class="pstat-v">${(pJ(p.fortalezas)||[]).length}</div><div class="pstat-l">Fortalezas</div></div>
+    <div class="pstat"><div class="pstat-v">${(pJ(p.oportunidades)||[]).length}</div><div class="pstat-l">Oportunidades</div></div>
+  </div>
+  <div class="stabs"><button class="stab on" onclick="swPT('pt-f',this)">Fortalezas</button><button class="stab" onclick="swPT('pt-o',this)">Oportunidades</button><button class="stab" onclick="swPT('pt-e',this)">Eventos</button></div>
+  <div id="pt-f" class="sv on">${(pJ(p.fortalezas)||[]).length?(pJ(p.fortalezas)||[]).map(f=>`<div style="display:flex;gap:8px;padding:8px 0;border-bottom:0.5px solid #e0d8ec"><span class="dot dv" style="margin-top:5px"></span><div style="font-size:13px;color:var(--t);line-height:1.5">${f}</div></div>`).join(''):'<div class="empty">Sin fortalezas</div>'}</div>
+  <div id="pt-o" class="sv">${(pJ(p.oportunidades)||[]).length?(pJ(p.oportunidades)||[]).map(o=>`<div style="display:flex;gap:8px;padding:8px 0;border-bottom:0.5px solid #e0d8ec"><span class="dot db" style="margin-top:5px"></span><div style="font-size:13px;color:var(--t);line-height:1.5">${o}</div></div>`).join(''):'<div class="empty">Sin oportunidades</div>'}</div>
+  <div id="pt-e" class="sv">${evs.length?evs.map(e=>{const ov=getOverall(e);const[l,c]=scoreLabel(ov);return`<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:0.5px solid #e0d8ec"><div style="flex:1"><div style="font-size:13px;font-weight:500;color:var(--t)">${e.nombre}</div><div style="font-size:12px;color:var(--t2)">${e.fecha}</div></div>${l?`<span class="badge ${c}">${l}</span>`:''}</div>`}).join(''):'<div class="empty">Sin eventos registrados</div>'}</div>
+  ${role==='admin'?`<hr class="divider"><button class="btn-d" onclick="delPersona('${p.id}')"><i class="ti ti-trash"></i> Eliminar perfil</button>`:''}`;
+  document.getElementById('perfil-body').innerHTML=h;
+  openPV('pv-perfil');
+}
+function swPT(id,btn){['pt-f','pt-o','pt-e'].forEach(k=>{const el=document.getElementById(k);if(el)el.classList.remove('on')});document.getElementById(id).classList.add('on');btn.parentElement.querySelectorAll('.stab').forEach(b=>b.classList.remove('on'));btn.classList.add('on')}
+async function delPersona(id){if(!confirm('¿Eliminar este perfil?'))return;await apiPost({action:'deleteRow',sheet:'equipo',id});db.team=db.team.filter(p=>p.id!=id);closePV('pv-perfil');renderEquipo()}
+
 // ── AI ──
-function buildContext(){
-  const n=db.events.length;
-  if(!n)return'No hay eventos registrados aún.';
-  const summary=db.events.map(e=>{
-    const preA=getEtapaAvg(e.id,'pre');const liveA=getEtapaAvg(e.id,'live');const postA=getEtapaAvg(e.id,'post');
-    const cierre=db.cierres.find(c=>c.evento_id==e.id);
-    return`- ${e.nombre} (${e.fecha}, ${e.tipo||'—'}, cliente: ${e.cliente||'—'}): Producción ${e.prod_rating||0}/5, Cuentas ${e.cuen_rating||0}/5, Previa ${preA.toFixed(1)}/5, Ejecución ${liveA.toFixed(1)}/5, Post ${postA.toFixed(1)}/5. Tiempos: ${e.tiempos==='TRUE'?'cumplidos':'con desvíos'}. Destacados: ${(parseJ(e.destacados)||[]).join('; ')||'ninguno'}. Observaciones producción: ${e.oprod||'ninguna'}. Observaciones cuentas: ${e.ocuen||'ninguna'}.${cierre?` Cierre registrado con participantes: ${cierre.participantes||'—'}, ${(parseJ(cierre.aprendizajes)||[]).length} aprendizajes.`:''}`
-  }).join('\n');
-  const team=db.contributors.map(c=>`- ${c.nombre} ${c.apellido||''} (${c.rol||'—'}): Fortalezas: ${(parseJ(c.fortalezas)||[]).join(', ')||'no registradas'}. Oportunidades: ${(parseJ(c.oportunidades)||[]).join(', ')||'no registradas'}.`).join('\n');
-  return`Sos el asistente de análisis de SAPPIA Event Manager, una productora de eventos argentina.\n\nEVENTOS (${n}):\n${summary}\n\nEQUIPO:\n${team}\n\nRespondé en español, de forma concisa y práctica. Usá los nombres reales. Analizá patrones, dá recomendaciones concretas.`;
-}
-
-async function sendAI(){
-  const input=document.getElementById('ai-input');
-  const msg=input.value.trim();if(!msg)return;
-  input.value='';autoResize(input);
-  addMsg('user',msg);
-  document.getElementById('ai-suggestions').innerHTML='';
-  document.getElementById('ai-send-btn').disabled=true;
-  showThinking();
-  try{
-    const ctx=buildContext();
-    const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,system:ctx,messages:[{role:'user',content:msg},...aiHistory.slice(-6)]})});
-    removeThinking();
-    if(!res.ok)throw new Error('API error');
-    const data=await res.json();
-    const reply=data.content?.[0]?.text||'No pude generar una respuesta.';
-    aiHistory.push({role:'user',content:msg},{role:'assistant',content:reply});
-    addMsg('bot',reply);
-    showSuggestions();
-  }catch(e){
-    removeThinking();
-    addMsg('bot','Hubo un error al conectar con la IA. Verificá tu conexión e intentá de nuevo.');
-  }
-  document.getElementById('ai-send-btn').disabled=false;
-}
-
-function addMsg(role,text){
-  const container=document.getElementById('ai-messages');
-  const div=document.createElement('div');div.className=`ai-msg ${role}`;
-  const formatted=text.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/^- (.+)$/gm,'<li>$1</li>').replace(/(<li>.*?<\/li>(\n|$))+/gs,s=>`<ul>${s}</ul>`).replace(/\n/g,'<br>');
-  div.innerHTML=`<div class="ai-msg-av ${role}">${role==='bot'?'✦':'Yo'}</div><div class="ai-bubble ${role}">${formatted}</div>`;
-  container.appendChild(div);container.scrollTop=container.scrollHeight;
-}
-function showThinking(){const c=document.getElementById('ai-messages');const d=document.createElement('div');d.className='ai-msg';d.id='ai-thinking-msg';d.innerHTML=`<div class="ai-msg-av bot">✦</div><div class="ai-bubble bot"><span class="ai-thinking"><span></span><span></span><span></span></span></div>`;c.appendChild(d);c.scrollTop=c.scrollHeight;}
-function removeThinking(){const el=document.getElementById('ai-thinking-msg');if(el)el.remove();}
-const SUGGESTIONS=['¿Cuál fue el evento con mejor performance?','Resumí los aprendizajes de todos los cierres','¿Dónde está fallando más el equipo?','¿Cómo mejoró el equipo entre eventos?','Generá recomendaciones para el próximo evento','Comparar Previa vs Ejecución'];
-function showSuggestions(){const c=document.getElementById('ai-suggestions');c.innerHTML=SUGGESTIONS.sort(()=>Math.random()-.5).slice(0,3).map(s=>`<button class="ai-sug" onclick="useSuggestion('${s}')">${s}</button>`).join('');}
-function useSuggestion(txt){document.getElementById('ai-input').value=txt;sendAI();}
-function handleAIKey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendAI();}}
-function autoResize(el){el.style.height='auto';el.style.height=Math.min(el.scrollHeight,120)+'px';}
-function initAI(){
-  if(document.getElementById('ai-messages').children.length>0)return;
-  addMsg('bot',`Hola 👋 Soy el asistente de SAPPIA.\n\nTengo acceso en tiempo real a todos los eventos registrados en el sistema. Puedo analizar performance por etapa, identificar patrones entre eventos, resumir aprendizajes de cierres o generar recomendaciones concretas.\n\n¿Qué querés analizar?`);
-  showSuggestions();
-}
+function buildCtx(){if(!db.events.length)return'No hay eventos registrados.';const s=db.events.map(e=>{const preA=getEtapaAvg(e.id,'pre');const liveA=getEtapaAvg(e.id,'live');const postA=getEtapaAvg(e.id,'post');const ci=db.cierres.find(c=>c.evento_id==e.id);return`- ${e.nombre} (${e.fecha}, ${e.tipo||'—'}, cliente: ${e.cliente||'—'}): Prod ${e.prod_rating||0}/5, Cuen ${e.cuen_rating||0}/5, Previa ${preA.toFixed(1)}/5, Ejecución ${liveA.toFixed(1)}/5, Post ${postA.toFixed(1)}/5. Destacados: ${(pJ(e.destacados)||[]).join('; ')||'ninguno'}.${ci?` Cierre: ${(pJ(ci.aprendizajes)||[]).length} aprendizajes.`:''}`}).join('\n');const t=db.team.map(p=>`- ${p.nombre} ${p.apellido||''} (${p.rol||'—'})`).join('\n');return`Sos el asistente de SAPPIA Event Manager. Respondé en español, conciso y práctico.\n\nEVENTOS:\n${s}\n\nEQUIPO:\n${t}`}
+async function sendAI(){const inp=document.getElementById('ai-inp');const msg=inp.value.trim();if(!msg)return;inp.value='';autoR(inp);addMsg('user',msg);document.getElementById('ai-sugs').innerHTML='';document.getElementById('ai-btn').disabled=true;showThink();try{const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,system:buildCtx(),messages:[...aiHistory.slice(-6),{role:'user',content:msg}]})});rmThink();if(!res.ok)throw new Error();const data=await res.json();const reply=data.content?.[0]?.text||'Sin respuesta.';aiHistory.push({role:'user',content:msg},{role:'assistant',content:reply});addMsg('bot',reply);showSugs();}catch(e){rmThink();addMsg('bot','Error al conectar. Verificá la conexión.')}document.getElementById('ai-btn').disabled=false}
+function addMsg(r,t){const c=document.getElementById('ai-msgs');const d=document.createElement('div');d.className=`ai-msg ${r}`;const fmt=t.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/^- (.+)$/gm,'<li>$1</li>').replace(/(<li>.*<\/li>\n?)+/g,s=>`<ul>${s}</ul>`).replace(/\n/g,'<br>');d.innerHTML=`<div class="ai-mav ${r}">${r==='bot'?'✦':'Yo'}</div><div class="ai-bub ${r}">${fmt}</div>`;c.appendChild(d);c.scrollTop=c.scrollHeight}
+function showThink(){const c=document.getElementById('ai-msgs');const d=document.createElement('div');d.className='ai-msg';d.id='ai-think';d.innerHTML=`<div class="ai-mav bot">✦</div><div class="ai-bub bot"><span class="ai-think"><span></span><span></span><span></span></span></div>`;c.appendChild(d);c.scrollTop=c.scrollHeight}
+function rmThink(){const el=document.getElementById('ai-think');if(el)el.remove()}
+const SUGS=['¿Cuál fue el mejor evento?','Resumí los aprendizajes','¿Dónde fallamos más?','¿Cómo mejoró el equipo?','Recomendaciones para el próximo evento'];
+function showSugs(){const c=document.getElementById('ai-sugs');c.innerHTML=SUGS.sort(()=>Math.random()-.5).slice(0,3).map(s=>`<button class="ai-sug" onclick="useSug('${s}')">${s}</button>`).join('')}
+function useSug(t){document.getElementById('ai-inp').value=t;sendAI()}
+function handleAIKey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendAI()}}
+function autoR(el){el.style.height='auto';el.style.height=Math.min(el.scrollHeight,120)+'px'}
+function initAI(){if(document.getElementById('ai-msgs').children.length)return;addMsg('bot','Hola 👋 Soy el asistente de SAPPIA. Tengo acceso a todos los eventos del sistema.\n\n¿Qué querés analizar?');showSugs()}
 
 // ── RENDER ALL ──
-function renderAll(){renderDashboard();renderHistorial();renderCierres();renderMejoras();renderContributors();}
-
-// ── SECTION HANDLING ──
-document.querySelectorAll('.sec').forEach(s=>s.classList.remove('on'));
-document.getElementById('s-dashboard').classList.add('on');
+function renderAll(){renderDash();renderHist();renderCierres();renderMejoras();renderEquipo()}
 </script>
 </body>
 </html>
