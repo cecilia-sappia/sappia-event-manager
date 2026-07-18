@@ -240,7 +240,6 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--v)}
   <div class="nav">
     <button class="nb on" onclick="goSec('dash',this)"><i class="ti ti-chart-bar" style="font-size:12px"></i> Dashboard</button>
     <button class="nb" onclick="goSec('hist',this)"><i class="ti ti-calendar" style="font-size:12px"></i> Historial</button>
-    <button class="nb" onclick="goSec('cierres',this)"><i class="ti ti-clipboard-check" style="font-size:12px"></i> Cierres</button>
     <button class="nb" onclick="goSec('mejoras',this)"><i class="ti ti-trending-up" style="font-size:12px"></i> Mejoras</button>
     <button class="nb" onclick="goSec('equipo',this)"><i class="ti ti-user-star" style="font-size:12px"></i> Equipo</button>
     <button class="nb" onclick="goSec('ai',this)"><i class="ti ti-sparkles" style="font-size:12px"></i> IA</button>
@@ -260,7 +259,6 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--v)}
       </div>
       <div id="hist-list"></div>
     </div>
-    <div id="s-cierres" class="sec"><div id="cierre-list"></div></div>
     <div id="s-mejoras" class="sec">
       <div class="chip-g">
         <button class="chip on" onclick="filtM('todo',this)">Todo</button>
@@ -380,20 +378,7 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--v)}
     <textarea id="en-mej" placeholder="Ej:&#10;Se armó el cashflow con más anticipación"></textarea>
     <label>¿Qué haríamos diferente la próxima vez? <span style="font-size:11px;color:var(--t2)">(uno por línea)</span></label>
     <textarea id="en-mal" placeholder="Ej:&#10;Confirmar pañol con más anticipación"></textarea>
-    <div class="divider"></div>
-    <div class="fs-ttl"><i class="ti ti-users"></i> Equipo del evento</div>
-    <div class="team-c" id="team-sel"></div>
-    <div class="divider"></div>
-    <div style="display:flex;gap:8px;align-items:center;margin-bottom:10px"><input type="checkbox" id="en-tiempos" style="width:auto"><label for="en-tiempos" style="margin:0;font-size:14px;color:var(--t)">Tiempos generales cumplidos</label></div>
-    <div class="divider"></div>
-    <div style="display:flex;gap:8px;align-items:center;margin-bottom:10px"><input type="checkbox" id="en-addcierre" style="width:auto" onchange="toggleCierre(this)"><label for="en-addcierre" style="margin:0;font-size:14px;color:var(--t)">Agregar reunión de cierre</label></div>
-    <div id="cierre-section" style="display:none">
-      <div class="cierre-banner"><i class="ti ti-clipboard-check"></i> Reunión de cierre — aprendizajes colectivos</div>
-      <label>Participantes del cierre</label><input type="text" id="ci-partic" placeholder="Ej: Sofi, Maca, Diego">
-      <label>Aprendizajes <span style="font-size:11px;color:var(--t2)">(uno por línea)</span></label><textarea id="ci-apr"></textarea>
-      <label>Voces del equipo <span style="font-size:11px;color:var(--t2)">(nombre: observación)</span></label><textarea id="ci-voces" placeholder="Ej:&#10;Sofi: La comunicación con el cliente mejoró&#10;Diego: Faltó tiempo para armar el pañol"></textarea>
-      <label>Acciones para el próximo evento <span style="font-size:11px;color:var(--t2)">(una por línea)</span></label><textarea id="ci-acc"></textarea>
-    </div>
+
     <div style="display:flex;gap:10px;margin-top:1.5rem;padding-top:1.5rem;border-top:0.5px solid #e0d8ec">
       <button class="btn-p" id="btn-save-ev" onclick="saveEvento()"><i class="ti ti-device-floppy"></i> Guardar evento</button>
       <button class="btn-s" onclick="closePV('pv-evento')">Cancelar</button>
@@ -647,8 +632,9 @@ function miniStars(v){return[1,2,3,4,5].map(i=>`<span style="color:${i<=Math.rou
 // ── DASHBOARD ──
 function renderDash(){
   const n=db.events.length;
-  const avg=n?(db.events.reduce((a,e)=>a+getOverall(e),0)/n).toFixed(1):'—';
-  const tiempos=db.events.filter(e=>e.tiempos==='TRUE'||e.tiempos===true).length;
+  const evalsValidos=db.events.filter(e=>getOverall(e)>0);
+  const avg=evalsValidos.length?(evalsValidos.reduce((a,e)=>a+getOverall(e),0)/evalsValidos.length).toFixed(1):'—';
+  const tiempos=db.events.filter(e=>e.tiempos==='TRUE'||e.tiempos===true||e.tiempos==='true').length;
   const dests=db.events.reduce((a,e)=>a+(pJ(e.destacados)||[]).length,0);
   const accs=['var(--v)','var(--b)','var(--m)','var(--g3)'];
   let h=`<div class="g4">${[['Total eventos',n],['Calidad promedio',avg+'/5'],['Tiempos cumplidos',(n?Math.round(tiempos/n*100):0)+'%'],['Destacados',dests]].map(([l,v],i)=>`<div class="met"><div class="met-l">${l}</div><div class="met-v"><div class="acc" style="background:${accs[i]}"></div>${v}</div></div>`).join('')}</div>`;
@@ -771,7 +757,7 @@ function toggleCierre(cb){document.getElementById('cierre-section').style.displa
 
 function openNewEvento(){
   
-  ['en-nombre','en-cliente','en-dest','en-mej','en-mal','en-oprod','en-ocuen','obs-pre','obs-live','obs-post','obs-cuen','obs-creat','ci-partic','ci-apr','ci-voces','ci-acc'].forEach(id=>{const el=document.getElementById(id);if(el)el.value=''});
+  ['en-nombre','en-cliente','en-dest','en-mej','en-mal','en-oprod','en-ocuen','obs-pre','obs-live','obs-post','obs-cuen','obs-creat'].forEach(id=>{const el=document.getElementById(id);if(el)el.value=''});
   ['r-prod','r-cuen'].forEach(id=>setR(id,0));
   ['rs-pre-cc','rs-pre-carp','rs-pre-cash','rs-pre-prov','rs-pre-com','rs-pre-prod','rs-live-crono','rs-live-planos','rs-live-panol','rs-live-roles','rs-live-prov','rs-live-com','rs-post-cc','rs-post-fact','rs-post-envio','rs-post-carg','rs-post-ext','rs-cuen-vinculo','rs-cuen-plazos','rs-cuen-perf','rs-creat-efic','rs-creat-cal','rs-creat-alin','rs-creat-tiem','rs-creat-com'].forEach(id=>setRS(id,0));
   document.getElementById('en-tiempos').checked=false;
@@ -784,7 +770,6 @@ function openNewEvento(){
   const prodTab = document.getElementById('tab-prod');
   if(prodTab) prodTab.style.display='block';
   document.querySelectorAll('#area-tabs .stab').forEach((b,i)=>{b.classList.toggle('on',i===0)});
-  renderTeamChips();
   renderParticChips('pre-partic');
   renderParticChips('live-partic');
   openPV('pv-evento');
@@ -805,7 +790,7 @@ async function saveEvento(){
     cliente:document.getElementById('en-cliente').value,
     asistentes:document.getElementById('en-asist').value||'0',
     prod_rating:getR('r-prod')||'',cuen_rating:getR('r-cuen')||'',
-    tiempos:document.getElementById('en-tiempos').checked?'TRUE':'FALSE',
+    tiempos:'',
     oprod:document.getElementById('en-oprod').value,
     ocuen:document.getElementById('en-ocuen').value,
     destacados:JSON.stringify(pLines(document.getElementById('en-dest').value)),
@@ -814,7 +799,6 @@ async function saveEvento(){
     cargado_por:cargado_por,
     cargado_nombre:cargado_nombre,
     created_at:new Date().toISOString(),
-    team:JSON.stringify(getTeam()),
   };
   const evals=[
     {id:'rs-pre-cc',campo:'Armado CC',etapa:'pre'},{id:'rs-pre-carp',campo:'Carpeta producción',etapa:'pre'},
@@ -838,7 +822,7 @@ async function saveEvento(){
   try{
     await apiPost({action:'saveEvento',data:evento});
     for(const ev of evals){const val=getRS(ev.id);if(!val)continue;const obs=ev.etapa==='pre'?document.getElementById('obs-pre').value:ev.etapa==='live'?document.getElementById('obs-live').value:ev.etapa==='cuen'?document.getElementById('obs-cuen').value:ev.etapa==='creat'?document.getElementById('obs-creat').value:document.getElementById('obs-post').value;const ptcs=ev.etapa==='pre'?getPartic('pre-partic'):ev.etapa==='live'?getPartic('live-partic'):[];await apiPost({action:'saveEvaluacion',data:{evento_id:eid,etapa:ev.etapa,campo:ev.campo,valor:val,obs,participantes:JSON.stringify(ptcs)}})}
-    if(document.getElementById('en-addcierre').checked){const vr=pKV(document.getElementById('ci-voces').value);await apiPost({action:'saveCierre',data:{evento_id:eid,participantes:document.getElementById('ci-partic').value,aprendizajes:JSON.stringify(pLines(document.getElementById('ci-apr').value)),voces:JSON.stringify(vr.map(v=>({nombre:v.k,obs:v.v}))),acciones:JSON.stringify(pLines(document.getElementById('ci-acc').value))}})}
+
     closePV('pv-evento');
     await loadData();
   }catch(err){alert('Error al guardar. Verificá la conexión.');}
@@ -950,10 +934,11 @@ function autoR(el){el.style.height='auto';el.style.height=Math.min(el.scrollHeig
 function initAI(){if(document.getElementById('ai-msgs').children.length)return;addMsg('bot','Hola 👋 Soy el asistente de SAPPIA. Tengo acceso a todos los eventos del sistema.\n\n¿Qué querés analizar?');showSugs()}
 
 // ── RENDER ALL ──
-function renderAll(){renderDash();renderHist();renderCierres();renderMejoras();renderEquipo()}
+function renderAll(){renderDash();renderHist();renderMejoras();renderEquipo()}
 </script>
 </body>
 </html>
+
 
 
 
