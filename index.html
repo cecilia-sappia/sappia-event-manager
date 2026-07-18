@@ -636,8 +636,11 @@ function renderDash(){
   const avg=evalsValidos.length?(evalsValidos.reduce((a,e)=>a+getOverall(e),0)/evalsValidos.length).toFixed(1):'—';
   const tiempos=db.events.filter(e=>e.tiempos==='TRUE'||e.tiempos===true||e.tiempos==='true').length;
   const dests=db.events.reduce((a,e)=>a+(pJ(e.destacados)||[]).length,0);
+  // Count unique events from evaluaciones if events array is empty
+  const uniqueEvIds = [...new Set(db.evals.map(e=>e.evento_id))].length;
+  const totalEvs = n || uniqueEvIds;
   const accs=['var(--v)','var(--b)','var(--m)','var(--g3)'];
-  let h=`<div class="g4">${[['Total eventos',n],['Calidad promedio',avg+'/5'],['Tiempos cumplidos',(n?Math.round(tiempos/n*100):0)+'%'],['Destacados',dests]].map(([l,v],i)=>`<div class="met"><div class="met-l">${l}</div><div class="met-v"><div class="acc" style="background:${accs[i]}"></div>${v}</div></div>`).join('')}</div>`;
+  let h=`<div class="g4">${[['Total eventos',totalEvs],['Calidad promedio',avg+'/5'],['Tiempos cumplidos',(n?Math.round(tiempos/n*100):0)+'%'],['Destacados',dests]].map(([l,v],i)=>`<div class="met"><div class="met-l">${l}</div><div class="met-v"><div class="acc" style="background:${accs[i]}"></div>${v}</div></div>`).join('')}</div>`;
   // Calidad por área
   const pA=db.events.filter(e=>parseFloat(e.prod_rating)>0);const cA=db.events.filter(e=>parseFloat(e.cuen_rating)>0);
   const aP=pA.length?(pA.reduce((a,e)=>a+parseFloat(e.prod_rating),0)/pA.length).toFixed(1):null;
@@ -661,7 +664,24 @@ function renderDash(){
   const aprMap={};db.cierres.forEach(ci=>{(pJ(ci.aprendizajes)||[]).forEach(a=>{const k=a.toLowerCase().slice(0,35);if(!aprMap[k])aprMap[k]={txt:a,evs:[]};const ev=db.events.find(e=>e.id==ci.evento_id);if(ev)aprMap[k].evs.push(ev.nombre)})});
   let iH='';Object.values(aprMap).slice(0,4).forEach(p=>{iH+=`<div class="item"><span class="dot dv"></span><div><div>${p.txt}</div><div style="font-size:11px;color:var(--t2)">En: ${p.evs.join(', ')}</div></div></div>`});
   if(!iH)iH='<div class="empty">Sin cierres registrados</div>';
-  document.getElementById('dash-content').innerHTML=h+`<div class="g2"><div class="card"><div class="cttl"><i class="ti ti-chart-bar"></i> Calidad por área y etapa</div>${aH||'<div class="empty">Sin datos</div>'}</div><div><div class="card" style="margin-bottom:10px"><div class="cttl"><i class="ti ti-star"></i> Destacados recientes</div>${dH}</div><div class="card"><div class="cttl"><i class="ti ti-alert-triangle"></i> Aprendizajes recurrentes</div>${iH}</div></div></div>`;
+  // Recent events list
+  const recent = [...db.events].sort((a,b)=>(b.fecha||'').localeCompare(a.fecha||'')).slice(0,3);
+  let recH = '';
+  if(recent.length){
+    recent.forEach(e=>{
+      const ov=getOverall(e);const[l,c]=scoreLabel(ov);
+      recH+=`<div class="erow" onclick="openDet('${e.id}')" style="margin-bottom:8px"><div style="flex:1"><div class="er-n">${e.nombre}</div><div class="er-s">${e.fecha||'—'} · ${e.cliente||'—'}</div></div>${l?`<span class="badge ${c}">${l}</span>`:''}</div>`;
+    });
+  } else recH='<div class="empty">Sin eventos registrados</div>';
+
+  document.getElementById('dash-content').innerHTML=h+`<div class="g2">
+    <div class="card"><div class="cttl"><i class="ti ti-chart-bar"></i> Calidad por área y etapa</div>${aH||'<div class="empty">Sin datos</div>'}</div>
+    <div>
+      <div class="card" style="margin-bottom:10px"><div class="cttl"><i class="ti ti-clock"></i> Eventos recientes</div>${recH}</div>
+      <div class="card" style="margin-bottom:10px"><div class="cttl"><i class="ti ti-star"></i> Destacados recientes</div>${dH}</div>
+      <div class="card"><div class="cttl"><i class="ti ti-alert-triangle"></i> Aprendizajes recurrentes</div>${iH}</div>
+    </div>
+  </div>`;
 }
 
 // ── HISTORIAL ──
@@ -938,6 +958,7 @@ function renderAll(){renderDash();renderHist();renderMejoras();renderEquipo()}
 </script>
 </body>
 </html>
+
 
 
 
