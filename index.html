@@ -776,19 +776,14 @@ function getPartic(cid){return[...document.querySelectorAll(`#${cid} .pc.on`)].m
 function toggleCierre(cb){document.getElementById('cierre-section').style.display=cb.checked?'block':'none'}
 
 function openNewEvento(){
-  
   ['en-nombre','en-cliente','en-dest','en-mej','en-mal','en-oprod','en-ocuen','obs-pre','obs-live','obs-post','obs-cuen','obs-creat'].forEach(id=>{const el=document.getElementById(id);if(el)el.value=''});
   ['r-prod','r-cuen'].forEach(id=>setR(id,0));
   ['rs-pre-cc','rs-pre-carp','rs-pre-cash','rs-pre-prov','rs-pre-com','rs-pre-prod','rs-live-crono','rs-live-planos','rs-live-panol','rs-live-roles','rs-live-prov','rs-live-com','rs-post-cc','rs-post-fact','rs-post-envio','rs-post-carg','rs-post-ext','rs-cuen-vinculo','rs-cuen-plazos','rs-cuen-perf','rs-creat-efic','rs-creat-cal','rs-creat-alin','rs-creat-tiem','rs-creat-com'].forEach(id=>setRS(id,0));
-  document.getElementById('en-tiempos').checked=false;
-  document.getElementById('en-addcierre').checked=false;
-  document.getElementById('cierre-section').style.display='none';
-  document.getElementById('en-fecha').value=new Date().toISOString().split('T')[0];
-  document.getElementById('en-asist').value='';
+  const fechaEl=document.getElementById('en-fecha');if(fechaEl)fechaEl.value=new Date().toISOString().split('T')[0];
+  const asistEl=document.getElementById('en-asist');if(asistEl)asistEl.value='';
   // Reset area tabs to producción
   document.querySelectorAll('.area-tab-content').forEach(t=>t.style.display='none');
-  const prodTab = document.getElementById('tab-prod');
-  if(prodTab) prodTab.style.display='block';
+  const prodTab=document.getElementById('tab-prod');if(prodTab)prodTab.style.display='block';
   document.querySelectorAll('#area-tabs .stab').forEach((b,i)=>{b.classList.toggle('on',i===0)});
   renderParticChips('pre-partic');
   renderParticChips('live-partic');
