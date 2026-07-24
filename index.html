@@ -608,6 +608,8 @@ async function loadData(){
     db.team=Array.isArray(data.equipo)?data.equipo:[];
     db.cierres=Array.isArray(data.cierres)?data.cierres:[];
     db.evals=Array.isArray(data.evaluaciones)?data.evaluaciones:[];
+    console.log('Datos cargados:', {eventos:db.events.length, equipo:db.team.length, cierres:db.cierres.length, evals:db.evals.length});
+    console.log('Primer evento:', db.events[0]);
     renderAll();
   }catch(e){
     document.getElementById('dash-content').innerHTML='<div class="empty">Error al cargar. Verificá la conexión.</div>';
@@ -692,7 +694,10 @@ function renderHist(){
   else if(hFilt==='bueno')evs=evs.filter(e=>{const a=getOverall(e);return a>=3.5&&a<4.5});
   else if(hFilt==='mejorar')evs=evs.filter(e=>getOverall(e)>0&&getOverall(e)<3.5);
   else if(hFilt==='cierre')evs=evs.filter(e=>db.cierres.some(c=>c.evento_id==e.id));
-  if(!evs.length){document.getElementById('hist-list').innerHTML='<div class="empty">Sin eventos</div>';return}
+  if(!evs.length){
+    document.getElementById('hist-list').innerHTML=`<div class="empty">Sin eventos registrados<br><span style="font-size:12px;color:var(--t2)">${db.evals.length>0?'Se encontraron '+db.evals.length+' evaluaciones pero sin eventos asociados. Puede haber un problema con la columna ID en la Sheet.':''}</span></div>`;
+    return;
+  }
   let h='';
   evs.forEach(e=>{
     const ov=getOverall(e);const[l,c]=scoreLabel(ov);
